@@ -1,0 +1,1 @@
+-- TODO: salin SQL dari PLANNING-PORTOFOLIO.md bagian 8.4 (bucket & kebijakan storage).

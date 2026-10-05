@@ -1,0 +1,12 @@
+name: Deploy
+
+# TODO (Fase 6): build image dengan build-args -> push ke GHCR -> SSH ke VPS
+# -> docker compose pull && docker compose up -d -> cek /api/health
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Belum dikonfigurasi. Lihat PLANNING-PORTOFOLIO.md bagian 17.5."

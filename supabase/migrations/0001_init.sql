@@ -1,0 +1,1 @@
+-- TODO: salin SQL dari PLANNING-PORTOFOLIO.md bagian 8.2 (tabel, trigger, fungsi is_admin).

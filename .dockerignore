@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.github
+.husky
+.env*
+!.env.example
+e2e
+coverage
+playwright-report
+test-results
+README.md

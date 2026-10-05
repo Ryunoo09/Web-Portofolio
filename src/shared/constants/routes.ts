@@ -1,0 +1,19 @@
+export const ROUTES = {
+  home: "/",
+  about: "/about",
+  skills: "/skills",
+  contact: "/contact",
+  projects: "/projects",
+  project: (slug: string) => `/projects/${slug}`,
+  admin: {
+    root: "/admin",
+    login: "/admin/login",
+    projects: "/admin/projects",
+    skills: "/admin/skills",
+    experiences: "/admin/experiences",
+    education: "/admin/education",
+    certificates: "/admin/certificates",
+    profile: "/admin/profile",
+    messages: "/admin/messages",
+  },
+} as const;
