@@ -1,11 +1,14 @@
-import type { Project } from "../types";
+import { DUMMY_PROJECTS, type ProjectItem } from "@/shared/constants/dummyData";
 
-// TODO: ganti dengan query Supabase memakai createPublicClient
-// (lihat PLANNING-PORTOFOLIO.md bagian 11.3).
-export async function getPublishedProjects(): Promise<Project[]> {
-  return [];
+export async function getPublishedProjects(): Promise<ProjectItem[]> {
+  return DUMMY_PROJECTS;
 }
 
-export async function getProjectBySlug(_slug: string): Promise<Project | null> {
-  return null;
+export async function getFeaturedProjects(): Promise<ProjectItem[]> {
+  return DUMMY_PROJECTS.filter((p) => p.featured);
+}
+
+export async function getProjectBySlug(slug: string): Promise<ProjectItem | null> {
+  const found = DUMMY_PROJECTS.find((p) => p.slug === slug);
+  return found ?? null;
 }

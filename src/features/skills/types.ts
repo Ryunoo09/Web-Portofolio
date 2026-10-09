@@ -1,4 +1,14 @@
+export type SkillCategory = "Frontend" | "Backend" | "Database & Cloud" | "DevOps & Tools";
+
+export type SkillProficiency = "Advanced" | "Proficient" | "Familiar";
+
 export type Skill = {
   id: string;
-  // TODO: tambahkan field sesuai tabel (lihat PLANNING-PORTOFOLIO.md bagian 8.2)
+  name: string;
+  category: SkillCategory;
+  proficiency: SkillProficiency;
+  level: number;
+  iconName: string;
+  description: string;
+  featured: boolean;
 };

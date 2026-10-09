@@ -52,6 +52,8 @@ const eslintConfig = defineConfig([
     },
   },
   globalIgnores([
+    ".agents/**",
+    "design-system/**",
     ".next/**",
     "out/**",
     "build/**",

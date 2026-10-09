@@ -1,26 +1,169 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #090d16;
+
+  --card: #ffffff;
+  --card-foreground: #090d16;
+
+  --popover: #ffffff;
+  --popover-foreground: #090d16;
+
+  --primary: #0b132b;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  --accent: #f1f5f9;
+  --accent-foreground: #0b132b;
+
+  --gold: #b8860b;
+  --gold-foreground: #ffffff;
+  --gold-muted: #d4af37;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #d4af37;
+
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #060a14;
+  --foreground: #f1f5f9;
+
+  --card: #0d1527;
+  --card-foreground: #f1f5f9;
+
+  --popover: #0d1527;
+  --popover-foreground: #f1f5f9;
+
+  --primary: #f8fafc;
+  --primary-foreground: #060a14;
+
+  --secondary: #131e36;
+  --secondary-foreground: #e2e8f0;
+
+  --muted: #111a30;
+  --muted-foreground: #94a3b8;
+
+  --accent: #131e36;
+  --accent-foreground: #f8fafc;
+
+  --gold: #e5c158;
+  --gold-foreground: #060a14;
+  --gold-muted: #c59b27;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #1a2744;
+  --input: #1a2744;
+  --ring: #e5c158;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-gold-muted: var(--gold-muted);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-jakarta);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+.font-serif-heading {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+/* Elegant gold gradient utility */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #f5d47a 0%, #d4af37 50%, #aa771c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-subtle {
+  background: linear-gradient(135deg, rgba(229, 193, 88, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
+}
+
+.gold-border-glow {
+  border-color: rgba(229, 193, 88, 0.3);
+  box-shadow: 0 0 15px -3px rgba(229, 193, 88, 0.15);
+}
+
+.card-luxury {
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-luxury:hover {
+  border-color: rgba(229, 193, 88, 0.4);
+  box-shadow:
+    0 10px 30px -10px rgba(0, 0, 0, 0.3),
+    0 0 20px -5px rgba(229, 193, 88, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Luxury ambient background glows */
+.luxury-glow-top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  max-width: 100vw;
+  height: 400px;
+  background: radial-gradient(
+    ellipse at top,
+    rgba(212, 175, 55, 0.12) 0%,
+    rgba(13, 21, 39, 0.3) 50%,
+    transparent 80%
+  );
+  pointer-events: none;
+  z-index: 0;
 }

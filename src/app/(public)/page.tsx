@@ -1,8 +1,108 @@
-export default function HomePage() {
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { PageContainer, SectionHeading } from "@/shared/components";
+import { Button } from "@/shared/components/ui/button";
+import { HeroSection } from "@/features/profile";
+import { getFeaturedProjects, ProjectCard } from "@/features/projects";
+import { getFeaturedSkills, SkillCard } from "@/features/skills";
+
+export default async function HomePage() {
+  const [featuredProjects, featuredSkills] = await Promise.all([
+    getFeaturedProjects(),
+    getFeaturedSkills(),
+  ]);
+
   return (
-    <main>
-      <h1>Beranda</h1>
-      <p>TODO: implementasikan halaman ini.</p>
-    </main>
+    <PageContainer className="space-y-24 py-8 md:py-12">
+      {/* 1. Hero Section */}
+      <HeroSection />
+
+      {/* 2. Featured Projects */}
+      <section>
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <SectionHeading
+            badge="Portofolio Karya"
+            title="Proyek"
+            highlight="Unggulan"
+            description="Koleksi sistem dan aplikasi pilihan yang dirancang dengan performa sub-detik dan clean code."
+            className="mb-0"
+          />
+          <Button
+            asChild
+            variant="outline"
+            className="border-border/80 hover:border-gold/50 shrink-0 rounded-full"
+          >
+            <Link href="/projects" className="flex items-center gap-1.5">
+              <span>Semua Proyek</span>
+              <ArrowUpRight className="size-3.5" />
+            </Link>
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {featuredProjects.map((p) => (
+            <ProjectCard key={p.id} project={p} />
+          ))}
+        </div>
+      </section>
+
+      {/* 3. Core Tech Stack Skills */}
+      <section>
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <SectionHeading
+            badge="Keahlian Utama"
+            title="Spesialisasi"
+            highlight="Teknologi"
+            description="Teknologi inti yang saya kuasai secara mendalam untuk merancang arsitektur web modern."
+            className="mb-0"
+          />
+          <Button
+            asChild
+            variant="outline"
+            className="border-border/80 hover:border-gold/50 shrink-0 rounded-full"
+          >
+            <Link href="/skills" className="flex items-center gap-1.5">
+              <span>Semua Keahlian</span>
+              <ArrowUpRight className="size-3.5" />
+            </Link>
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {featuredSkills.map((s) => (
+            <SkillCard key={s.id} skill={s} />
+          ))}
+        </div>
+      </section>
+
+      {/* 4. Contact Climax CTA */}
+      <section className="border-gold/30 from-card via-card to-gold/5 relative space-y-6 overflow-hidden rounded-3xl border bg-gradient-to-br p-8 text-center shadow-xl sm:p-12 md:p-16">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#e5c158_1px,transparent_1px)] [background-size:20px_20px] opacity-10" />
+        <div className="relative z-10 mx-auto max-w-2xl space-y-4">
+          <span className="border-gold/40 bg-gold/10 text-gold inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold">
+            Mulai Diskusi Proyek
+          </span>
+          <h2 className="text-foreground font-serif text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+            Siap Membangun Solusi Digital Anda?
+          </h2>
+          <p className="text-muted-foreground text-sm leading-relaxed sm:text-base">
+            Apakah Anda memerlukan arsitektur web baru atau optimasi sistem yang sudah berjalan,
+            saya siap membantu merealisasikannya.
+          </p>
+          <div className="pt-2">
+            <Button
+              asChild
+              size="lg"
+              className="bg-gold text-primary-foreground shadow-gold/20 hover:bg-gold/90 rounded-full px-8 font-semibold shadow-lg"
+            >
+              <Link href="/contact" className="flex items-center gap-2">
+                <span>Hubungi Saya Sekarang</span>
+                <ArrowUpRight className="size-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+    </PageContainer>
   );
 }
