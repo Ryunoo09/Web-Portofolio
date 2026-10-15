@@ -264,12 +264,12 @@ Konfigurasi: `vitest.config.mts` dan `playwright.config.ts`.
 
 Target: satu VPS kecil + Docker + Caddy sebagai reverse proxy/HTTPS, dengan Cloudflare untuk DNS/CDN. Build dilakukan di CI (GitHub Actions), bukan di VPS.
 
-| Berkas                     | Fungsi                                                       |
-| -------------------------- | ------------------------------------------------------------ |
-| `Dockerfile`               | Build multi-stage (pnpm, output _standalone_, user non-root) |
-| `docker-compose.yml`       | Layanan `web` + `caddy` dengan health check                  |
-| `Caddyfile`                | Reverse proxy, HTTPS otomatis, header keamanan               |
-| `.github/workflows/ci.yml` | Lint, typecheck, test, build pada setiap PR/push             |
+| Berkas                     | Fungsi                                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------------------- |
+| `Dockerfile`               | Build multi-stage (pnpm, output _standalone_, user non-root)                                      |
+| `docker-compose.yml`       | Layanan `web` + `caddy` dengan health check                                                       |
+| `Caddyfile`                | Reverse proxy, HTTPS otomatis, header keamanan                                                    |
+| `.github/workflows/ci.yml` | Lint, typecheck, test, build pada setiap PR/push (build dijalankan offline via `SKIP_DB_FETCH=1`) |
 
 Langkah ringkas:
 

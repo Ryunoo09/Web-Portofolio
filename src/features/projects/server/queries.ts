@@ -1,20 +1,23 @@
 import { createPublicClient } from "@/shared/lib/supabase/public";
 import { createServerSupabase } from "@/shared/lib/supabase/server";
+import { withOfflineFallback } from "@/shared/lib/query";
 import type { Project } from "../types";
 import { toProject, type ProjectWithSkills } from "./mappers";
 
 const PROJECT_SELECT =
   "id, slug, title, summary, description_html, repo_url, demo_url, started_at, is_featured, is_published, created_at, sort_order, project_skills(skills(id, name))";
 
-async function findProjects(featuredOnly: boolean): Promise<Project[]> {
-  const supabase = createPublicClient();
-  let query = supabase.from("projects").select(PROJECT_SELECT).eq("is_published", true);
-  if (featuredOnly) query = query.eq("is_featured", true);
+function findProjects(featuredOnly: boolean): Promise<Project[]> {
+  return withOfflineFallback(async () => {
+    const supabase = createPublicClient();
+    let query = supabase.from("projects").select(PROJECT_SELECT).eq("is_published", true);
+    if (featuredOnly) query = query.eq("is_featured", true);
 
-  const { data, error } = await query.order("sort_order");
-  if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
+    const { data, error } = await query.order("sort_order");
+    if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
 
-  return (data as unknown as ProjectWithSkills[]).map(toProject);
+    return (data as unknown as ProjectWithSkills[]).map(toProject);
+  }, []);
 }
 
 export function getPublishedProjects(): Promise<Project[]> {
@@ -25,17 +28,19 @@ export function getFeaturedProjects(): Promise<Project[]> {
   return findProjects(true);
 }
 
-export async function getProjectBySlug(slug: string): Promise<Project | null> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("projects")
-    .select(PROJECT_SELECT)
-    .eq("slug", slug)
-    .eq("is_published", true)
-    .maybeSingle();
+export function getProjectBySlug(slug: string): Promise<Project | null> {
+  return withOfflineFallback(async () => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("projects")
+      .select(PROJECT_SELECT)
+      .eq("slug", slug)
+      .eq("is_published", true)
+      .maybeSingle();
 
-  if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
-  return data ? toProject(data as unknown as ProjectWithSkills) : null;
+    if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
+    return data ? toProject(data as unknown as ProjectWithSkills) : null;
+  }, null);
 }
 
 // Admin queries ----------------------------------------------------------------

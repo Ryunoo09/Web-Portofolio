@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HUSKY: "0"
+      # Build CI tanpa akses Supabase: query data dilewati (lihat shared/lib/query.ts).
+      SKIP_DB_FETCH: "1"
       NEXT_PUBLIC_SITE_URL: https://example.com
       NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy-anon-key
