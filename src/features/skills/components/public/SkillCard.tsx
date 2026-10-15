@@ -22,7 +22,7 @@ export function SkillCard({ skill }: SkillCardProps) {
         </div>
 
         <div>
-          <h3 className="text-foreground font-serif text-lg font-bold tracking-tight">
+          <h3 className="text-foreground font-heading text-lg font-bold tracking-tight">
             {skill.name}
           </h3>
           <p className="text-muted-foreground mt-1.5 line-clamp-2 text-xs leading-relaxed">

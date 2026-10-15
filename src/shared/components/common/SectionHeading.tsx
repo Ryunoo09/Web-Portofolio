@@ -35,7 +35,7 @@ export function SectionHeading({
         </div>
       )}
 
-      <h2 className="text-foreground font-serif text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
+      <h2 className="text-foreground font-heading text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
         {title} {highlight && <span className="gold-gradient-text italic">{highlight}</span>}
       </h2>
 

@@ -15,10 +15,10 @@ export function Footer() {
           {/* Brand Info */}
           <div className="space-y-4 md:col-span-2">
             <div className="flex items-center gap-2.5">
-              <div className="border-gold/40 bg-card text-gold flex size-8 items-center justify-center rounded-lg border font-serif text-base font-bold">
+              <div className="border-gold/40 bg-card text-gold font-heading flex size-8 items-center justify-center rounded-lg border text-base font-bold">
                 R
               </div>
-              <span className="text-foreground font-serif text-lg font-bold tracking-tight">
+              <span className="text-foreground font-heading text-lg font-bold tracking-tight">
                 {siteConfig.name}
               </span>
             </div>
@@ -36,7 +36,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-3">
-            <h3 className="text-foreground font-serif text-sm font-semibold tracking-wider uppercase">
+            <h3 className="text-foreground font-heading text-sm font-semibold tracking-wider uppercase">
               Navigasi
             </h3>
             <ul className="text-muted-foreground space-y-2 text-sm">
@@ -55,7 +55,7 @@ export function Footer() {
 
           {/* Connect & Socials */}
           <div className="space-y-3">
-            <h3 className="text-foreground font-serif text-sm font-semibold tracking-wider uppercase">
+            <h3 className="text-foreground font-heading text-sm font-semibold tracking-wider uppercase">
               Koneksi
             </h3>
             <ul className="space-y-2.5 text-sm">

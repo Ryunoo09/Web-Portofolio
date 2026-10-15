@@ -39,8 +39,8 @@ The color strategy is a deep, immersive midnight navy background accented with b
 
 ### Typography
 
-- **Heading Font:** Playfair Display (Luxury Serif, timeless, authoritative, editorial)
-- **Body Font:** Inter / Plus Jakarta Sans (Clean, high-legibility sans-serif)
+- **Heading Font:** Space Grotesk (Modern geometric sans-serif, tech-forward, distinctive)
+- **Body Font:** Plus Jakarta Sans (Clean, high-legibility sans-serif)
 - **Mono Font:** JetBrains Mono (For tech badges, code tags, metrics)
 
 ---

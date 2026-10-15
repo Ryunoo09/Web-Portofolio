@@ -80,7 +80,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           </span>
         </div>
 
-        <h1 className="text-foreground font-serif text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+        <h1 className="text-foreground font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
           {project.title}
         </h1>
 
@@ -112,7 +112,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <div className="border-gold/40 bg-card/60 text-gold mb-4 flex size-20 items-center justify-center rounded-3xl border shadow-xl backdrop-blur-md">
             <Layers className="size-10" />
           </div>
-          <h2 className="text-foreground font-serif text-2xl font-bold">{project.title}</h2>
+          <h2 className="text-foreground font-heading text-2xl font-bold">{project.title}</h2>
           <p className="text-muted-foreground mt-2 max-w-md text-sm">{project.description}</p>
         </div>
 
@@ -124,7 +124,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
 
       {/* Detailed Description */}
       <div className="space-y-6">
-        <h2 className="text-foreground font-serif text-2xl font-bold">
+        <h2 className="text-foreground font-heading text-2xl font-bold">
           Ringkasan & Gambaran Arsitektur
         </h2>
         <p className="text-muted-foreground text-base leading-relaxed">{project.longDescription}</p>
@@ -132,7 +132,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
 
       {/* Highlights */}
       <div className="space-y-4">
-        <h2 className="text-foreground font-serif text-2xl font-bold">
+        <h2 className="text-foreground font-heading text-2xl font-bold">
           Fitur Utama & Keunggulan Teknis
         </h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

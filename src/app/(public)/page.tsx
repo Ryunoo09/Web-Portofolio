@@ -82,7 +82,7 @@ export default async function HomePage() {
           <span className="border-gold/40 bg-gold/10 text-gold inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold">
             Mulai Diskusi Proyek
           </span>
-          <h2 className="text-foreground font-serif text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+          <h2 className="text-foreground font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
             Siap Membangun Solusi Digital Anda?
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed sm:text-base">

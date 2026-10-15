@@ -94,7 +94,7 @@
   --color-gold-foreground: var(--gold-foreground);
   --color-gold-muted: var(--gold-muted);
 
-  --font-serif: var(--font-playfair);
+  --font-heading: var(--font-space-grotesk);
   --font-sans: var(--font-jakarta);
   --font-mono: var(--font-mono);
 
@@ -115,8 +115,10 @@ body {
 h1,
 h2,
 h3,
-.font-serif-heading {
-  font-family: var(--font-serif), Georgia, serif;
+.font-heading {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 /* Elegant gold gradient utility */

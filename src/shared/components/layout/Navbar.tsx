@@ -24,11 +24,11 @@ export function Navbar() {
           className="group flex items-center gap-2.5 transition-opacity hover:opacity-90"
           id="navbar-brand-link"
         >
-          <div className="border-gold/40 bg-card text-gold group-hover:border-gold flex size-9 items-center justify-center rounded-lg border font-serif text-lg font-bold shadow-xs">
+          <div className="border-gold/40 bg-card text-gold group-hover:border-gold font-heading flex size-9 items-center justify-center rounded-lg border text-lg font-bold shadow-xs">
             R
           </div>
           <div className="flex flex-col">
-            <span className="text-foreground font-serif text-base font-bold tracking-tight">
+            <span className="text-foreground font-heading text-base font-bold tracking-tight">
               {siteConfig.name}
             </span>
             <span className="text-gold text-[10px] font-medium tracking-widest uppercase">

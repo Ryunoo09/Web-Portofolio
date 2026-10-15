@@ -17,7 +17,7 @@ export function EducationCard({ education }: EducationCardProps) {
             <GraduationCap className="size-6" />
           </div>
           <div>
-            <h3 className="text-foreground font-serif text-lg font-bold sm:text-xl">
+            <h3 className="text-foreground font-heading text-lg font-bold sm:text-xl">
               {education.degree}
             </h3>
             <p className="text-gold/90 text-sm font-medium">{education.institution}</p>

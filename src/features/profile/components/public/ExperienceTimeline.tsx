@@ -24,7 +24,7 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
                 <span className="text-gold font-mono text-xs font-medium tracking-wider uppercase">
                   {exp.company}
                 </span>
-                <h3 className="text-foreground font-serif text-xl font-bold">{exp.role}</h3>
+                <h3 className="text-foreground font-heading text-xl font-bold">{exp.role}</h3>
               </div>
 
               <div className="flex flex-wrap items-center gap-2">

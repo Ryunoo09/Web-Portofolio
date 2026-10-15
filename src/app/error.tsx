@@ -23,7 +23,7 @@ export default function ErrorPage({ reset }: ErrorPageProps) {
           <span className="font-mono text-sm font-bold tracking-widest text-red-400 uppercase">
             Sistem Mengalami Kendala
           </span>
-          <h1 className="text-foreground font-serif text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+          <h1 className="text-foreground font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
             Terjadi Kesalahan Tak Terduga
           </h1>
           <p className="text-muted-foreground mx-auto max-w-md text-base leading-relaxed">

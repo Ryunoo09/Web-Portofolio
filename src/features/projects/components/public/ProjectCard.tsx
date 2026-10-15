@@ -54,7 +54,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             href={`/projects/${project.slug}`}
             className="group-hover:text-gold inline-block transition-colors"
           >
-            <h3 className="text-foreground line-clamp-1 font-serif text-xl font-bold tracking-tight">
+            <h3 className="text-foreground font-heading line-clamp-1 text-xl font-bold tracking-tight">
               {project.title}
             </h3>
           </Link>

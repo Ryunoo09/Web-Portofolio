@@ -24,7 +24,7 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
           </Badge>
         </div>
 
-        <h3 className="text-foreground mt-4 line-clamp-2 font-serif text-base font-bold sm:text-lg">
+        <h3 className="text-foreground font-heading mt-4 line-clamp-2 text-base font-bold sm:text-lg">
           {certificate.title}
         </h3>
         <p className="text-gold/90 mt-1 text-xs font-medium">{certificate.issuer}</p>

@@ -16,7 +16,7 @@ export function HeroSection() {
 
         {/* Main Headline */}
         <div className="space-y-4">
-          <h1 className="text-foreground font-serif text-4xl leading-[1.1] font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="text-foreground font-heading text-4xl leading-[1.1] font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             Merancang Sistem Web <span className="gold-gradient-text italic">Skalabel</span> &amp;
             Antarmuka <span className="gold-gradient-text italic">Elegan</span>.
           </h1>
@@ -77,7 +77,7 @@ export function HeroSection() {
           <div className="space-y-1">
             <div className="text-gold flex items-center gap-2">
               <Code2 className="size-4" />
-              <span className="text-foreground font-serif text-2xl font-bold sm:text-3xl">
+              <span className="text-foreground font-heading text-2xl font-bold sm:text-3xl">
                 4+ Thn
               </span>
             </div>
@@ -87,7 +87,9 @@ export function HeroSection() {
           <div className="space-y-1">
             <div className="text-gold flex items-center gap-2">
               <Terminal className="size-4" />
-              <span className="text-foreground font-serif text-2xl font-bold sm:text-3xl">20+</span>
+              <span className="text-foreground font-heading text-2xl font-bold sm:text-3xl">
+                20+
+              </span>
             </div>
             <p className="text-muted-foreground text-xs">Proyek Sukses Dipublikasi</p>
           </div>
@@ -95,7 +97,9 @@ export function HeroSection() {
           <div className="space-y-1">
             <div className="text-gold flex items-center gap-2">
               <Cpu className="size-4" />
-              <span className="text-foreground font-serif text-2xl font-bold sm:text-3xl">99%</span>
+              <span className="text-foreground font-heading text-2xl font-bold sm:text-3xl">
+                99%
+              </span>
             </div>
             <p className="text-muted-foreground text-xs">Rata-rata Skor Lighthouse</p>
           </div>
@@ -103,7 +107,7 @@ export function HeroSection() {
           <div className="space-y-1">
             <div className="text-gold flex items-center gap-2">
               <Sparkles className="size-4" />
-              <span className="text-foreground font-serif text-2xl font-bold sm:text-3xl">
+              <span className="text-foreground font-heading text-2xl font-bold sm:text-3xl">
                 100%
               </span>
             </div>

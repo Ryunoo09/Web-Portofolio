@@ -40,7 +40,7 @@ export default async function AboutPage() {
 
       {/* 2. Work Experiences */}
       <section className="space-y-6">
-        <h2 className="text-foreground font-serif text-2xl font-bold">
+        <h2 className="text-foreground font-heading text-2xl font-bold">
           Pengalaman Kerja &amp; Kontribusi
         </h2>
         <ExperienceTimeline experiences={experiences} />
@@ -48,7 +48,7 @@ export default async function AboutPage() {
 
       {/* 3. Education */}
       <section className="space-y-6">
-        <h2 className="text-foreground font-serif text-2xl font-bold">Pendidikan Formal</h2>
+        <h2 className="text-foreground font-heading text-2xl font-bold">Pendidikan Formal</h2>
         <div className="grid grid-cols-1 gap-6">
           {educationList.map((edu) => (
             <EducationCard key={edu.id} education={edu} />
@@ -58,7 +58,7 @@ export default async function AboutPage() {
 
       {/* 4. Certificates */}
       <section className="space-y-6">
-        <h2 className="text-foreground font-serif text-2xl font-bold">
+        <h2 className="text-foreground font-heading text-2xl font-bold">
           Sertifikasi &amp; Kualifikasi Profesional
         </h2>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
