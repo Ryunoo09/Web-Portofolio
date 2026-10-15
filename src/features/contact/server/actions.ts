@@ -1,5 +1,6 @@
 "use server";
 
+import { createPublicClient } from "@/shared/lib/supabase/public";
 import type { ActionResult } from "@/shared/types/action-result";
 import { contactFormSchema, type ContactFormValues } from "../schemas";
 
@@ -13,13 +14,24 @@ export async function submitContactMessage(input: ContactFormValues): Promise<Ac
     };
   }
 
-  // Honeypot check - if bot filled it, fail silently
-  if (parsed.data.website && parsed.data.website.length > 0) {
+  // Honeypot terisi = bot. Pura-pura sukses agar bot tidak mencoba lagi.
+  if (parsed.data.website) {
     return { ok: true, data: undefined };
   }
 
-  // In Fase 2 stub: simulate 400ms server network latency
-  await new Promise((resolve) => setTimeout(resolve, 400));
+  const supabase = createPublicClient();
+  // Tanpa .select(): anon tidak punya izin SELECT pada contact_messages (RLS).
+  const { error } = await supabase.from("contact_messages").insert({
+    name: parsed.data.name,
+    email: parsed.data.email,
+    subject: parsed.data.subject || null,
+    message: parsed.data.message,
+  });
+
+  if (error) {
+    console.error("Gagal menyimpan pesan kontak:", error.message);
+    return { ok: false, error: "Gagal mengirim pesan. Silakan coba lagi." };
+  }
 
   return { ok: true, data: undefined };
 }
