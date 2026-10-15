@@ -8,5 +8,8 @@ export type Project = {
   demoUrl: string | null;
   startedAt: string | null;
   isFeatured: boolean;
+  isPublished: boolean;
+  createdAt: string;
+  sortOrder: number;
   skills: { id: string; name: string }[];
 };

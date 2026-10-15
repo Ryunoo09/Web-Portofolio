@@ -22,6 +22,15 @@ export function getTopSkills(limit = 4): Promise<Skill[]> {
   return findSkills(limit);
 }
 
+/** Semua keahlian (termasuk draf) untuk form admin. */
+export async function getAllSkills(): Promise<Skill[]> {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase.from("skills").select("*").order("sort_order");
+
+  if (error) throw new Error(`Gagal memuat keahlian: ${error.message}`);
+  return data.map(toSkill);
+}
+
 /** Hitungan untuk dashboard admin (butuh sesi admin, termasuk data draf). */
 export async function countSkills(): Promise<number> {
   const supabase = await createServerSupabase();

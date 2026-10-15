@@ -3,9 +3,8 @@ import { createServerSupabase } from "@/shared/lib/supabase/server";
 import type { Project } from "../types";
 import { toProject, type ProjectWithSkills } from "./mappers";
 
-// shortcut: cover & galeri gambar belum diambil; tambahkan saat upload storage (Fase 3) siap.
 const PROJECT_SELECT =
-  "id, slug, title, summary, description_html, repo_url, demo_url, started_at, is_featured, project_skills(skills(id, name))";
+  "id, slug, title, summary, description_html, repo_url, demo_url, started_at, is_featured, is_published, created_at, sort_order, project_skills(skills(id, name))";
 
 async function findProjects(featuredOnly: boolean): Promise<Project[]> {
   const supabase = createPublicClient();
@@ -15,7 +14,6 @@ async function findProjects(featuredOnly: boolean): Promise<Project[]> {
   const { data, error } = await query.order("sort_order");
   if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
 
-  // Supabase mengetik relasi join secara longgar; baris sudah sesuai PROJECT_SELECT.
   return (data as unknown as ProjectWithSkills[]).map(toProject);
 }
 
@@ -34,6 +32,33 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     .select(PROJECT_SELECT)
     .eq("slug", slug)
     .eq("is_published", true)
+    .maybeSingle();
+
+  if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
+  return data ? toProject(data as unknown as ProjectWithSkills) : null;
+}
+
+// Admin queries ----------------------------------------------------------------
+
+/** Semua proyek (termasuk draf) untuk admin. */
+export async function getAllProjects(): Promise<Project[]> {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase
+    .from("projects")
+    .select(PROJECT_SELECT)
+    .order("sort_order");
+
+  if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
+  return (data as unknown as ProjectWithSkills[]).map(toProject);
+}
+
+/** Satu proyek berdasarkan ID (termasuk draf) untuk form edit. */
+export async function getProjectById(id: string): Promise<Project | null> {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase
+    .from("projects")
+    .select(PROJECT_SELECT)
+    .eq("id", id)
     .maybeSingle();
 
   if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);

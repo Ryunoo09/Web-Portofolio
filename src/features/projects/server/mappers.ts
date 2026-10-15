@@ -17,6 +17,9 @@ export function toProject(row: ProjectWithSkills): Project {
     demoUrl: row.demo_url,
     startedAt: row.started_at,
     isFeatured: row.is_featured,
+    isPublished: row.is_published,
+    createdAt: row.created_at,
+    sortOrder: row.sort_order,
     skills: (row.project_skills ?? [])
       .map((ps) => ps.skills)
       .filter((s): s is { id: string; name: string } => s !== null),
