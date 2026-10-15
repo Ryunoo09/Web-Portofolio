@@ -1,4 +1,5 @@
 import { createPublicClient } from "@/shared/lib/supabase/public";
+import { createServerSupabase } from "@/shared/lib/supabase/server";
 import type { Project } from "../types";
 import { toProject, type ProjectWithSkills } from "./mappers";
 
@@ -37,4 +38,15 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 
   if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
   return data ? toProject(data as unknown as ProjectWithSkills) : null;
+}
+
+/** Hitungan untuk dashboard admin (butuh sesi admin, termasuk data draf). */
+export async function countProjects(): Promise<number> {
+  const supabase = await createServerSupabase();
+  const { count, error } = await supabase
+    .from("projects")
+    .select("*", { count: "exact", head: true });
+
+  if (error) throw new Error(`Gagal menghitung proyek: ${error.message}`);
+  return count ?? 0;
 }

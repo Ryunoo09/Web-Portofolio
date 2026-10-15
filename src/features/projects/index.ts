@@ -1,5 +1,10 @@
 // API publik fitur "projects". Kode di luar fitur hanya boleh mengimpor dari sini.
-export { getPublishedProjects, getFeaturedProjects, getProjectBySlug } from "./server/queries";
+export {
+  getPublishedProjects,
+  getFeaturedProjects,
+  getProjectBySlug,
+  countProjects,
+} from "./server/queries";
 export { ProjectGrid } from "./components/public/ProjectGrid";
 export { ProjectCard } from "./components/public/ProjectCard";
 export { ProjectDetail } from "./components/public/ProjectDetail";

@@ -1,4 +1,5 @@
 import { createPublicClient } from "@/shared/lib/supabase/public";
+import { createServerSupabase } from "@/shared/lib/supabase/server";
 import type { Skill } from "../types";
 import { toSkill } from "./mappers";
 
@@ -19,4 +20,15 @@ export function getSkills(): Promise<Skill[]> {
 /** Keahlian yang tampil ringkas di beranda. */
 export function getTopSkills(limit = 4): Promise<Skill[]> {
   return findSkills(limit);
+}
+
+/** Hitungan untuk dashboard admin (butuh sesi admin, termasuk data draf). */
+export async function countSkills(): Promise<number> {
+  const supabase = await createServerSupabase();
+  const { count, error } = await supabase
+    .from("skills")
+    .select("*", { count: "exact", head: true });
+
+  if (error) throw new Error(`Gagal menghitung keahlian: ${error.message}`);
+  return count ?? 0;
 }
