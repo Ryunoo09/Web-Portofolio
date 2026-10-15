@@ -2,20 +2,23 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { PageContainer, SectionHeading } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
-import { HeroSection } from "@/features/profile";
+import { HeroSection, getProfile } from "@/features/profile";
 import { getFeaturedProjects, ProjectCard } from "@/features/projects";
-import { getFeaturedSkills, SkillCard } from "@/features/skills";
+import { getTopSkills, SkillCard } from "@/features/skills";
+
+export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [featuredProjects, featuredSkills] = await Promise.all([
+  const [profile, featuredProjects, topSkills] = await Promise.all([
+    getProfile(),
     getFeaturedProjects(),
-    getFeaturedSkills(),
+    getTopSkills(4),
   ]);
 
   return (
     <PageContainer className="space-y-24 py-8 md:py-12">
       {/* 1. Hero Section */}
-      <HeroSection />
+      <HeroSection profile={profile} />
 
       {/* 2. Featured Projects */}
       <section>
@@ -69,7 +72,7 @@ export default async function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredSkills.map((s) => (
+          {topSkills.map((s) => (
             <SkillCard key={s.id} skill={s} />
           ))}
         </div>

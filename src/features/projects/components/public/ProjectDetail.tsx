@@ -1,26 +1,21 @@
 import * as React from "react";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  ArrowUpRight,
-  CheckCircle2,
-  ShieldAlert,
-  Lightbulb,
-  Calendar,
-  Layers,
-} from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Calendar, Layers } from "lucide-react";
 import { GithubIcon } from "@/shared/components";
 import { TechStackList } from "./TechStackList";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { Card } from "@/shared/components/ui/card";
-import type { ProjectItem } from "@/shared/constants/dummyData";
+import { sanitizeHtml } from "@/shared/lib/sanitize";
+import type { Project } from "../../types";
 
 interface ProjectDetailProps {
-  project: ProjectItem;
+  project: Project;
 }
 
 export function ProjectDetail({ project }: ProjectDetailProps) {
+  const stack = project.skills.map((s) => s.name);
+  const description = project.descriptionHtml ? sanitizeHtml(project.descriptionHtml) : null;
+
   return (
     <article className="space-y-12">
       {/* Top Navigation */}
@@ -34,26 +29,26 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
         </Link>
 
         <div className="flex items-center gap-3">
-          {project.githubUrl && (
+          {project.repoUrl && (
             <Button
               asChild
               variant="outline"
               size="sm"
               className="border-border/70 hover:border-gold/50 rounded-full"
             >
-              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+              <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
                 <GithubIcon className="mr-1.5 size-4" />
                 <span>Source Code</span>
               </a>
             </Button>
           )}
-          {project.liveUrl && (
+          {project.demoUrl && (
             <Button
               asChild
               size="sm"
               className="bg-gold text-primary-foreground hover:bg-gold/90 rounded-full font-medium"
             >
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+              <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
                 <span>Live Demo</span>
                 <ArrowUpRight className="ml-1.5 size-4" />
               </a>
@@ -64,33 +59,38 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
 
       {/* Hero Header */}
       <div className="space-y-4">
-        <div className="flex flex-wrap items-center gap-2">
+        {project.isFeatured && (
           <Badge variant="outline" className="border-gold/40 text-gold bg-gold/5">
-            {project.category}
+            Proyek Unggulan
           </Badge>
+        )}
+
+        {project.startedAt && (
           <span className="text-muted-foreground flex items-center gap-1 text-xs">
             <Calendar className="size-3.5" />
             <span>
-              Rilis:{" "}
-              {new Date(project.publishedAt).toLocaleDateString("id-ID", {
+              Mulai:{" "}
+              {new Date(project.startedAt).toLocaleDateString("id-ID", {
                 month: "long",
                 year: "numeric",
               })}
             </span>
           </span>
-        </div>
+        )}
 
         <h1 className="text-foreground font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
           {project.title}
         </h1>
 
         <p className="text-muted-foreground max-w-3xl text-lg leading-relaxed sm:text-xl">
-          {project.tagline}
+          {project.summary}
         </p>
 
-        <div className="pt-2">
-          <TechStackList stack={project.techStack} />
-        </div>
+        {stack.length > 0 && (
+          <div className="pt-2">
+            <TechStackList stack={stack} />
+          </div>
+        )}
       </div>
 
       {/* Main Mockup Container */}
@@ -113,58 +113,28 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
             <Layers className="size-10" />
           </div>
           <h2 className="text-foreground font-heading text-2xl font-bold">{project.title}</h2>
-          <p className="text-muted-foreground mt-2 max-w-md text-sm">{project.description}</p>
+          <p className="text-muted-foreground mt-2 max-w-md text-sm">{project.summary}</p>
         </div>
 
         <div className="text-muted-foreground border-border/40 relative z-10 flex items-center justify-between border-t pt-4 text-xs">
-          <span>Target Platform: Web & Mobile Responsive</span>
-          <span className="text-gold font-medium">99.9% Lighthouse Score</span>
+          <span>Target Platform: Web &amp; Mobile Responsive</span>
+          <span className="text-gold font-medium">Production Ready</span>
         </div>
       </div>
 
       {/* Detailed Description */}
       <div className="space-y-6">
         <h2 className="text-foreground font-heading text-2xl font-bold">
-          Ringkasan & Gambaran Arsitektur
+          Ringkasan &amp; Gambaran Arsitektur
         </h2>
-        <p className="text-muted-foreground text-base leading-relaxed">{project.longDescription}</p>
-      </div>
-
-      {/* Highlights */}
-      <div className="space-y-4">
-        <h2 className="text-foreground font-heading text-2xl font-bold">
-          Fitur Utama & Keunggulan Teknis
-        </h2>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {project.highlights.map((highlight, index) => (
-            <div
-              key={index}
-              className="border-border/70 bg-card hover:border-gold/30 flex items-start gap-3 rounded-xl border p-4 transition-colors"
-            >
-              <CheckCircle2 className="text-gold mt-0.5 size-5 shrink-0" />
-              <span className="text-foreground/90 text-sm leading-snug">{highlight}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Technical Challenge & Solution */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <Card className="card-luxury border-amber-500/20 bg-amber-500/5 p-6">
-          <div className="mb-3 flex items-center gap-3 font-semibold text-amber-500">
-            <ShieldAlert className="size-5" />
-            <h3 className="text-base">Tantangan Teknis</h3>
-          </div>
-          <p className="text-muted-foreground text-sm leading-relaxed">{project.challenges}</p>
-        </Card>
-
-        <Card className="card-luxury border-gold/30 bg-gold/5 p-6">
-          <div className="text-gold mb-3 flex items-center gap-3 font-semibold">
-            <Lightbulb className="size-5" />
-            <h3 className="text-base">Solusi & Hasil</h3>
-          </div>
-          <p className="text-muted-foreground text-sm leading-relaxed">{project.solution}</p>
-        </Card>
+        {description ? (
+          <div
+            className="text-muted-foreground [&_a]:text-gold [&_h2]:text-foreground [&_h2]:font-heading space-y-4 text-base leading-relaxed [&_a]:underline [&_h2]:text-xl [&_h2]:font-bold [&_li]:ml-5 [&_li]:list-disc"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        ) : (
+          <p className="text-muted-foreground text-base leading-relaxed">{project.summary}</p>
+        )}
       </div>
     </article>
   );

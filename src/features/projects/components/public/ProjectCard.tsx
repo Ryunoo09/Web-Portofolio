@@ -3,15 +3,17 @@ import Link from "next/link";
 import { ArrowUpRight, Sparkles, FolderGit2 } from "lucide-react";
 import { GithubIcon } from "@/shared/components";
 import { TechStackList } from "./TechStackList";
-import { Badge } from "@/shared/components/ui/badge";
 import { Card } from "@/shared/components/ui/card";
-import type { ProjectItem } from "@/shared/constants/dummyData";
+import type { Project } from "../../types";
 
 interface ProjectCardProps {
-  project: ProjectItem;
+  project: Project;
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const stack = project.skills.map((s) => s.name);
+  const year = project.startedAt ? new Date(project.startedAt).getFullYear() : "";
+
   return (
     <Card className="group card-luxury border-border/80 bg-card relative flex flex-col justify-between overflow-hidden rounded-xl border p-0 transition-all duration-300">
       {/* Card Header visual placeholder / preview */}
@@ -19,14 +21,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div className="absolute inset-0 bg-[radial-gradient(#e5c158_1px,transparent_1px)] [background-size:16px_16px] opacity-15" />
 
         <div className="relative z-10 flex items-center justify-between">
-          <Badge
-            variant="outline"
-            className="border-gold/40 bg-card/80 text-gold text-[11px] font-medium backdrop-blur-sm"
-          >
-            {project.category}
-          </Badge>
+          <span className="text-muted-foreground font-mono text-xs">{project.slug}</span>
 
-          {project.featured && (
+          {project.isFeatured && (
             <span className="border-gold/40 bg-gold/15 text-gold inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold">
               <Sparkles className="size-3" />
               <span>Unggulan</span>
@@ -42,8 +39,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         <div className="text-muted-foreground relative z-10 flex items-center justify-between font-mono text-xs">
-          <span>{project.slug}</span>
-          <span>{new Date(project.publishedAt).getFullYear()}</span>
+          <span>Arsitektur Web</span>
+          <span>{year}</span>
         </div>
       </div>
 
@@ -59,13 +56,15 @@ export function ProjectCard({ project }: ProjectCardProps) {
             </h3>
           </Link>
           <p className="text-muted-foreground mt-2 line-clamp-2 text-xs leading-relaxed sm:text-sm">
-            {project.description}
+            {project.summary}
           </p>
         </div>
 
-        <div className="border-border/50 mt-5 border-t pt-4">
-          <TechStackList stack={project.techStack} limit={4} />
-        </div>
+        {stack.length > 0 && (
+          <div className="border-border/50 mt-5 border-t pt-4">
+            <TechStackList stack={stack} limit={4} />
+          </div>
+        )}
 
         {/* Card Footer Actions */}
         <div className="mt-4 flex items-center justify-between pt-2">
@@ -78,9 +77,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </Link>
 
           <div className="flex items-center gap-2">
-            {project.githubUrl && (
+            {project.repoUrl && (
               <a
-                href={project.githubUrl}
+                href={project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:bg-secondary hover:text-foreground rounded-md p-1.5 transition-colors"
@@ -89,9 +88,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 <GithubIcon className="size-4" />
               </a>
             )}
-            {project.liveUrl && (
+            {project.demoUrl && (
               <a
-                href={project.liveUrl}
+                href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:bg-secondary hover:text-gold rounded-md p-1.5 transition-colors"

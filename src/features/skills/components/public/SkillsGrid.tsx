@@ -3,10 +3,10 @@
 import * as React from "react";
 import { SkillCard } from "./SkillCard";
 import { Button } from "@/shared/components/ui/button";
-import type { SkillItem } from "@/shared/constants/dummyData";
+import type { Skill } from "../../types";
 
 interface SkillsGridProps {
-  skills: SkillItem[];
+  skills: Skill[];
   showFilter?: boolean;
 }
 

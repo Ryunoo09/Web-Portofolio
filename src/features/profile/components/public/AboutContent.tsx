@@ -2,50 +2,52 @@ import * as React from "react";
 import { ShieldCheck, Zap, HeartHandshake, Compass } from "lucide-react";
 import { Card } from "@/shared/components/ui/card";
 
-export function AboutContent() {
-  const principles = [
-    {
-      icon: Zap,
-      title: "Performa Sub-Detik",
-      description:
-        "Setiap byte dan query dioptimalkan untuk meminimalkan waktu rendering dan Time to Interactive (TTI).",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Keamanan Berbasis Desain",
-      description:
-        "Menerapkan Row-Level Security, otentikasi zero-trust, dan validasi input ketat di setiap layer.",
-    },
-    {
-      icon: Compass,
-      title: "Arsitektur Modular",
-      description:
-        "Struktur kode terorganisir per domain bisnis memastikan kemudahan refactoring dan skalabilitas jangka panjang.",
-    },
-    {
-      icon: HeartHandshake,
-      title: "Kolaborasi Transparan",
-      description:
-        "Komunikasi aktif, dokumentasi komprehensif, dan pengiriman kode tepat waktu dengan pengujian otomatis.",
-    },
-  ];
+interface AboutContentProps {
+  bio: string | null;
+}
+
+const principles = [
+  {
+    icon: Zap,
+    title: "Performa Sub-Detik",
+    description:
+      "Setiap byte dan query dioptimalkan untuk meminimalkan waktu rendering dan Time to Interactive (TTI).",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Keamanan Berbasis Desain",
+    description:
+      "Menerapkan Row-Level Security, otentikasi zero-trust, dan validasi input ketat di setiap layer.",
+  },
+  {
+    icon: Compass,
+    title: "Arsitektur Modular",
+    description:
+      "Struktur kode terorganisir per domain bisnis memastikan kemudahan refactoring dan skalabilitas jangka panjang.",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Kolaborasi Transparan",
+    description:
+      "Komunikasi aktif, dokumentasi komprehensif, dan pengiriman kode tepat waktu dengan pengujian otomatis.",
+  },
+];
+
+export function AboutContent({ bio }: AboutContentProps) {
+  const paragraphs = (bio ?? "")
+    .split(/\n{2,}/)
+    .map((p) => p.trim())
+    .filter(Boolean);
 
   return (
     <div className="space-y-12">
       {/* Bio Paragraphs */}
       <div className="text-muted-foreground space-y-6 text-base leading-relaxed sm:text-lg">
-        <p>
-          Saya adalah seorang insinyur perangkat lunak dengan ketertarikan mendalam pada
-          persimpangan antara arsitektur sistem backend yang kokoh dan estetika frontend modern.
-          Karier saya dimulai dari kecintaan membangun solusi yang tidak hanya fungsional, tetapi
-          juga memberikan pengalaman penggunaan yang mulus dan intuitif.
-        </p>
-        <p>
-          Dalam keseharian, saya berfokus pada teknologi modern seperti Next.js App Router,
-          TypeScript, React Server Components, serta basis data PostgreSQL dengan Supabase. Saya
-          percaya bahwa kode yang hebat harus bersih, mudah dipelihara (maintainable), dan memiliki
-          performa tinggi tanpa kompromi.
-        </p>
+        {paragraphs.length > 0 ? (
+          paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)
+        ) : (
+          <p>Bio belum diisi. Silakan isi melalui dashboard admin.</p>
+        )}
       </div>
 
       {/* Principles Grid */}

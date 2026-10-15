@@ -3,6 +3,8 @@ import { PageContainer, SectionHeading } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
 import { getSkills, SkillsGrid } from "@/features/skills";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = buildMetadata({
   title: "Keahlian & Penguasaan Teknologi",
   description:

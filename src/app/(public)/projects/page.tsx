@@ -3,6 +3,8 @@ import { PageContainer, SectionHeading } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
 import { getPublishedProjects, ProjectGrid } from "@/features/projects";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = buildMetadata({
   title: "Daftar Proyek & Karya",
   description:

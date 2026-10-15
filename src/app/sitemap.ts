@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/shared/constants/siteConfig";
-import { DUMMY_PROJECTS } from "@/shared/constants/dummyData";
+import { getPublishedProjects } from "@/features/projects";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const staticPages = ["", "/about", "/skills", "/projects", "/contact"].map((path) => ({
@@ -12,9 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: path === "" ? 1.0 : 0.8,
   }));
 
-  const projectPages = DUMMY_PROJECTS.map((project) => ({
+  const projects = await getPublishedProjects();
+  const projectPages = projects.map((project) => ({
     url: `${siteConfig.url}/projects/${project.slug}`,
-    lastModified: new Date(project.publishedAt),
+    lastModified: project.startedAt ? new Date(project.startedAt) : now,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));

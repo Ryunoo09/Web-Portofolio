@@ -1,3 +1,24 @@
-// TODO: toProject(row) mengubah baris DB menjadi model Project
-// (lihat PLANNING-PORTOFOLIO.md bagian 11.2).
-export {};
+import type { Database } from "@/shared/types/database";
+import type { Project } from "../types";
+
+type ProjectRow = Database["public"]["Tables"]["projects"]["Row"];
+type ProjectSkill = { skills: { id: string; name: string } | null };
+
+export type ProjectWithSkills = ProjectRow & { project_skills: ProjectSkill[] | null };
+
+export function toProject(row: ProjectWithSkills): Project {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    summary: row.summary,
+    descriptionHtml: row.description_html,
+    repoUrl: row.repo_url,
+    demoUrl: row.demo_url,
+    startedAt: row.started_at,
+    isFeatured: row.is_featured,
+    skills: (row.project_skills ?? [])
+      .map((ps) => ps.skills)
+      .filter((s): s is { id: string; name: string } => s !== null),
+  };
+}

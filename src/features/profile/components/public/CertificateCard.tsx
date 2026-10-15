@@ -1,14 +1,16 @@
 import * as React from "react";
-import { Award, ArrowUpRight, CheckCircle } from "lucide-react";
+import { Award, ArrowUpRight } from "lucide-react";
 import { Card } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
-import type { CertificateItem } from "@/shared/constants/dummyData";
+import type { Certificate } from "../../types";
 
 interface CertificateCardProps {
-  certificate: CertificateItem;
+  certificate: Certificate;
 }
 
 export function CertificateCard({ certificate }: CertificateCardProps) {
+  const year = certificate.issuedAt ? new Date(certificate.issuedAt).getFullYear() : "";
+
   return (
     <Card className="card-luxury border-border/80 bg-card flex flex-col justify-between p-5 sm:p-6">
       <div>
@@ -16,23 +18,20 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
           <div className="border-gold/30 bg-gold/10 text-gold flex size-10 shrink-0 items-center justify-center rounded-xl border">
             <Award className="size-5" />
           </div>
-          <Badge
-            variant="outline"
-            className="border-border/70 text-muted-foreground font-mono text-[10px]"
-          >
-            {certificate.issueDate}
-          </Badge>
+          {year && (
+            <Badge
+              variant="outline"
+              className="border-border/70 text-muted-foreground font-mono text-[10px]"
+            >
+              {year}
+            </Badge>
+          )}
         </div>
 
         <h3 className="text-foreground font-heading mt-4 line-clamp-2 text-base font-bold sm:text-lg">
           {certificate.title}
         </h3>
         <p className="text-gold/90 mt-1 text-xs font-medium">{certificate.issuer}</p>
-
-        <div className="text-muted-foreground mt-3 flex items-center gap-1.5 font-mono text-xs">
-          <CheckCircle className="size-3.5 text-emerald-400" />
-          <span>ID: {certificate.badgeCode}</span>
-        </div>
       </div>
 
       {certificate.credentialUrl && (

@@ -4,6 +4,8 @@ import { PageContainer } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
 import { getProjectBySlug, getPublishedProjects, ProjectDetail } from "@/features/projects";
 
+export const revalidate = 3600;
+
 type ProjectDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
@@ -20,7 +22,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
 
   return buildMetadata({
     title: project.title,
-    description: project.description,
+    description: project.summary,
     path: `/projects/${project.slug}`,
   });
 }

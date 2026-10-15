@@ -3,46 +3,46 @@
 import * as React from "react";
 import { ProjectCard } from "./ProjectCard";
 import { Button } from "@/shared/components/ui/button";
-import type { ProjectItem } from "@/shared/constants/dummyData";
+import type { Project } from "../../types";
 
 interface ProjectGridProps {
-  projects: ProjectItem[];
+  projects: Project[];
   showFilter?: boolean;
 }
 
 export function ProjectGrid({ projects, showFilter = true }: ProjectGridProps) {
-  const [selectedCategory, setSelectedCategory] = React.useState<string>("Semua");
+  const [selectedSkill, setSelectedSkill] = React.useState<string>("Semua");
 
-  const categories = React.useMemo(() => {
+  const skills = React.useMemo(() => {
     const list = new Set<string>();
-    projects.forEach((p) => list.add(p.category));
-    return ["Semua", ...Array.from(list)];
+    projects.forEach((p) => p.skills.forEach((s) => list.add(s.name)));
+    return ["Semua", ...Array.from(list).sort()];
   }, [projects]);
 
   const filteredProjects = React.useMemo(() => {
-    if (selectedCategory === "Semua") return projects;
-    return projects.filter((p) => p.category === selectedCategory);
-  }, [projects, selectedCategory]);
+    if (selectedSkill === "Semua") return projects;
+    return projects.filter((p) => p.skills.some((s) => s.name === selectedSkill));
+  }, [projects, selectedSkill]);
 
   return (
     <div className="space-y-8">
-      {showFilter && (
+      {showFilter && skills.length > 1 && (
         <div className="flex flex-wrap items-center gap-2">
-          {categories.map((cat) => {
-            const isSelected = selectedCategory === cat;
+          {skills.map((skill) => {
+            const isSelected = selectedSkill === skill;
             return (
               <Button
-                key={cat}
+                key={skill}
                 variant={isSelected ? "default" : "outline"}
                 size="sm"
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => setSelectedSkill(skill)}
                 className={
                   isSelected
                     ? "bg-gold text-primary-foreground hover:bg-gold/90 rounded-full font-medium shadow-xs"
                     : "border-border/60 text-muted-foreground hover:text-foreground hover:border-gold/40 hover:bg-gold/5 rounded-full"
                 }
               >
-                {cat}
+                {skill}
               </Button>
             );
           })}
@@ -52,7 +52,7 @@ export function ProjectGrid({ projects, showFilter = true }: ProjectGridProps) {
       {filteredProjects.length === 0 ? (
         <div className="border-border/60 rounded-xl border border-dashed py-16 text-center">
           <p className="text-muted-foreground text-sm">
-            Tidak ada proyek yang cocok dengan kategori ini.
+            Tidak ada proyek yang menggunakan teknologi ini.
           </p>
         </div>
       ) : (
