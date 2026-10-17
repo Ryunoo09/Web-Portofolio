@@ -145,6 +145,21 @@ ditunda ke Fase 2; Tiptap (A-10) dilewati, deskripsi proyek tetap `<Textarea>` H
    - 🔴 Karena `docs/` di-ignore, `PLANNING-PORTOFOLIO.md` & `PANDUAN-PROJECT-KOSONG.md`
      hanya ada **lokal** (sumber kebenaran arsitektur).
 5. PowerShell menampilkan stderr git sebagai error — **commit tetap berhasil**.
+6. **Vitest tidak membersihkan DOM Testing Library sendiri** (karena `globals: true` tidak dipakai).
+   `vitest.setup.ts` sudah memanggil `afterEach(cleanup)`; tanpa itu id `htmlFor`
+   bertumpuk antar-tes dan query bisa mengembalikan elemen lama.
+7. **`server-only` di unit test**: `vitest.config.mts` meng-alias `server-only` ke
+   `node_modules/server-only/empty.js` (Vitest tak memakai kondisi ekspor `react-server`).
+8. **Radix (Dialog/Select) di jsdom** butuh stub `ResizeObserver`,
+   `hasPointerCapture/setPointerCapture/releasePointerCapture`, dan `scrollIntoView` —
+   sudah ada di `vitest.setup.ts`.
+9. **Playwright**: `expect.timeout` 15 detik karena kompilasi pertama Turbopack bisa > 5 detik
+   (soft navigation baru mengubah URL setelah RSC payload datang). `playwright-report/` &
+   `test-results/` sudah di-ignore git.
+10. **commitlint `subject-case`**: subject harus diawali huruf kecil.
+    `feat(admin): CRUD ...` **ditolak** → pakai `feat(admin): tambah CRUD ...`.
+11. **`next/image` + `unoptimized`** dipakai untuk pratinjau di `ImageUploadField`, jadi host
+    gambar non-Supabase tetap aman di form admin.
 
 ---
 
@@ -212,6 +227,57 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
   `features/{experiences,education,certificates}` (CRUD admin) untuk tabel yang sama.
   Menyatukan ownership domain perlu refactor terpisah.
 - **Test mappers** memakai fixture manual; belum ada tes integrasi ke Supabase.
+
+---
+
+## 🗓️ RIWAYAT SESI
+
+### Sesi 2026-10-17 — Eksekusi `docs/PLANNING-ADMIN-CRUD.md` (Tahap 3 selesai)
+
+**Permintaan:** "tolong eksekusi planning docs/PLANNING-ADMIN-CRUD.md", lalu "buatkan ringkasan
+percakapan agar sesi berikutnya tahu apa yang sudah dikerjakan".
+
+**Hasil:** P0–P6 planning dieksekusi penuh, semua verifikasi hijau, 10 commit ter-push ke `main`.
+
+| Commit    | Isi                                                                                                                                                         |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `99ae5f6` | P0 fondasi: `bodySizeLimit` 6 MB, `shared/lib/storage.ts` (+22 test), `ImageUploadField`, `AdminPageHeader`, `FieldError`, sidebar responsif, `loading.tsx` |
+| `03aaf86` | P1 unggah cover + galeri proyek (admin → Storage → tampil publik)                                                                                           |
+| `bbc75b9` | P2 CRUD Pengalaman/Pendidikan/Sertifikat + `ConfirmDeleteDialog` & `FormField` bersama                                                                      |
+| `4fe793a` | P3 edit Profil (avatar, CV PDF, tautan sosial, SEO)                                                                                                         |
+| `1d74779` | P4 kotak masuk pesan + badge belum dibaca di sidebar                                                                                                        |
+| `4eb42b0` | P5 ringkasan semua konten + 5 pesan terbaru                                                                                                                 |
+| `bda814f` | P6 unit/komponen test (61) + E2E publik & axe                                                                                                               |
+| `4421f5c` | fix a11y: halaman publik belum punya `<h1>`, urutan heading melompat                                                                                        |
+| `095e490` | docs: handoff Tahap 3 selesai                                                                                                                               |
+| `e7d5084` | chore: hapus komentar TODO usang, rapikan selector E2E inbox                                                                                                |
+
+**Keputusan/penyimpangan yang perlu diketahui:**
+
+- **Bukan** `admin.ts` (service role) yang dipakai upload, tapi `createServerSupabase()`
+  (sesi admin) — policy Storage cek `public.is_admin()`, jadi service role tak diperlukan.
+- `uploadProjectImage`/`uploadCertificate*`/`uploadProfile*` mengembalikan
+  `ActionResult<string>` (URL), **bukan** `ActionResult<{ url: string }>` seperti draft planning
+  — supaya cocok dengan prop `upload` di `ImageUploadField`.
+- `revalidateDashboard()` **tidak** dibuat (redundan: `revalidateMessages()` sudah mencakup
+  `/admin`). `revalidateProfile()` tidak menyentuh `/contact` karena halaman itu hanya
+  memakai `siteConfig`, bukan data profil.
+- **`getContactMessage(id)` tidak dibuat** — inbox menerima seluruh daftar sebagai prop,
+  jadi fungsi itu akan jadi kode mati.
+- Dialog hapus tidak lagi satu file per fitur: `DeleteProjectDialog` & `DeleteSkillDialog`
+  **dihapus**, diganti `shared/components/common/ConfirmDeleteDialog.tsx`.
+- `SectionHeading` mendapat prop `as="h1"`; judul kartu (`ProjectCard`, `SkillCard`, footer)
+  dinaikkan ke `h2` supaya urutan heading valid (temuan axe).
+
+**Bukti verifikasi:** `pnpm lint` 0 error/0 warning · `pnpm typecheck` bersih ·
+`pnpm test` 61 test / 17 file lolos · `pnpm build` sukses (24 route) ·
+`pnpm test:e2e` 9 lolos + 4 di-skip (blok admin, butuh `E2E_ADMIN_EMAIL`/`E2E_ADMIN_PASSWORD`).
+
+**Belum diverifikasi manusia:** alur admin di browser (login → unggah cover/galeri → tampil di
+`/projects` → hapus). Ini bagian D3 yang memang direncanakan manual. Uji juga edit profil,
+sertifikat bergambar, dan inbox pesan.
+
+**Titik mulai berikutnya:** Tahap 4 (SEO & Kualitas) — lihat bagian di bawah.
 
 ---
 
