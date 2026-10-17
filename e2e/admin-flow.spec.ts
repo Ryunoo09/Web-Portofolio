@@ -77,10 +77,10 @@ test.describe("alur admin", () => {
     await login(page);
     await page.goto("/admin/messages");
 
-    const empty = page.getByText("Kotak masuk masih kosong");
-    if (await empty.isVisible()) test.skip(true, "Belum ada pesan untuk diuji.");
+    const emptyState = page.getByText("Kotak masuk masih kosong");
+    if (await emptyState.isVisible()) test.skip(true, "Belum ada pesan untuk diuji.");
 
-    await page.getByRole("button", { name: /Baru|/ }).first().click();
+    await page.locator("ul li button").first().click();
     await expect(page.getByText("Sudah dibaca")).toBeVisible();
   });
 

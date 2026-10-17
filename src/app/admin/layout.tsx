@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 };
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
-  // TODO (Fase 3): sidebar + guard sesi memakai getCurrentAdmin().
+  // Guard sesi + sidebar ada di `(dashboard)/layout.tsx`, supaya `/admin/login`
+  // tetap bisa diakses tanpa sesi (mencegah redirect loop).
   return <div>{children}</div>;
 }
