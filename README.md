@@ -57,7 +57,7 @@ Dibangun dengan Next.js (App Router) + Supabase + TypeScript strict. Halaman pub
 | `/admin/profile`      | Edit profil: nama, headline, bio, foto, CV, sosial  |
 | `/admin/messages`     | Kotak masuk pesan dari form kontak                  |
 
-> **Status:** halaman publik dan autentikasi admin selesai. CRUD Proyek selesai; CRUD modul lain dan editor rich text (Tiptap) menyusul. Lihat [Tahap pengembangan](#dokumen-terkait).
+> **Status:** halaman publik dan autentikasi admin selesai. CRUD Proyek & Keahlian selesai; CRUD modul lain dan editor rich text (Tiptap) menyusul. Lihat [Tahap pengembangan](#dokumen-terkait).
 
 ---
 

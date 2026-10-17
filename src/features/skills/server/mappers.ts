@@ -10,5 +10,7 @@ export function toSkill(row: SkillRow): Skill {
     category: row.category,
     level: row.level ?? 0,
     iconName: row.icon,
+    sortOrder: row.sort_order,
+    isPublished: row.is_published,
   };
 }

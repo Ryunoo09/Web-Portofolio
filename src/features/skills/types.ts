@@ -4,4 +4,6 @@ export type Skill = {
   category: string;
   level: number; // skala 1-5
   iconName: string | null;
+  sortOrder: number;
+  isPublished: boolean;
 };

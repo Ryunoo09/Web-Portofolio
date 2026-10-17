@@ -80,7 +80,7 @@
 | --------------------- | ---------------------------------------------------------------------- |
 | 1. Fondasi + Supabase | ✅ **SELESAI**                                                         |
 | 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**   |
-| 3. Dashboard admin    | 🟡 **SEBAGIAN** — auth selesai; **CRUD belum**                         |
+| 3. Dashboard admin    | 🟡 **SEBAGIAN** — auth + CRUD Proyek & Keahlian selesai                |
 | 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub |
 | 5. Testing            | 🟡 Hanya tes `utils`; E2E masih stub                                   |
 | 6. Deployment         | 🔴 File ada, belum dijalankan                                          |
@@ -89,12 +89,13 @@
 
 **Sudah:** `login`/`logout`, guard `getCurrentAdmin()` + `requireAdmin()`, `proxy.ts`
 (refresh sesi + proteksi), layout admin + sidebar (`AdminSidebar`), halaman **Ringkasan**
-dengan hitungan konten.
+dengan hitungan konten. **CRUD Proyek** dan **CRUD Keahlian** (tabel + form + hapus +
+publish + revalidasi publik).
 
-**Belum (lanjutan Tahap 3):** CRUD Proyek (form/tabel/hapus/publish toggle/upload gambar),
-Tiptap + sanitasi, CRUD Skill, CRUD Pengalaman/Pendidikan/Sertifikat, Edit Profil,
-Inbox Pesan, revalidasi di semua action.
-**Semua halaman admin selain Ringkasan masih placeholder `TODO`.**
+**Belum (lanjutan Tahap 3):** upload gambar proyek, Tiptap + sanitasi editor,
+CRUD Pengalaman/Pendidikan/Sertifikat, Edit Profil, Inbox Pesan.
+**Halaman admin yang masih placeholder `TODO`:** Pengalaman, Pendidikan, Sertifikat,
+Profil, Pesan.
 
 ---
 
@@ -153,7 +154,7 @@ Inbox Pesan, revalidasi di semua action.
 
 1. CRUD **Projects** (form RHF + Zod, tabel TanStack, hapus + dialog, publish toggle) + upload gambar ke Storage
 2. Integrasi **Tiptap** + sanitasi HTML server-side
-3. CRUD **Skills**
+3. ~~CRUD **Skills**~~ — ✅ **selesai** (tabel, form, hapus, publish, revalidasi)
 4. CRUD **Experiences / Education / Certificates**
 5. Edit **Profile** (avatar, CV, social links, SEO)
 6. **Inbox pesan** (baca/tandai/hapus)
@@ -186,6 +187,9 @@ pnpm build       # harus sukses
 
 - **Gambar cover & galeri proyek** belum diambil — perlu `next.config` `remotePatterns` +
   upload storage. Ada komentar `shortcut:` di `features/projects/server/queries.ts`.
+- **Kolom `icon` keahlian** belum dirender di UI mana pun, jadi belum diekspos di form
+  admin (update tidak menyentuh kolom itu, nilai lama tetap utuh). Lihat
+  `features/skills/server/actions.ts`.
 - **`opengraph-image.tsx`** masih teks statis "Portofolio".
 - **Login belum ada rate-limit kustom.**
 - **Proxy tidak me-redirect admin yang sudah login** dari `/admin/login` (sengaja, hindari loop).
