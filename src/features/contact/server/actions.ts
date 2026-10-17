@@ -1,6 +1,9 @@
 "use server";
 
 import { createPublicClient } from "@/shared/lib/supabase/public";
+import { createServerSupabase } from "@/shared/lib/supabase/server";
+import { revalidateMessages } from "@/shared/lib/revalidate";
+import { requireAdmin } from "@/features/auth";
 import type { ActionResult } from "@/shared/types/action-result";
 import { contactFormSchema, type ContactFormValues } from "../schemas";
 
@@ -36,10 +39,36 @@ export async function submitContactMessage(input: ContactFormValues): Promise<Ac
   return { ok: true, data: undefined };
 }
 
-export async function markMessageRead(_id: string): Promise<ActionResult> {
-  return { ok: true, data: undefined };
+/** Tandai pesan sudah/belum dibaca. */
+export async function markMessageRead(id: string, isRead: boolean): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+
+    const supabase = await createServerSupabase();
+    const { error } = await supabase
+      .from("contact_messages")
+      .update({ is_read: isRead })
+      .eq("id", id);
+    if (error) return { ok: false, error: error.message };
+
+    revalidateMessages();
+    return { ok: true, data: undefined };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Gagal memperbarui pesan." };
+  }
 }
 
-export async function deleteMessage(_id: string): Promise<ActionResult> {
-  return { ok: true, data: undefined };
+export async function deleteMessage(id: string): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+
+    const supabase = await createServerSupabase();
+    const { error } = await supabase.from("contact_messages").delete().eq("id", id);
+    if (error) return { ok: false, error: error.message };
+
+    revalidateMessages();
+    return { ok: true, data: undefined };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Gagal menghapus pesan." };
+  }
 }

@@ -1,9 +1,17 @@
 import { createServerSupabase } from "@/shared/lib/supabase/server";
 import type { ContactMessage } from "../types";
+import { toContactMessage } from "./mappers";
 
-// TODO (Fase 3): ambil pesan memakai klien server dengan sesi admin.
+/** Semua pesan masuk, terbaru lebih dulu (butuh sesi admin). */
 export async function getContactMessages(): Promise<ContactMessage[]> {
-  return [];
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase
+    .from("contact_messages")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw new Error(`Gagal memuat pesan: ${error.message}`);
+  return data.map(toContactMessage);
 }
 
 /** Jumlah pesan belum dibaca untuk dashboard admin (butuh sesi admin). */
