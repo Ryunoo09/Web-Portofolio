@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FolderKanban, Mail, Wrench } from "lucide-react";
 import { ROUTES } from "@/shared/constants/routes";
+import { AdminPageHeader } from "@/shared/components";
 import { Card } from "@/shared/components/ui/card";
 import { countProjects } from "@/features/projects";
 import { countSkills } from "@/features/skills";
@@ -21,10 +22,7 @@ export default async function AdminDashboardPage() {
 
   return (
     <main className="space-y-8">
-      <div>
-        <h1 className="text-foreground font-heading text-2xl font-bold">Ringkasan</h1>
-        <p className="text-muted-foreground text-sm">Kondisi konten portofolio Anda saat ini.</p>
-      </div>
+      <AdminPageHeader title="Ringkasan" description="Kondisi konten portofolio Anda saat ini." />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map(({ label, value, href, icon: Icon }) => (

@@ -1,5 +1,8 @@
 export { PageContainer } from "./common/PageContainer";
 export { SectionHeading } from "./common/SectionHeading";
+export { AdminPageHeader } from "./common/AdminPageHeader";
+export { FieldError } from "./common/FieldError";
+export { ImageUploadField } from "./common/ImageUploadField";
 export { ThemeProvider } from "./common/ThemeProvider";
 export { GithubIcon, LinkedinIcon } from "./common/Icons";
 export { Navbar } from "./layout/Navbar";

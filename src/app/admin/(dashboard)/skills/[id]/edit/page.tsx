@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { AdminPageHeader } from "@/shared/components";
 import { SkillForm } from "@/features/skills/components/admin/SkillForm";
 import { getAllSkills } from "@/features/skills/server/queries";
 
@@ -13,10 +14,7 @@ export default async function AdminSkillEditPage({ params }: { params: Promise<{
 
   return (
     <main className="space-y-6">
-      <div>
-        <h1 className="text-foreground font-heading text-2xl font-bold">Ubah Keahlian</h1>
-        <p className="text-muted-foreground text-sm">{skill.name}</p>
-      </div>
+      <AdminPageHeader title="Ubah Keahlian" description={skill.name} />
       <SkillForm skill={skill} categories={categories} />
     </main>
   );
