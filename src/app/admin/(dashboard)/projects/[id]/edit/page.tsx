@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
+import { AdminPageHeader } from "@/shared/components";
 import { getProjectById } from "@/features/projects/server/queries";
 import { ProjectForm } from "@/features/projects/components/admin/ProjectForm";
+import { ProjectGalleryManager } from "@/features/projects/components/admin/ProjectGalleryManager";
 import { getAllSkills } from "@/features/skills/server/queries";
 
 export default async function AdminProjectEditPage({
@@ -14,26 +16,10 @@ export default async function AdminProjectEditPage({
   if (!project) notFound();
 
   return (
-    <main className="space-y-6">
-      <div>
-        <h1 className="text-foreground font-heading text-2xl font-bold">Ubah Proyek</h1>
-        <p className="text-muted-foreground text-sm">{project.title}</p>
-      </div>
-      <ProjectForm
-        project={{
-          id: project.id,
-          title: project.title,
-          slug: project.slug,
-          summary: project.summary,
-          descriptionHtml: project.descriptionHtml,
-          repoUrl: project.repoUrl,
-          demoUrl: project.demoUrl,
-          isFeatured: project.isFeatured,
-          isPublished: project.isPublished,
-          skillIds: project.skills.map((s) => s.id),
-        }}
-        skills={skills}
-      />
+    <main className="space-y-10">
+      <AdminPageHeader title="Ubah Proyek" description={project.title} />
+      <ProjectForm project={project} skills={skills} />
+      <ProjectGalleryManager projectId={project.id} images={project.images} />
     </main>
   );
 }

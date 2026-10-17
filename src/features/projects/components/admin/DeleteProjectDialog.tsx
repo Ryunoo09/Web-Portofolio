@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -25,6 +25,7 @@ export function DeleteProjectDialog({ project }: DeleteProjectDialogProps) {
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const router = useRouter();
+  const confirmRef = useRef<HTMLButtonElement>(null);
 
   const handleDelete = () => {
     startTransition(async () => {
@@ -47,19 +48,25 @@ export function DeleteProjectDialog({ project }: DeleteProjectDialogProps) {
           <span className="sr-only">Hapus</span>
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        onOpenAutoFocus={(event) => {
+          // Fokus langsung ke tombol destruktif agar jelas apa yang akan terjadi.
+          event.preventDefault();
+          confirmRef.current?.focus();
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Hapus Proyek</DialogTitle>
           <DialogDescription>
-            Yakin ingin menghapus <strong>{project.title}</strong>? Tindakan ini tidak dapat
-            dibatalkan.
+            Yakin ingin menghapus <strong>{project.title}</strong>? Gambar cover dan galeri proyek
+            ini juga akan dihapus. Tindakan ini tidak dapat dibatalkan.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
             Batal
           </Button>
-          <Button variant="destructive" onClick={handleDelete} disabled={pending}>
+          <Button ref={confirmRef} variant="destructive" onClick={handleDelete} disabled={pending}>
             {pending ? "Menghapus..." : "Hapus"}
           </Button>
         </DialogFooter>

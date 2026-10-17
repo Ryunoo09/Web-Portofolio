@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { ROUTES } from "@/shared/constants/routes";
+import { AdminPageHeader } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
 import { ProjectTable } from "@/features/projects/components/admin/ProjectTable";
 import { getAllProjects } from "@/features/projects/server/queries";
@@ -21,18 +22,18 @@ export default async function AdminProjectsPage() {
 
   return (
     <main className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-foreground font-heading text-2xl font-bold">Kelola Proyek</h1>
-          <p className="text-muted-foreground text-sm">{projects.length} proyek</p>
-        </div>
-        <Button asChild>
-          <Link href={ROUTES.admin.projects + "/new"}>
-            <Plus className="size-4" />
-            Proyek Baru
-          </Link>
-        </Button>
-      </div>
+      <AdminPageHeader
+        title="Kelola Proyek"
+        description={`${projects.length} proyek`}
+        action={
+          <Button asChild>
+            <Link href={`${ROUTES.admin.projects}/new`}>
+              <Plus className="size-4" />
+              Proyek Baru
+            </Link>
+          </Button>
+        }
+      />
 
       <ProjectTable data={rows} />
     </main>

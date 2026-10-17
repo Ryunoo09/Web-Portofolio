@@ -8,8 +8,10 @@ export {
 export { ProjectGrid } from "./components/public/ProjectGrid";
 export { ProjectCard } from "./components/public/ProjectCard";
 export { ProjectDetail } from "./components/public/ProjectDetail";
+export { ProjectGallery } from "./components/public/ProjectGallery";
 export { TechStackList } from "./components/public/TechStackList";
 export { ProjectTable } from "./components/admin/ProjectTable";
 export { ProjectForm } from "./components/admin/ProjectForm";
+export { ProjectGalleryManager } from "./components/admin/ProjectGalleryManager";
 export { DeleteProjectDialog } from "./components/admin/DeleteProjectDialog";
-export type { Project } from "./types";
+export type { Project, ProjectImage } from "./types";

@@ -1,11 +1,11 @@
 import { createPublicClient } from "@/shared/lib/supabase/public";
 import { createServerSupabase } from "@/shared/lib/supabase/server";
 import { withOfflineFallback } from "@/shared/lib/query";
-import type { Project } from "../types";
-import { toProject, type ProjectWithSkills } from "./mappers";
+import type { Project, ProjectImage } from "../types";
+import { toProject, toProjectImage, type ProjectWithRelations } from "./mappers";
 
 const PROJECT_SELECT =
-  "id, slug, title, summary, description_html, repo_url, demo_url, started_at, is_featured, is_published, created_at, sort_order, project_skills(skills(id, name))";
+  "id, slug, title, summary, description_html, repo_url, demo_url, cover_image_url, cover_image_alt, started_at, ended_at, is_featured, is_published, created_at, sort_order, project_skills(skills(id, name)), project_images(id, url, alt, sort_order)";
 
 function findProjects(featuredOnly: boolean): Promise<Project[]> {
   return withOfflineFallback(async () => {
@@ -16,7 +16,7 @@ function findProjects(featuredOnly: boolean): Promise<Project[]> {
     const { data, error } = await query.order("sort_order");
     if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
 
-    return (data as unknown as ProjectWithSkills[]).map(toProject);
+    return (data as unknown as ProjectWithRelations[]).map(toProject);
   }, []);
 }
 
@@ -39,7 +39,7 @@ export function getProjectBySlug(slug: string): Promise<Project | null> {
       .maybeSingle();
 
     if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
-    return data ? toProject(data as unknown as ProjectWithSkills) : null;
+    return data ? toProject(data as unknown as ProjectWithRelations) : null;
   }, null);
 }
 
@@ -54,7 +54,7 @@ export async function getAllProjects(): Promise<Project[]> {
     .order("sort_order");
 
   if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
-  return (data as unknown as ProjectWithSkills[]).map(toProject);
+  return (data as unknown as ProjectWithRelations[]).map(toProject);
 }
 
 /** Satu proyek berdasarkan ID (termasuk draf) untuk form edit. */
@@ -67,7 +67,20 @@ export async function getProjectById(id: string): Promise<Project | null> {
     .maybeSingle();
 
   if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
-  return data ? toProject(data as unknown as ProjectWithSkills) : null;
+  return data ? toProject(data as unknown as ProjectWithRelations) : null;
+}
+
+/** Galeri satu proyek (tanpa data proyeknya). */
+export async function getProjectImages(projectId: string): Promise<ProjectImage[]> {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase
+    .from("project_images")
+    .select("id, url, alt, sort_order")
+    .eq("project_id", projectId)
+    .order("sort_order");
+
+  if (error) throw new Error(`Gagal memuat galeri proyek: ${error.message}`);
+  return data.map(toProjectImage);
 }
 
 /** Hitungan untuk dashboard admin (butuh sesi admin, termasuk data draf). */

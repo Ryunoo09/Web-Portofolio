@@ -1,8 +1,10 @@
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ArrowUpRight, Calendar, Layers } from "lucide-react";
 import { GithubIcon } from "@/shared/components";
 import { TechStackList } from "./TechStackList";
+import { ProjectGallery } from "./ProjectGallery";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { sanitizeHtml } from "@/shared/lib/sanitize";
@@ -93,34 +95,47 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
         )}
       </div>
 
-      {/* Main Mockup Container */}
-      <div className="border-border/80 via-navy-card relative flex aspect-video w-full flex-col justify-between overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-900 to-slate-950 p-8 shadow-2xl">
-        <div className="absolute inset-0 bg-[radial-gradient(#e5c158_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-15" />
-        <div className="border-border/40 relative z-10 flex items-center justify-between border-b pb-4">
-          <div className="flex items-center gap-2">
-            <div className="size-3 rounded-full bg-red-500/80" />
-            <div className="size-3 rounded-full bg-yellow-500/80" />
-            <div className="size-3 rounded-full bg-green-500/80" />
-            <span className="text-muted-foreground ml-2 font-mono text-xs">
-              https://{project.slug}.dev
-            </span>
+      {/* Cover terunggah; placeholder arsitektur hanya bila belum ada gambar. */}
+      {project.coverImageUrl ? (
+        <div className="border-border/80 relative aspect-video w-full overflow-hidden rounded-2xl border shadow-2xl">
+          <Image
+            src={project.coverImageUrl}
+            alt={project.coverImageAlt ?? project.title}
+            fill
+            priority
+            sizes="(min-width: 1024px) 896px, 100vw"
+            className="object-cover"
+          />
+        </div>
+      ) : (
+        <div className="border-border/80 via-navy-card relative flex aspect-video w-full flex-col justify-between overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-900 to-slate-950 p-8 shadow-2xl">
+          <div className="absolute inset-0 bg-[radial-gradient(#e5c158_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-15" />
+          <div className="border-border/40 relative z-10 flex items-center justify-between border-b pb-4">
+            <div className="flex items-center gap-2">
+              <div className="size-3 rounded-full bg-red-500/80" />
+              <div className="size-3 rounded-full bg-yellow-500/80" />
+              <div className="size-3 rounded-full bg-green-500/80" />
+              <span className="text-muted-foreground ml-2 font-mono text-xs">
+                https://{project.slug}.dev
+              </span>
+            </div>
+            <span className="text-gold/80 font-mono text-xs">Architecture Preview</span>
           </div>
-          <span className="text-gold/80 font-mono text-xs">Architecture Preview</span>
-        </div>
 
-        <div className="relative z-10 my-auto flex flex-col items-center justify-center p-6 text-center">
-          <div className="border-gold/40 bg-card/60 text-gold mb-4 flex size-20 items-center justify-center rounded-3xl border shadow-xl backdrop-blur-md">
-            <Layers className="size-10" />
+          <div className="relative z-10 my-auto flex flex-col items-center justify-center p-6 text-center">
+            <div className="border-gold/40 bg-card/60 text-gold mb-4 flex size-20 items-center justify-center rounded-3xl border shadow-xl backdrop-blur-md">
+              <Layers className="size-10" aria-hidden="true" />
+            </div>
+            <h2 className="text-foreground font-heading text-2xl font-bold">{project.title}</h2>
+            <p className="text-muted-foreground mt-2 max-w-md text-sm">{project.summary}</p>
           </div>
-          <h2 className="text-foreground font-heading text-2xl font-bold">{project.title}</h2>
-          <p className="text-muted-foreground mt-2 max-w-md text-sm">{project.summary}</p>
-        </div>
 
-        <div className="text-muted-foreground border-border/40 relative z-10 flex items-center justify-between border-t pt-4 text-xs">
-          <span>Target Platform: Web &amp; Mobile Responsive</span>
-          <span className="text-gold font-medium">Production Ready</span>
+          <div className="text-muted-foreground border-border/40 relative z-10 flex items-center justify-between border-t pt-4 text-xs">
+            <span>Target Platform: Web &amp; Mobile Responsive</span>
+            <span className="text-gold font-medium">Production Ready</span>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Detailed Description */}
       <div className="space-y-6">
@@ -136,6 +151,8 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <p className="text-muted-foreground text-base leading-relaxed">{project.summary}</p>
         )}
       </div>
+
+      <ProjectGallery images={project.images} projectTitle={project.title} />
     </article>
   );
 }
