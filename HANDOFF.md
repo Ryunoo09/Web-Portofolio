@@ -76,26 +76,26 @@
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                 |
-| --------------------- | ---------------------------------------------------------------------- |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                         |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**   |
-| 3. Dashboard admin    | 🟡 **SEBAGIAN** — auth + CRUD Proyek & Keahlian selesai                |
-| 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub |
-| 5. Testing            | 🟡 Hanya tes `utils`; E2E masih stub                                   |
-| 6. Deployment         | 🔴 File ada, belum dijalankan                                          |
+| Fase                  | Status                                                                   |
+| --------------------- | ------------------------------------------------------------------------ |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                           |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**     |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan   |
+| 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub   |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik & axe jalan; E2E admin menunggu akun uji |
+| 6. Deployment         | 🔴 File ada, belum dijalankan                                            |
 
 ### Detail Fase 3
 
-**Sudah:** `login`/`logout`, guard `getCurrentAdmin()` + `requireAdmin()`, `proxy.ts`
-(refresh sesi + proteksi), layout admin + sidebar (`AdminSidebar`), halaman **Ringkasan**
-dengan hitungan konten. **CRUD Proyek** dan **CRUD Keahlian** (tabel + form + hapus +
-publish + revalidasi publik).
+**Sudah semua:** `login`/`logout`, guard `getCurrentAdmin()` + `requireAdmin()`, `proxy.ts`
+(refresh sesi + proteksi), layout admin + sidebar responsif (drawer di mobile), halaman
+**Ringkasan** (hitungan semua konten + 5 pesan terbaru). CRUD **Proyek** (termasuk unggah
+**cover + galeri** ke Supabase Storage), **Keahlian**, **Pengalaman**, **Pendidikan**,
+**Sertifikat** (termasuk gambar), **Edit Profil** (avatar, CV PDF, tautan sosial, SEO), dan
+**Kotak masuk pesan** (tandai dibaca/belum, hapus).
 
-**Belum (lanjutan Tahap 3):** upload gambar proyek, Tiptap + sanitasi editor,
-CRUD Pengalaman/Pendidikan/Sertifikat, Edit Profil, Inbox Pesan.
-**Halaman admin yang masih placeholder `TODO`:** Pengalaman, Pendidikan, Sertifikat,
-Profil, Pesan.
+**Belum:** Reorder galeri/skill dengan drag & drop (A-12) dan CRUD Blog (A-13) — sengaja
+ditunda ke Fase 2; Tiptap (A-10) dilewati, deskripsi proyek tetap `<Textarea>` HTML.
 
 ---
 
@@ -150,20 +150,23 @@ Profil, Pesan.
 
 ## 🗺️ ROADMAP LANJUTAN
 
-### Tahap 3 — CRUD Admin (lanjutkan di sini)
+### Tahap 3 — CRUD Admin ✅ **SELESAI**
 
-1. CRUD **Projects** (form RHF + Zod, tabel TanStack, hapus + dialog, publish toggle) + upload gambar ke Storage
-2. Integrasi **Tiptap** + sanitasi HTML server-side
-3. ~~CRUD **Skills**~~ — ✅ **selesai** (tabel, form, hapus, publish, revalidasi)
-4. CRUD **Experiences / Education / Certificates**
-5. Edit **Profile** (avatar, CV, social links, SEO)
-6. **Inbox pesan** (baca/tandai/hapus)
-7. Pastikan **revalidasi** di semua action (`shared/lib/revalidate.ts`)
+1. CRUD **Projects** + upload cover & galeri ke Storage ✅
+2. Integrasi **Tiptap** — **dilewati (D2)**, tetap `<Textarea>` + `sanitizeHtml`
+3. ~~CRUD **Skills**~~ ✅
+4. CRUD **Experiences / Education / Certificates** ✅ (+ gambar sertifikat)
+5. Edit **Profile** (avatar, CV, social links, SEO) ✅
+6. **Inbox pesan** (baca/tandai/hapus) ✅
+7. **Revalidasi** di semua action (`shared/lib/revalidate.ts`) ✅
+8. UX admin: sidebar responsif, header konsisten, aria di semua form, tabel sticky,
+   ringkasan lengkap, dialog hapus dengan fokus ✅
 
-### Tahap 4 — SEO & Kualitas
+### Tahap 4 — SEO & Kualitas (lanjutkan di sini)
 
-JSON-LD (Person, WebSite, Project) · `generateMetadata` semua halaman · `opengraph-image` nyata ·
-unit/komponen test · E2E Playwright · header keamanan + CSP
+JSON-LD (Person, WebSite, Project) · `generateMetadata` semua halaman · `opengraph-image`
+nyata memakai cover proyek · header keamanan + CSP · rate-limit login ·
+drag & drop urutan (A-12) · CRUD Blog (A-13)
 
 ### Tahap 5 — Deployment
 
@@ -177,30 +180,48 @@ Google Search Console
 ```bash
 pnpm lint        # harus 0 error, 0 warning
 pnpm typecheck   # harus bersih
-pnpm test        # harus lulus
+pnpm test        # harus lulus (Vitest: unit + komponen, colocated src/**/*.test.ts(x))
 pnpm build       # harus sukses
+pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun uji
 ```
+
+> **Storage**: bucket `portfolio-media` publik; unggah hanya lewat Server Action dengan sesi
+> admin (`shared/lib/storage.ts`). Batas 5 MB/berkas, `serverActions.bodySizeLimit` 6 MB.
+> Ganti cover/gambar lama otomatis menghapus objek lama; hapus entitas menghapus berkasnya.
 
 ---
 
 ## 🚧 UTANG TEKNIS (sengaja dilewati, tercatat)
 
-- **Gambar cover & galeri proyek** belum diambil — perlu `next.config` `remotePatterns` +
-  upload storage. Ada komentar `shortcut:` di `features/projects/server/queries.ts`.
+- **Reorder galeri/skill (A-12)** masih lewat input angka `sort_order`; ada komentar
+  `shortcut:` di `features/projects/server/actions.ts`.
+- **Tiptap (A-10)** dilewati — deskripsi proyek tetap `<Textarea>` HTML + `sanitizeHtml`.
 - **Kolom `icon` keahlian** belum dirender di UI mana pun, jadi belum diekspos di form
   admin (update tidak menyentuh kolom itu, nilai lama tetap utuh). Lihat
   `features/skills/server/actions.ts`.
-- **`opengraph-image.tsx`** masih teks statis "Portofolio".
+- **`opengraph-image.tsx`** masih teks statis "Portofolio"; cover proyek belum dipakai
+  sebagai OG image.
 - **Login belum ada rate-limit kustom.**
 - **Proxy tidak me-redirect admin yang sudah login** dari `/admin/login` (sengaja, hindari loop).
 - **AboutContent** — grid "Prinsip & Filosofi" masih hardcoded (DB tak punya kolomnya).
 - **`features/projects/seo.ts`** & **`shared/lib/seo/jsonLd.ts`** masih stub.
 - **`getTopSkills(4)`** = 4 skill pertama by `sort_order` (skema skill tak punya `featured`).
+- **E2E alur admin di-skip** sampai ada akun uji: isi `E2E_ADMIN_EMAIL` &
+  `E2E_ADMIN_PASSWORD` di `.env.local`, lalu `e2e/admin-flow.spec.ts` ikut berjalan.
+- **Duplikasi tipe/mapper** antara `features/profile` (konsumsi halaman publik) dan
+  `features/{experiences,education,certificates}` (CRUD admin) untuk tabel yang sama.
+  Menyatukan ownership domain perlu refactor terpisah.
+- **Test mappers** memakai fixture manual; belum ada tes integrasi ke Supabase.
 
 ---
 
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan Tahap 3: CRUD Proyek. Terapkan skill clean-code, ponytail, fullstack-developer,
-> senior-fullstack, code-reviewer, frontend-developer, senior-frontend, ui-ux-pro-max.
-> Commit + push setiap perubahan."
+> "Lanjutkan Tahap 4 (SEO & Kualitas): JSON-LD Person/WebSite/Project, `generateMetadata`
+> lengkap, `opengraph-image` memakai cover proyek, dan header keamanan/CSP. Terapkan skill
+> clean-code, ponytail, fullstack-developer, senior-fullstack, code-reviewer,
+> frontend-developer, senior-frontend, ui-ux-pro-max. Verifikasi `pnpm lint && pnpm typecheck
+&& pnpm test && pnpm build && pnpm test:e2e`, lalu commit + push setiap perubahan."
+>
+> Saat akun uji sudah siap: isi `E2E_ADMIN_EMAIL` & `E2E_ADMIN_PASSWORD` di `.env.local`,
+> jalankan `pnpm test:e2e`, dan pastikan blok admin di `e2e/admin-flow.spec.ts` hijau.
