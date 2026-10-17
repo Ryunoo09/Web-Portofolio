@@ -13,5 +13,4 @@ export { TechStackList } from "./components/public/TechStackList";
 export { ProjectTable } from "./components/admin/ProjectTable";
 export { ProjectForm } from "./components/admin/ProjectForm";
 export { ProjectGalleryManager } from "./components/admin/ProjectGalleryManager";
-export { DeleteProjectDialog } from "./components/admin/DeleteProjectDialog";
 export type { Project, ProjectImage } from "./types";

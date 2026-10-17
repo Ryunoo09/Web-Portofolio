@@ -1,8 +1,11 @@
 export { PageContainer } from "./common/PageContainer";
 export { SectionHeading } from "./common/SectionHeading";
 export { AdminPageHeader } from "./common/AdminPageHeader";
+export { ConfirmDeleteDialog } from "./common/ConfirmDeleteDialog";
 export { FieldError } from "./common/FieldError";
+export { FormField } from "./common/FormField";
 export { ImageUploadField } from "./common/ImageUploadField";
+export type { FormFieldControlProps } from "./common/FormField";
 export { ThemeProvider } from "./common/ThemeProvider";
 export { GithubIcon, LinkedinIcon } from "./common/Icons";
 export { Navbar } from "./layout/Navbar";

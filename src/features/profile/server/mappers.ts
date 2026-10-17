@@ -15,6 +15,8 @@ export function toProfile(row: Row<"profile">): Profile {
     location: row.location,
     // social_links tersimpan sebagai jsonb: [{ platform, url }]
     socialLinks: (row.social_links ?? []) as { platform: string; url: string }[],
+    seoTitle: row.seo_title,
+    seoDescription: row.seo_description,
   };
 }
 
@@ -49,5 +51,6 @@ export function toCertificate(row: Row<"certificates">): Certificate {
     issuer: row.issuer,
     issuedAt: row.issued_at,
     credentialUrl: row.credential_url,
+    imageUrl: row.image_url,
   };
 }

@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Edit } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { DeleteSkillDialog } from "./DeleteSkillDialog";
+import { ConfirmDeleteDialog } from "@/shared/components";
+import { deleteSkill } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
 import {
   Table,
@@ -31,7 +32,7 @@ export function SkillTable({ data }: SkillTableProps) {
             <TableHead>Tingkat</TableHead>
             <TableHead>Urutan</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Aksi</TableHead>
+            <TableHead className="bg-card sticky right-0 text-right">Aksi</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -40,7 +41,8 @@ export function SkillTable({ data }: SkillTableProps) {
           ) : (
             <TableRow>
               <TableCell colSpan={6} className="text-muted-foreground h-24 text-center">
-                Belum ada keahlian.
+                Belum ada keahlian. Tambahkan keahlian pertama Anda dengan tombol &quot;Keahlian
+                Baru&quot;.
               </TableCell>
             </TableRow>
           )}
@@ -51,12 +53,14 @@ export function SkillTable({ data }: SkillTableProps) {
 }
 
 function SkillRowComponent({ skill }: { skill: Skill }) {
+  const editHref = `${ROUTES.admin.skills}/${skill.id}/edit`;
+
   return (
     <TableRow>
       <TableCell>
         <Link
-          href={`${ROUTES.admin.skills}/${skill.id}/edit`}
-          className="hover:text-gold font-medium transition-colors"
+          href={editHref}
+          className="hover:text-gold focus-visible:ring-ring rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {skill.name}
         </Link>
@@ -79,15 +83,25 @@ function SkillRowComponent({ skill }: { skill: Skill }) {
           </Badge>
         )}
       </TableCell>
-      <TableCell>
-        <div className="flex gap-1">
+      <TableCell className="bg-card sticky right-0">
+        <div className="flex justify-end gap-1">
           <Button variant="ghost" size="icon-sm" asChild>
-            <Link href={`${ROUTES.admin.skills}/${skill.id}/edit`}>
-              <Edit className="size-3.5" />
-              <span className="sr-only">Edit</span>
+            <Link
+              href={editHref}
+              className="focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none"
+            >
+              <Edit className="size-3.5" aria-hidden="true" />
+              <span className="sr-only">Ubah keahlian {skill.name}</span>
             </Link>
           </Button>
-          <DeleteSkillDialog skill={skill} />
+          <ConfirmDeleteDialog
+            title="Hapus Keahlian"
+            itemName={skill.name}
+            ariaLabel={`Hapus keahlian ${skill.name}`}
+            successMessage="Keahlian dihapus."
+            description="Keahlian ini juga akan dilepas dari semua proyek yang memakainya."
+            onConfirm={() => deleteSkill(skill.id)}
+          />
         </div>
       </TableCell>
     </TableRow>

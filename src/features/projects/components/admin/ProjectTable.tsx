@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Edit } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { DeleteProjectDialog } from "./DeleteProjectDialog";
+import { ConfirmDeleteDialog } from "@/shared/components";
+import { deleteProject } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
 import {
   Table,
@@ -31,42 +32,43 @@ interface ProjectTableProps {
 
 export function ProjectTable({ data }: ProjectTableProps) {
   return (
-    <>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Judul</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Unggulan</TableHead>
+            <TableHead>Keahlian</TableHead>
+            <TableHead className="bg-card sticky right-0 text-right">Aksi</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.length > 0 ? (
+            data.map((project) => <ProjectRowComponent key={project.id} project={project} />)
+          ) : (
             <TableRow>
-              <TableHead>Judul</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Unggulan</TableHead>
-              <TableHead>Keahlian</TableHead>
-              <TableHead>Aksi</TableHead>
+              <TableCell colSpan={5} className="text-muted-foreground h-24 text-center">
+                Belum ada proyek. Tambahkan proyek pertama Anda dengan tombol &quot;Proyek
+                Baru&quot;.
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.length > 0 ? (
-              data.map((project) => <ProjectRowComponent key={project.id} project={project} />)
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5} className="text-muted-foreground h-24 text-center">
-                  Belum ada proyek.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-    </>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
 
 function ProjectRowComponent({ project }: { project: ProjectRow }) {
+  const editHref = `${ROUTES.admin.projects}/${project.id}/edit`;
+
   return (
     <TableRow>
       <TableCell>
         <Link
-          href={`${ROUTES.admin.projects}/${project.id}/edit`}
-          className="hover:text-gold font-medium transition-colors"
+          href={editHref}
+          className="hover:text-gold focus-visible:ring-ring rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {project.title}
         </Link>
@@ -103,15 +105,25 @@ function ProjectRowComponent({ project }: { project: ProjectRow }) {
           )}
         </div>
       </TableCell>
-      <TableCell>
-        <div className="flex gap-1">
+      <TableCell className="bg-card sticky right-0">
+        <div className="flex justify-end gap-1">
           <Button variant="ghost" size="icon-sm" asChild>
-            <Link href={`${ROUTES.admin.projects}/${project.id}/edit`}>
-              <Edit className="size-3.5" />
-              <span className="sr-only">Edit</span>
+            <Link
+              href={editHref}
+              className="focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none"
+            >
+              <Edit className="size-3.5" aria-hidden="true" />
+              <span className="sr-only">Ubah proyek {project.title}</span>
             </Link>
           </Button>
-          <DeleteProjectDialog project={project} />
+          <ConfirmDeleteDialog
+            title="Hapus Proyek"
+            itemName={project.title}
+            ariaLabel={`Hapus proyek ${project.title}`}
+            successMessage="Proyek dihapus."
+            description="Gambar cover dan galeri proyek ini juga dihapus dari penyimpanan."
+            onConfirm={() => deleteProject(project.id)}
+          />
         </div>
       </TableCell>
     </TableRow>

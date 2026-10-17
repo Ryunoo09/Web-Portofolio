@@ -1,6 +1,5 @@
 import { z } from "zod";
-
-const urlOrEmpty = z.string().url().optional().or(z.literal(""));
+import { urlOrEmpty } from "@/shared/lib/validation";
 
 export const projectFormSchema = z
   .object({

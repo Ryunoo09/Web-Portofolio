@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -7,9 +8,9 @@ import { toast } from "sonner";
 import { skillFormSchema, type SkillFormValues } from "../../schemas";
 import { createSkill, updateSkill } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
+import { FormField } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import {
   Select,
@@ -68,70 +69,72 @@ export function SkillForm({ skill, categories }: SkillFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl space-y-6">
-      {/* Nama */}
-      <div className="space-y-2">
-        <Label htmlFor="name">Nama</Label>
-        <Input id="name" placeholder="Laravel & PHP" {...register("name")} />
-        {errors.name && <p className="text-destructive text-xs">{errors.name.message}</p>}
-      </div>
+      <FormField label="Nama" name="name" error={errors.name?.message}>
+        {(props) => <Input placeholder="Laravel & PHP" {...props} {...register("name")} />}
+      </FormField>
 
-      {/* Kategori */}
-      <div className="space-y-2">
-        <Label htmlFor="category">Kategori</Label>
-        <Input
-          id="category"
-          list="skill-categories"
-          placeholder="Backend"
-          {...register("category")}
-        />
-        <datalist id="skill-categories">
-          {categories.map((category) => (
-            <option key={category} value={category} />
-          ))}
-        </datalist>
-        {errors.category && <p className="text-destructive text-xs">{errors.category.message}</p>}
-      </div>
+      <FormField
+        label="Kategori"
+        name="category"
+        error={errors.category?.message}
+        hint="Pilih dari kategori yang sudah ada, atau tulis kategori baru."
+      >
+        {(props) => (
+          <>
+            <Input
+              list="skill-categories"
+              placeholder="Backend"
+              {...props}
+              {...register("category")}
+            />
+            <datalist id="skill-categories">
+              {categories.map((category) => (
+                <option key={category} value={category} />
+              ))}
+            </datalist>
+          </>
+        )}
+      </FormField>
 
-      {/* Tingkat */}
-      <div className="space-y-2">
-        <Label htmlFor="level">Tingkat Kemahiran</Label>
-        <Controller
-          control={control}
-          name="level"
-          render={({ field }) => (
-            <Select
-              value={String(field.value)}
-              onValueChange={(value) => field.onChange(Number(value))}
-            >
-              <SelectTrigger id="level" className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {LEVELS.map((option) => (
-                  <SelectItem key={option.value} value={String(option.value)}>
-                    {option.value} — {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        />
-        {errors.level && <p className="text-destructive text-xs">{errors.level.message}</p>}
-      </div>
+      <FormField label="Tingkat Kemahiran" name="level" error={errors.level?.message}>
+        {(props) => (
+          <Controller
+            control={control}
+            name="level"
+            render={({ field }) => (
+              <Select
+                value={String(field.value)}
+                onValueChange={(value) => field.onChange(Number(value))}
+              >
+                <SelectTrigger {...props} className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {LEVELS.map((option) => (
+                    <SelectItem key={option.value} value={String(option.value)}>
+                      {option.value} — {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+        )}
+      </FormField>
 
-      {/* Urutan */}
-      <div className="space-y-2">
-        <Label htmlFor="sortOrder">Urutan Tampil</Label>
-        <Input
-          id="sortOrder"
-          type="number"
-          min={0}
-          {...register("sortOrder", { setValueAs: (value) => (value === "" ? 0 : Number(value)) })}
-        />
-        {errors.sortOrder && <p className="text-destructive text-xs">{errors.sortOrder.message}</p>}
-      </div>
+      <FormField label="Urutan Tampil" name="sortOrder" error={errors.sortOrder?.message}>
+        {(props) => (
+          <Input
+            type="number"
+            min={0}
+            {...props}
+            {...register("sortOrder", {
+              setValueAs: (value) => (value === "" ? 0 : Number(value)),
+            })}
+          />
+        )}
+      </FormField>
 
-      {/* Publikasi */}
       <Controller
         control={control}
         name="isPublished"
@@ -146,12 +149,12 @@ export function SkillForm({ skill, categories }: SkillFormProps) {
         )}
       />
 
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Menyimpan..." : isEdit ? "Simpan Perubahan" : "Buat Keahlian"}
         </Button>
-        <Button type="button" variant="outline" onClick={() => router.back()}>
-          Batal
+        <Button type="button" variant="outline" asChild>
+          <Link href={ROUTES.admin.skills}>Batal</Link>
         </Button>
       </div>
     </form>

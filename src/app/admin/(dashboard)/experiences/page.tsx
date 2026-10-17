@@ -1,8 +1,29 @@
-export default function AdminExperiencesPage() {
+import Link from "next/link";
+import { Plus } from "lucide-react";
+import { ROUTES } from "@/shared/constants/routes";
+import { AdminPageHeader } from "@/shared/components";
+import { Button } from "@/shared/components/ui/button";
+import { ExperienceTable, getAllExperiences } from "@/features/experiences";
+
+export default async function AdminExperiencesPage() {
+  const experiences = await getAllExperiences();
+
   return (
-    <main>
-      <h1>Kelola Pengalaman</h1>
-      <p>TODO: implementasikan halaman ini.</p>
+    <main className="space-y-6">
+      <AdminPageHeader
+        title="Kelola Pengalaman"
+        description={`${experiences.length} pengalaman · tampil di halaman /about`}
+        action={
+          <Button asChild>
+            <Link href={`${ROUTES.admin.experiences}/new`}>
+              <Plus className="size-4" />
+              Pengalaman Baru
+            </Link>
+          </Button>
+        }
+      />
+
+      <ExperienceTable data={experiences} />
     </main>
   );
 }

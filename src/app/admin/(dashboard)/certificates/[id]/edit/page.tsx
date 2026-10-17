@@ -1,0 +1,22 @@
+import { notFound } from "next/navigation";
+import { AdminPageHeader } from "@/shared/components";
+import { CertificateForm, getAllCertificates } from "@/features/certificates";
+
+export default async function AdminCertificateEditPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const certificates = await getAllCertificates();
+  const certificate = certificates.find((item) => item.id === id);
+
+  if (!certificate) notFound();
+
+  return (
+    <main className="space-y-6">
+      <AdminPageHeader title="Ubah Sertifikat" description={certificate.title} />
+      <CertificateForm certificate={certificate} />
+    </main>
+  );
+}

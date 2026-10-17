@@ -1,8 +1,29 @@
-export default function AdminEducationPage() {
+import Link from "next/link";
+import { Plus } from "lucide-react";
+import { ROUTES } from "@/shared/constants/routes";
+import { AdminPageHeader } from "@/shared/components";
+import { Button } from "@/shared/components/ui/button";
+import { EducationTable, getAllEducation } from "@/features/education";
+
+export default async function AdminEducationPage() {
+  const educationList = await getAllEducation();
+
   return (
-    <main>
-      <h1>Kelola Pendidikan</h1>
-      <p>TODO: implementasikan halaman ini.</p>
+    <main className="space-y-6">
+      <AdminPageHeader
+        title="Kelola Pendidikan"
+        description={`${educationList.length} riwayat pendidikan · tampil di halaman /about`}
+        action={
+          <Button asChild>
+            <Link href={`${ROUTES.admin.education}/new`}>
+              <Plus className="size-4" />
+              Pendidikan Baru
+            </Link>
+          </Button>
+        }
+      />
+
+      <EducationTable data={educationList} />
     </main>
   );
 }

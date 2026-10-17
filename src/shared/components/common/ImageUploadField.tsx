@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { AlertCircle, FileText, Loader2, Trash2, UploadCloud } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
+import { Label } from "@/shared/components/ui/label";
 import { MAX_UPLOAD_BYTES } from "@/shared/constants/media";
 import { cn } from "@/shared/lib/utils";
 import type { ActionResult } from "@/shared/types/action-result";
@@ -66,7 +67,7 @@ export function ImageUploadField({
 
   return (
     <div className="space-y-2">
-      <p className="text-sm font-medium">{label}</p>
+      <Label htmlFor={inputId}>{label}</Label>
 
       <div
         className={cn(

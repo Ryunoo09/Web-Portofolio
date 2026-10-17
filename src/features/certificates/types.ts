@@ -1,4 +1,10 @@
 export type Certificate = {
   id: string;
-  // TODO: tambahkan field sesuai tabel (lihat PLANNING-PORTOFOLIO.md bagian 8.2)
+  title: string;
+  issuer: string;
+  issuedAt: string | null;
+  credentialUrl: string | null;
+  imageUrl: string | null;
+  sortOrder: number;
+  isPublished: boolean;
 };

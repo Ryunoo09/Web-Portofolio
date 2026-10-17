@@ -8,6 +8,8 @@ export type Profile = {
   email: string | null;
   location: string | null;
   socialLinks: { platform: string; url: string }[];
+  seoTitle: string | null;
+  seoDescription: string | null;
 };
 
 export type Experience = {
@@ -36,4 +38,5 @@ export type Certificate = {
   issuer: string;
   issuedAt: string | null;
   credentialUrl: string | null;
+  imageUrl: string | null;
 };

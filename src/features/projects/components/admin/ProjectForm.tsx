@@ -11,7 +11,7 @@ import { createProject, updateProject, uploadProjectImage } from "../../server/a
 import { slugify } from "@/shared/lib/utils";
 import { IMAGE_ACCEPT } from "@/shared/constants/media";
 import { ROUTES } from "@/shared/constants/routes";
-import { FieldError, ImageUploadField } from "@/shared/components";
+import { FormField, ImageUploadField } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
@@ -71,7 +71,7 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
     [projectId],
   );
 
-  // Auto-generate slug from title
+  // Slug dibuat otomatis dari judul selama admin belum mengubahnya sendiri.
   const handleTitleBlur = () => {
     if (!isEdit && (!slug || slug === slugify(title.slice(0, -1)))) {
       setValue("slug", slugify(title), { shouldValidate: true });
@@ -99,45 +99,23 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Title */}
-      <div className="space-y-2">
-        <Label htmlFor="title">Judul</Label>
-        <Input
-          id="title"
-          aria-invalid={!!errors.title}
-          aria-describedby={errors.title ? "title-error" : undefined}
-          {...register("title")}
-          onBlur={handleTitleBlur}
-        />
-        <FieldError id="title-error" message={errors.title?.message} />
-      </div>
+      <FormField label="Judul" name="title" error={errors.title?.message}>
+        {(props) => <Input {...props} {...register("title")} onBlur={handleTitleBlur} />}
+      </FormField>
 
-      {/* Slug */}
-      <div className="space-y-2">
-        <Label htmlFor="slug">Slug</Label>
-        <Input
-          id="slug"
-          aria-invalid={!!errors.slug}
-          aria-describedby={errors.slug ? "slug-error" : undefined}
-          {...register("slug")}
-        />
-        <FieldError id="slug-error" message={errors.slug?.message} />
-      </div>
+      <FormField
+        label="Slug"
+        name="slug"
+        error={errors.slug?.message}
+        hint="Dipakai di URL: /projects/slug-anda"
+      >
+        {(props) => <Input {...props} {...register("slug")} />}
+      </FormField>
 
-      {/* Summary */}
-      <div className="space-y-2">
-        <Label htmlFor="summary">Ringkasan</Label>
-        <Textarea
-          id="summary"
-          rows={3}
-          aria-invalid={!!errors.summary}
-          aria-describedby={errors.summary ? "summary-error" : undefined}
-          {...register("summary")}
-        />
-        <FieldError id="summary-error" message={errors.summary?.message} />
-      </div>
+      <FormField label="Ringkasan" name="summary" error={errors.summary?.message}>
+        {(props) => <Textarea rows={3} {...props} {...register("summary")} />}
+      </FormField>
 
-      {/* Cover image */}
       <Controller
         control={control}
         name="coverImageUrl"
@@ -153,58 +131,44 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
         )}
       />
 
-      {/* Cover alt */}
-      <div className="space-y-2">
-        <Label htmlFor="coverImageAlt">Teks Alternatif Cover</Label>
-        <Input
-          id="coverImageAlt"
-          placeholder="Tangkapan layar beranda aplikasi"
-          aria-invalid={!!errors.coverImageAlt}
-          aria-describedby={errors.coverImageAlt ? "coverImageAlt-error" : "coverImageAlt-help"}
-          {...register("coverImageAlt")}
-        />
-        <p id="coverImageAlt-help" className="text-muted-foreground text-sm">
-          Wajib bila cover diunggah; dibacakan screen reader dan dipakai mesin pencari.
-        </p>
-        <FieldError id="coverImageAlt-error" message={errors.coverImageAlt?.message} />
-      </div>
+      <FormField
+        label="Teks Alternatif Cover"
+        name="coverImageAlt"
+        error={errors.coverImageAlt?.message}
+        hint="Wajib bila cover diunggah; dibacakan screen reader dan dipakai mesin pencari."
+      >
+        {(props) => (
+          <Input
+            placeholder="Tangkapan layar beranda aplikasi"
+            {...props}
+            {...register("coverImageAlt")}
+          />
+        )}
+      </FormField>
 
-      {/* Description HTML */}
       <div className="space-y-2">
         <Label htmlFor="descriptionHtml">Deskripsi (HTML)</Label>
         {/* shortcut: ganti dengan Tiptap editor nanti */}
         <Textarea id="descriptionHtml" rows={8} {...register("descriptionHtml")} />
       </div>
 
-      {/* Repo URL */}
-      <div className="space-y-2">
-        <Label htmlFor="repoUrl">URL Repositori</Label>
-        <Input
-          id="repoUrl"
-          type="url"
-          placeholder="https://github.com/..."
-          aria-invalid={!!errors.repoUrl}
-          aria-describedby={errors.repoUrl ? "repoUrl-error" : undefined}
-          {...register("repoUrl")}
-        />
-        <FieldError id="repoUrl-error" message={errors.repoUrl?.message} />
-      </div>
+      <FormField label="URL Repositori" name="repoUrl" error={errors.repoUrl?.message}>
+        {(props) => (
+          <Input
+            type="url"
+            placeholder="https://github.com/..."
+            {...props}
+            {...register("repoUrl")}
+          />
+        )}
+      </FormField>
 
-      {/* Demo URL */}
-      <div className="space-y-2">
-        <Label htmlFor="demoUrl">URL Demo</Label>
-        <Input
-          id="demoUrl"
-          type="url"
-          placeholder="https://..."
-          aria-invalid={!!errors.demoUrl}
-          aria-describedby={errors.demoUrl ? "demoUrl-error" : undefined}
-          {...register("demoUrl")}
-        />
-        <FieldError id="demoUrl-error" message={errors.demoUrl?.message} />
-      </div>
+      <FormField label="URL Demo" name="demoUrl" error={errors.demoUrl?.message}>
+        {(props) => (
+          <Input type="url" placeholder="https://..." {...props} {...register("demoUrl")} />
+        )}
+      </FormField>
 
-      {/* Skills */}
       <fieldset className="space-y-2">
         <legend className="text-sm font-medium">Keahlian Terkait</legend>
         <div className="flex max-h-48 flex-wrap gap-2 overflow-y-auto rounded-md border p-3">
@@ -226,14 +190,12 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
         </div>
       </fieldset>
 
-      {/* Gallery hint */}
       {!isEdit && (
         <p className="text-muted-foreground text-sm">
           Gambar galeri bisa ditambahkan setelah proyek disimpan.
         </p>
       )}
 
-      {/* Toggles */}
       <div className="flex flex-wrap gap-6">
         <label className="flex cursor-pointer items-center gap-2 text-sm">
           <Checkbox
@@ -251,7 +213,6 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
         </label>
       </div>
 
-      {/* Submit */}
       <div className="flex flex-wrap gap-3">
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Menyimpan..." : isEdit ? "Simpan Perubahan" : "Buat Proyek"}

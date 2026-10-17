@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { AlertCircle, Loader2, Trash2, UploadCloud } from "lucide-react";
+import { AlertCircle, Loader2, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 import {
   createProjectImage,
@@ -13,18 +13,10 @@ import {
 } from "../../server/actions";
 import { IMAGE_ACCEPT, MAX_UPLOAD_BYTES } from "@/shared/constants/media";
 import { cn } from "@/shared/lib/utils";
+import { ConfirmDeleteDialog } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/shared/components/ui/dialog";
 import type { ProjectImage } from "../../types";
 
 interface ProjectGalleryManagerProps {
@@ -201,68 +193,17 @@ function GalleryItem({ image, index }: { image: ProjectImage; index: number }) {
             onBlur={saveAlt}
             disabled={pending}
           />
-          <DeleteImageDialog image={image} index={index} />
+          <ConfirmDeleteDialog
+            triggerSize="icon"
+            title="Hapus Gambar"
+            itemName={image.alt || `Gambar ${index + 1}`}
+            ariaLabel={`Hapus ${image.alt || `gambar ${index + 1}`}`}
+            successMessage="Gambar dihapus."
+            description="Berkasnya juga dihapus dari penyimpanan."
+            onConfirm={() => deleteProjectImage(image.id)}
+          />
         </div>
       </div>
     </li>
-  );
-}
-
-function DeleteImageDialog({ image, index }: { image: ProjectImage; index: number }) {
-  const router = useRouter();
-  const confirmRef = React.useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = React.useState(false);
-  const [pending, startTransition] = React.useTransition();
-
-  const label = image.alt || `Gambar ${index + 1}`;
-
-  const handleDelete = () => {
-    startTransition(async () => {
-      const result = await deleteProjectImage(image.id);
-      if (result.ok) {
-        toast.success("Gambar dihapus.");
-        setOpen(false);
-        router.refresh();
-      } else {
-        toast.error(result.error);
-      }
-    });
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-destructive hover:text-destructive min-h-11 min-w-11"
-          aria-label={`Hapus ${label}`}
-        >
-          <Trash2 className="size-4" aria-hidden="true" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent
-        onOpenAutoFocus={(event) => {
-          // Fokus langsung ke tombol destruktif agar jelas apa yang akan terjadi.
-          event.preventDefault();
-          confirmRef.current?.focus();
-        }}
-      >
-        <DialogHeader>
-          <DialogTitle>Hapus Gambar</DialogTitle>
-          <DialogDescription>
-            Yakin ingin menghapus <strong>{label}</strong>? Berkasnya juga dihapus dari penyimpanan.
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            Batal
-          </Button>
-          <Button ref={confirmRef} variant="destructive" onClick={handleDelete} disabled={pending}>
-            {pending ? "Menghapus..." : "Hapus"}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 }
