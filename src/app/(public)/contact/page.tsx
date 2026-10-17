@@ -14,6 +14,7 @@ export default function ContactPage() {
   return (
     <PageContainer className="space-y-10 py-12 md:py-16">
       <SectionHeading
+        as="h1"
         badge="Saluran Komunikasi"
         title="Hubungi"
         highlight="Saya"

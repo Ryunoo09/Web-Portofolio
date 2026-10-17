@@ -60,9 +60,9 @@ export function ContactForm() {
           <CheckCircle2 className="size-8" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-foreground font-heading text-2xl font-bold">
+          <h2 className="text-foreground font-heading text-2xl font-bold">
             Pesan Berhasil Terkirim
-          </h3>
+          </h2>
           <p className="text-muted-foreground mx-auto max-w-md text-sm leading-relaxed">
             Terima kasih telah menghubungi. Saya telah menerima pesan Anda dan akan merespons dalam
             waktu 1x24 jam kerja.

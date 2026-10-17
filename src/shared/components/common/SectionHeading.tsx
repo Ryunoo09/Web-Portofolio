@@ -7,6 +7,8 @@ interface SectionHeadingProps {
   highlight?: string;
   description?: string;
   align?: "left" | "center";
+  /** Tingkat judul; pakai `h1` untuk judul halaman, biarkan `h2` untuk judul bagian. */
+  as?: "h1" | "h2" | "h3";
   className?: string;
 }
 
@@ -16,6 +18,7 @@ export function SectionHeading({
   highlight,
   description,
   align = "left",
+  as: Heading = "h2",
   className,
 }: SectionHeadingProps) {
   const isCenter = align === "center";
@@ -35,9 +38,9 @@ export function SectionHeading({
         </div>
       )}
 
-      <h2 className="text-foreground font-heading text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
+      <Heading className="text-foreground font-heading text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
         {title} {highlight && <span className="gold-gradient-text italic">{highlight}</span>}
-      </h2>
+      </Heading>
 
       {description && (
         <p className="text-muted-foreground mt-3 max-w-2xl text-sm leading-relaxed sm:text-base">

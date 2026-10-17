@@ -52,9 +52,9 @@ export function AboutContent({ bio }: AboutContentProps) {
 
       {/* Principles Grid */}
       <div className="space-y-6">
-        <h3 className="text-foreground font-heading text-2xl font-bold">
+        <h2 className="text-foreground font-heading text-2xl font-bold">
           Prinsip &amp; Filosofi Kerja
-        </h3>
+        </h2>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {principles.map((item, idx) => {
             const Icon = item.icon;
@@ -67,7 +67,7 @@ export function AboutContent({ bio }: AboutContentProps) {
                   <div className="border-gold/30 bg-gold/10 text-gold mb-4 flex size-10 items-center justify-center rounded-xl border">
                     <Icon className="size-5" />
                   </div>
-                  <h4 className="text-foreground font-heading text-lg font-bold">{item.title}</h4>
+                  <h3 className="text-foreground font-heading text-lg font-bold">{item.title}</h3>
                   <p className="text-muted-foreground mt-2 text-xs leading-relaxed sm:text-sm">
                     {item.description}
                   </p>

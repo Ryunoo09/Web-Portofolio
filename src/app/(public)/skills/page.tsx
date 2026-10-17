@@ -18,6 +18,7 @@ export default async function SkillsPage() {
   return (
     <PageContainer className="space-y-10 py-12 md:py-16">
       <SectionHeading
+        as="h1"
         badge="Kompetensi Teknis"
         title="Keahlian &amp;"
         highlight="Penguasaan Teknologi"

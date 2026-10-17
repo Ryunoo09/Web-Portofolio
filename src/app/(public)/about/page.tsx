@@ -34,6 +34,7 @@ export default async function AboutPage() {
       {/* 1. Header & Bio */}
       <section>
         <SectionHeading
+          as="h1"
           badge="Profil Profesional"
           title="Tentang"
           highlight="Saya & Filosofi Kerja"

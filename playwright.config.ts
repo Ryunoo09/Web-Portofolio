@@ -4,6 +4,8 @@ export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
   reporter: "html",
+  // Kompilasi pertama dev server (Turbopack) bisa memakan beberapa detik.
+  expect: { timeout: 15_000 },
   use: { baseURL: "http://localhost:3000", trace: "on-first-retry" },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {

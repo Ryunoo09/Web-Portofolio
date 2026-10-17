@@ -18,9 +18,9 @@ export function SkillCard({ skill }: SkillCardProps) {
           {skill.category}
         </Badge>
 
-        <h3 className="text-foreground font-heading text-lg font-bold tracking-tight">
+        <h2 className="text-foreground font-heading text-lg font-bold tracking-tight">
           {skill.name}
-        </h3>
+        </h2>
       </div>
 
       {/* Tingkat kemahiran (skala 1-5) */}

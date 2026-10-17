@@ -25,9 +25,9 @@ export function ContactInfoCard() {
   return (
     <Card className="card-luxury border-border/80 bg-card space-y-6 p-6 sm:p-8">
       <div>
-        <h3 className="text-foreground font-heading text-xl font-bold sm:text-2xl">
+        <h2 className="text-foreground font-heading text-xl font-bold sm:text-2xl">
           Informasi Kontak
-        </h3>
+        </h2>
         <p className="text-muted-foreground mt-2 text-xs leading-relaxed sm:text-sm">
           Jangan ragu untuk menghubungi jika Anda memiliki proyek baru, tawaran kolaborasi, atau
           sekadar berdiskusi tentang rekayasa perangkat lunak.

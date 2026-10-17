@@ -36,9 +36,9 @@ export function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-3">
-            <h3 className="text-foreground font-heading text-sm font-semibold tracking-wider uppercase">
+            <h2 className="text-foreground font-heading text-sm font-semibold tracking-wider uppercase">
               Navigasi
-            </h3>
+            </h2>
             <ul className="text-muted-foreground space-y-2 text-sm">
               {siteConfig.navLinks.map((item) => (
                 <li key={item.href}>
@@ -55,9 +55,9 @@ export function Footer() {
 
           {/* Connect & Socials */}
           <div className="space-y-3">
-            <h3 className="text-foreground font-heading text-sm font-semibold tracking-wider uppercase">
+            <h2 className="text-foreground font-heading text-sm font-semibold tracking-wider uppercase">
               Koneksi
-            </h3>
+            </h2>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <a

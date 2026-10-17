@@ -18,6 +18,7 @@ export default async function ProjectsPage() {
   return (
     <PageContainer className="space-y-10 py-12 md:py-16">
       <SectionHeading
+        as="h1"
         badge="Portofolio Rekayasa"
         title="Daftar"
         highlight="Karya & Proyek"
