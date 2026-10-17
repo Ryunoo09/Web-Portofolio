@@ -1,4 +1,5 @@
 import { createPublicClient } from "@/shared/lib/supabase/public";
+import { createServerSupabase } from "@/shared/lib/supabase/server";
 import { withOfflineFallback } from "@/shared/lib/query";
 import type { Certificate, Education, Experience, Profile } from "../types";
 import { toCertificate, toEducation, toExperience, toProfile } from "./mappers";
@@ -10,6 +11,15 @@ export function getProfile(): Promise<Profile | null> {
     if (error) throw new Error(`Gagal memuat profil: ${error.message}`);
     return data ? toProfile(data) : null;
   }, null);
+}
+
+/** Profil apa adanya (tanpa filter) untuk form admin. */
+export async function getProfileForAdmin(): Promise<Profile | null> {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase.from("profile").select("*").maybeSingle();
+
+  if (error) throw new Error(`Gagal memuat profil: ${error.message}`);
+  return data ? toProfile(data) : null;
 }
 
 export function getExperiences(): Promise<Experience[]> {

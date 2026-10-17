@@ -1,8 +1,23 @@
-export default function AdminProfilePage() {
+import { AdminPageHeader } from "@/shared/components";
+import { ProfileForm, getProfileForAdmin } from "@/features/profile";
+
+export default async function AdminProfilePage() {
+  const profile = await getProfileForAdmin();
+
   return (
-    <main>
-      <h1>Edit Profil</h1>
-      <p>TODO: implementasikan halaman ini.</p>
+    <main className="space-y-6">
+      <AdminPageHeader
+        title="Profil"
+        description="Data ini dipakai di beranda, /about, dan meta description situs."
+      />
+
+      {profile ? (
+        <ProfileForm profile={profile} />
+      ) : (
+        <p className="text-destructive text-sm">
+          Baris profil belum tersedia. Jalankan migrasi &amp; seed Supabase terlebih dahulu.
+        </p>
+      )}
     </main>
   );
 }
