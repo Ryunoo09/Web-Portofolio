@@ -126,4 +126,63 @@ test.describe("alur admin", () => {
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
   });
+
+  test("organisasi: tambah lalu muncul di /about, lalu dibersihkan lagi", async ({ page }) => {
+    await login(page);
+
+    const name = `E2E Organisasi ${Date.now()}`;
+    await page.goto("/admin/organizations/new");
+    await page.getByLabel("Nama Organisasi").fill(name);
+    await page.getByLabel("Peran").fill("Anggota Aktif");
+    await page.getByRole("button", { name: "Buat Organisasi" }).click();
+
+    await expect(page).toHaveURL(/\/admin\/organizations$/);
+    await page.goto("/about");
+    await expect(page.getByText(name)).toBeVisible();
+
+    await page.goto("/admin/organizations");
+    await page
+      .getByRole("row", { name: new RegExp(name) })
+      .getByRole("button", { name: /Hapus organisasi/ })
+      .click();
+    await confirmDelete(page);
+  });
+
+  test("bahasa: tambah lalu muncul di /about, lalu dibersihkan lagi", async ({ page }) => {
+    await login(page);
+
+    const name = `E2E Bahasa ${Date.now()}`;
+    await page.goto("/admin/languages/new");
+    await page.getByLabel("Nama Bahasa").fill(name);
+    await page.getByLabel("Tingkat").click();
+    await page.getByRole("option", { name: /Intermediate/ }).click();
+    await page.getByRole("button", { name: "Buat Bahasa" }).click();
+
+    await expect(page).toHaveURL(/\/admin\/languages$/);
+    await page.goto("/about");
+    await expect(page.getByText(name)).toBeVisible();
+
+    await page.goto("/admin/languages");
+    await page
+      .getByRole("row", { name: new RegExp(name) })
+      .getByRole("button", { name: /Hapus bahasa/ })
+      .click();
+    await confirmDelete(page);
+  });
+
+  test("tidak ada pelanggaran aksesibilitas di halaman admin organisasi & bahasa", async ({
+    page,
+  }) => {
+    await login(page);
+
+    for (const path of ["/admin/organizations", "/admin/languages"]) {
+      await page.goto(path);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(results.violations, `${path}: ${JSON.stringify(results.violations, null, 2)}`).toEqual(
+        [],
+      );
+    }
+  });
 });
