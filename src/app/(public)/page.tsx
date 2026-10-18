@@ -27,7 +27,7 @@ export default async function HomePage() {
             badge="Portofolio Karya"
             title="Proyek"
             highlight="Unggulan"
-            description="Koleksi sistem dan aplikasi pilihan yang dirancang dengan performa sub-detik dan clean code."
+            description="Koleksi sistem dan aplikasi pilihan — dari computer vision dan analitik data hingga backend yang dipakai di lapangan."
             className="mb-0"
           />
           <Button
@@ -56,7 +56,7 @@ export default async function HomePage() {
             badge="Keahlian Utama"
             title="Spesialisasi"
             highlight="Teknologi"
-            description="Teknologi inti yang saya kuasai secara mendalam untuk merancang arsitektur web modern."
+            description="Teknologi inti yang saya pakai untuk membangun backend, mengolah data, dan mengotomasi proses."
             className="mb-0"
           />
           <Button
@@ -83,14 +83,14 @@ export default async function HomePage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#e5c158_1px,transparent_1px)] [background-size:20px_20px] opacity-10" />
         <div className="relative z-10 mx-auto max-w-2xl space-y-4">
           <span className="border-gold/40 bg-gold/10 text-gold inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold">
-            Mulai Diskusi Proyek
+            Terbuka untuk Peluang
           </span>
           <h2 className="text-foreground font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Siap Membangun Solusi Digital Anda?
+            Tertarik Bekerja Sama?
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed sm:text-base">
-            Apakah Anda memerlukan arsitektur web baru atau optimasi sistem yang sudah berjalan,
-            saya siap membantu merealisasikannya.
+            Saya terbuka untuk peluang magang, kontrak, maupun posisi penuh waktu di bidang backend,
+            data, dan otomasi. Mari berdiskusi.
           </p>
           <div className="pt-2">
             <Button
@@ -99,7 +99,7 @@ export default async function HomePage() {
               className="bg-gold text-primary-foreground shadow-gold/20 hover:bg-gold/90 rounded-full px-8 font-semibold shadow-lg"
             >
               <Link href="/contact" className="flex items-center gap-2">
-                <span>Hubungi Saya Sekarang</span>
+                <span>Hubungi Saya</span>
                 <ArrowUpRight className="size-4" />
               </Link>
             </Button>

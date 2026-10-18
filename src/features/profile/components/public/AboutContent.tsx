@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ShieldCheck, Zap, HeartHandshake, Compass } from "lucide-react";
+import { Bot, Database, HeartHandshake, ShieldCheck } from "lucide-react";
 import { Card } from "@/shared/components/ui/card";
 
 interface AboutContentProps {
@@ -8,28 +8,28 @@ interface AboutContentProps {
 
 const principles = [
   {
-    icon: Zap,
-    title: "Performa Sub-Detik",
+    icon: Bot,
+    title: "AI & Otomasi untuk Masalah Nyata",
     description:
-      "Setiap byte dan query dioptimalkan untuk meminimalkan waktu rendering dan Time to Interactive (TTI).",
+      "Menerapkan computer vision dan otomasi untuk menggantikan proses manual yang lambat dan rawan kesalahan.",
+  },
+  {
+    icon: Database,
+    title: "Berbasis Data",
+    description:
+      "Mulai dari pembersihan dan analisis data hingga evaluasi model dengan metrik yang jelas dan dapat diuji.",
   },
   {
     icon: ShieldCheck,
-    title: "Keamanan Berbasis Desain",
+    title: "Backend Rapi & Aman",
     description:
-      "Menerapkan Row-Level Security, otentikasi zero-trust, dan validasi input ketat di setiap layer.",
-  },
-  {
-    icon: Compass,
-    title: "Arsitektur Modular",
-    description:
-      "Struktur kode terorganisir per domain bisnis memastikan kemudahan refactoring dan skalabilitas jangka panjang.",
+      "Validasi input, otorisasi berbasis peran, dan struktur kode modular agar mudah dirawat serta dikembangkan.",
   },
   {
     icon: HeartHandshake,
-    title: "Kolaborasi Transparan",
+    title: "Kolaborasi & Belajar Berkelanjutan",
     description:
-      "Komunikasi aktif, dokumentasi komprehensif, dan pengiriman kode tepat waktu dengan pengujian otomatis.",
+      "Terbiasa bekerja dalam tim lintas peran dan terus mempelajari teknologi baru untuk menyelesaikan masalah.",
   },
 ];
 

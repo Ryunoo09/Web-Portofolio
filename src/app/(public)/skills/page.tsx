@@ -8,7 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = buildMetadata({
   title: "Keahlian & Penguasaan Teknologi",
   description:
-    "Daftar kemampuan teknis meliputi Frontend (Next.js, React), Backend (Node.js, Python), Basis Data, dan DevOps.",
+    "Daftar kemampuan teknis: bahasa pemrograman, framework, basis data, cloud/DevOps, IoT, serta data & machine learning.",
   path: "/skills",
 });
 
@@ -22,7 +22,7 @@ export default async function SkillsPage() {
         badge="Kompetensi Teknis"
         title="Keahlian &amp;"
         highlight="Penguasaan Teknologi"
-        description="Teknologi dan tools yang saya gunakan sehari-hari untuk merancang arsitektur aplikasi tangguh dan scalable."
+        description="Teknologi dan tools yang saya pakai untuk membangun backend, mengolah data, dan mengembangkan solusi IoT."
       />
 
       <SkillsGrid skills={skills} />

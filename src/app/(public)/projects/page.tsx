@@ -8,7 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = buildMetadata({
   title: "Daftar Proyek & Karya",
   description:
-    "Eksplorasi portofolio proyek perangkat lunak, sistem e-commerce, dashboard analitik, dan arsitektur web modern.",
+    "Eksplorasi proyek perangkat lunak — computer vision, analitik data, IoT, dan backend yang dipakai di lapangan.",
   path: "/projects",
 });
 
@@ -22,7 +22,7 @@ export default async function ProjectsPage() {
         badge="Portofolio Rekayasa"
         title="Daftar"
         highlight="Karya & Proyek"
-        description="Semua proyek aplikasi web dan sistem perangkat lunak yang dirancang dengan dedikasi tinggi pada performa, skalabilitas, dan clean architecture."
+        description="Semua proyek yang saya kerjakan — dari tugas kuliah dan skripsi hingga freelance untuk tim sales lapangan."
       />
 
       <ProjectGrid projects={projects} />

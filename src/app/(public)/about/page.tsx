@@ -38,7 +38,7 @@ export default async function AboutPage() {
           badge="Profil Profesional"
           title="Tentang"
           highlight="Saya & Filosofi Kerja"
-          description="Dedikasi pada kode bersih, keamanan sistem, dan pengalaman pengguna tingkat tinggi."
+          description="Latar belakang, pengalaman kerja, pendidikan, dan sertifikasi yang membentuk cara saya membangun perangkat lunak."
         />
         <AboutContent bio={profile?.bio ?? null} />
       </section>
