@@ -6,6 +6,7 @@ export const skillFormSchema = z.object({
   level: z.number().int().min(1, "Pilih tingkat 1-5").max(5, "Tingkat maksimal 5"),
   sortOrder: z.number().int().min(0, "Urutan minimal 0"),
   isPublished: z.boolean(),
+  isLearning: z.boolean(),
 });
 
 export type SkillFormValues = z.infer<typeof skillFormSchema>;

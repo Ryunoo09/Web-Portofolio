@@ -52,6 +52,7 @@ export function SkillForm({ skill, categories }: SkillFormProps) {
       level: skill?.level ?? 3,
       sortOrder: skill?.sortOrder ?? 0,
       isPublished: skill?.isPublished ?? true,
+      isLearning: skill?.isLearning ?? false,
     },
   });
 
@@ -135,19 +136,35 @@ export function SkillForm({ skill, categories }: SkillFormProps) {
         )}
       </FormField>
 
-      <Controller
-        control={control}
-        name="isPublished"
-        render={({ field }) => (
-          <label className="flex cursor-pointer items-center gap-2 text-sm">
-            <Checkbox
-              checked={field.value}
-              onCheckedChange={(value) => field.onChange(value === true)}
-            />
-            Publikasikan
-          </label>
-        )}
-      />
+      <div className="flex flex-wrap gap-6">
+        <Controller
+          control={control}
+          name="isPublished"
+          render={({ field }) => (
+            <label className="flex cursor-pointer items-center gap-2 text-sm">
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={(value) => field.onChange(value === true)}
+              />
+              Publikasikan
+            </label>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="isLearning"
+          render={({ field }) => (
+            <label className="flex cursor-pointer items-center gap-2 text-sm">
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={(value) => field.onChange(value === true)}
+              />
+              Sedang dipelajari
+            </label>
+          )}
+        />
+      </div>
 
       <div className="flex flex-wrap gap-3">
         <Button type="submit" disabled={isSubmitting}>

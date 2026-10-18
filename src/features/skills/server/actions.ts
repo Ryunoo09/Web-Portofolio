@@ -20,6 +20,7 @@ function toColumns(values: SkillFormValues) {
     level: values.level,
     sort_order: values.sortOrder,
     is_published: values.isPublished,
+    is_learning: values.isLearning,
   };
 }
 

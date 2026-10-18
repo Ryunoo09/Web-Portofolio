@@ -7,11 +7,16 @@ const valid = {
   level: 4,
   sortOrder: 13,
   isPublished: true,
+  isLearning: false,
 };
 
 describe("skillFormSchema", () => {
   it("menerima data keahlian yang lengkap", () => {
     expect(skillFormSchema.safeParse(valid).success).toBe(true);
+  });
+
+  it("menerima keahlian yang sedang dipelajari", () => {
+    expect(skillFormSchema.safeParse({ ...valid, isLearning: true }).success).toBe(true);
   });
 
   it("menolak nama yang terlalu pendek", () => {

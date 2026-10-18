@@ -1,5 +1,14 @@
 import Link from "next/link";
-import { Award, Briefcase, FolderKanban, GraduationCap, Mail, Wrench } from "lucide-react";
+import {
+  Award,
+  Briefcase,
+  Building2,
+  FolderKanban,
+  GraduationCap,
+  Languages,
+  Mail,
+  Wrench,
+} from "lucide-react";
 import { ROUTES } from "@/shared/constants/routes";
 import { AdminPageHeader } from "@/shared/components";
 import { Card } from "@/shared/components/ui/card";
@@ -7,15 +16,28 @@ import { countProjects } from "@/features/projects";
 import { countSkills } from "@/features/skills";
 import { countExperiences } from "@/features/experiences";
 import { countEducation } from "@/features/education";
+import { countOrganizations } from "@/features/organizations";
+import { countLanguages } from "@/features/languages";
 import { countCertificates } from "@/features/certificates";
 import { getContactMessages } from "@/features/contact";
 
 export default async function AdminDashboardPage() {
-  const [projects, skills, experiences, education, certificates, messages] = await Promise.all([
+  const [
+    projects,
+    skills,
+    experiences,
+    education,
+    organizations,
+    languages,
+    certificates,
+    messages,
+  ] = await Promise.all([
     countProjects(),
     countSkills(),
     countExperiences(),
     countEducation(),
+    countOrganizations(),
+    countLanguages(),
     countCertificates(),
     getContactMessages(),
   ]);
@@ -36,6 +58,18 @@ export default async function AdminDashboardPage() {
       value: education,
       href: ROUTES.admin.education,
       icon: GraduationCap,
+    },
+    {
+      label: "Total Organisasi",
+      value: organizations,
+      href: ROUTES.admin.organizations,
+      icon: Building2,
+    },
+    {
+      label: "Total Bahasa",
+      value: languages,
+      href: ROUTES.admin.languages,
+      icon: Languages,
     },
     {
       label: "Total Sertifikat",

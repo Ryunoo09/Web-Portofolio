@@ -6,9 +6,11 @@ import { usePathname } from "next/navigation";
 import {
   Award,
   Briefcase,
+  Building2,
   ExternalLink,
   FolderKanban,
   GraduationCap,
+  Languages,
   LayoutDashboard,
   LogOut,
   Mail,
@@ -34,7 +36,9 @@ const links = [
   { href: ROUTES.admin.skills, label: "Keahlian", icon: Wrench },
   { href: ROUTES.admin.experiences, label: "Pengalaman", icon: Briefcase },
   { href: ROUTES.admin.education, label: "Pendidikan", icon: GraduationCap },
+  { href: ROUTES.admin.organizations, label: "Organisasi", icon: Building2 },
   { href: ROUTES.admin.certificates, label: "Sertifikat", icon: Award },
+  { href: ROUTES.admin.languages, label: "Bahasa", icon: Languages },
   { href: ROUTES.admin.profile, label: "Profil", icon: User },
   { href: ROUTES.admin.messages, label: "Pesan", icon: Mail },
 ];

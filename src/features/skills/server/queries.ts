@@ -7,7 +7,12 @@ import { toSkill } from "./mappers";
 function findSkills(limit?: number): Promise<Skill[]> {
   return withOfflineFallback(async () => {
     const supabase = createPublicClient();
-    let query = supabase.from("skills").select("*").eq("is_published", true).order("sort_order");
+    let query = supabase
+      .from("skills")
+      .select("*")
+      .eq("is_published", true)
+      .eq("is_learning", false)
+      .order("sort_order");
     if (limit) query = query.limit(limit);
 
     const { data, error } = await query;
@@ -23,6 +28,22 @@ export function getSkills(): Promise<Skill[]> {
 /** Keahlian yang tampil ringkas di beranda. */
 export function getTopSkills(limit = 4): Promise<Skill[]> {
   return findSkills(limit);
+}
+
+/** Keahlian yang sedang dipelajari — ditampilkan terpisah di /skills. */
+export function getLearningSkills(): Promise<Skill[]> {
+  return withOfflineFallback(async () => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("skills")
+      .select("*")
+      .eq("is_published", true)
+      .eq("is_learning", true)
+      .order("sort_order");
+
+    if (error) throw new Error(`Gagal memuat keahlian yang dipelajari: ${error.message}`);
+    return data.map(toSkill);
+  }, []);
 }
 
 /** Semua keahlian (termasuk draf) untuk form admin. */

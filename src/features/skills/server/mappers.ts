@@ -12,5 +12,6 @@ export function toSkill(row: SkillRow): Skill {
     iconName: row.icon,
     sortOrder: row.sort_order,
     isPublished: row.is_published,
+    isLearning: row.is_learning,
   };
 }

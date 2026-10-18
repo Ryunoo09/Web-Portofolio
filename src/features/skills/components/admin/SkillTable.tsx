@@ -66,9 +66,16 @@ function SkillRowComponent({ skill }: { skill: Skill }) {
         </Link>
       </TableCell>
       <TableCell>
-        <Badge variant="secondary" className="text-xs">
-          {skill.category}
-        </Badge>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <Badge variant="secondary" className="text-xs">
+            {skill.category}
+          </Badge>
+          {skill.isLearning && (
+            <Badge variant="outline" className="border-gold/30 text-gold text-xs">
+              Dipelajari
+            </Badge>
+          )}
+        </div>
       </TableCell>
       <TableCell className="font-mono text-xs">{skill.level}/5</TableCell>
       <TableCell className="font-mono text-xs">{skill.sortOrder}</TableCell>

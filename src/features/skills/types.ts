@@ -6,4 +6,5 @@ export type Skill = {
   iconName: string | null;
   sortOrder: number;
   isPublished: boolean;
+  isLearning: boolean;
 };

@@ -11,6 +11,8 @@ import {
   getEducation,
   getCertificates,
 } from "@/features/profile";
+import { getPublishedOrganizations, OrganizationCard } from "@/features/organizations";
+import { getPublishedLanguages, LanguageList } from "@/features/languages";
 
 export const revalidate = 3600;
 
@@ -22,15 +24,18 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function AboutPage() {
-  const [profile, experiences, educationList, certificates] = await Promise.all([
-    getProfile(),
-    getExperiences(),
-    getEducation(),
-    getCertificates(),
-  ]);
+  const [profile, experiences, educationList, certificates, organizations, languages] =
+    await Promise.all([
+      getProfile(),
+      getExperiences(),
+      getEducation(),
+      getCertificates(),
+      getPublishedOrganizations(),
+      getPublishedLanguages(),
+    ]);
 
   return (
-    <PageContainer size="narrow" className="space-y-16 py-12 md:py-16">
+    <PageContainer className="space-y-12 py-8 md:py-12">
       {/* 1. Header & Bio */}
       <section>
         <SectionHeading
@@ -57,7 +62,7 @@ export default async function AboutPage() {
       {educationList.length > 0 && (
         <section className="space-y-6">
           <h2 className="text-foreground font-heading text-2xl font-bold">Pendidikan Formal</h2>
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-5">
             {educationList.map((edu) => (
               <EducationCard key={edu.id} education={edu} />
             ))}
@@ -65,13 +70,35 @@ export default async function AboutPage() {
         </section>
       )}
 
-      {/* 4. Certificates */}
+      {/* 4. Organizations */}
+      {organizations.length > 0 && (
+        <section className="space-y-6">
+          <h2 className="text-foreground font-heading text-2xl font-bold">
+            Organisasi &amp; Kepanitiaan
+          </h2>
+          <div className="grid grid-cols-1 gap-5">
+            {organizations.map((organization) => (
+              <OrganizationCard key={organization.id} organization={organization} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 5. Languages */}
+      {languages.length > 0 && (
+        <section className="space-y-6">
+          <h2 className="text-foreground font-heading text-2xl font-bold">Bahasa</h2>
+          <LanguageList languages={languages} />
+        </section>
+      )}
+
+      {/* 6. Certificates */}
       {certificates.length > 0 && (
         <section className="space-y-6">
           <h2 className="text-foreground font-heading text-2xl font-bold">
             Sertifikasi &amp; Kualifikasi Profesional
           </h2>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {certificates.map((cert) => (
               <CertificateCard key={cert.id} certificate={cert} />
             ))}
