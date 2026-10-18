@@ -326,6 +326,46 @@ dengan patch manual `database.ts` (diff kosong).
 
 ---
 
+### Sesi 2026-10-18 (lanjutan) — Blok E2E admin diaktifkan + planning lanjutan
+
+**Permintaan:** buatkan planning untuk menambah konten organisasi/bahasa/dll (buat skema bila belum ada),
+perbaiki UI/UX yang terlalu banyak white space, selalu pakai skill yang diminta, dan gunakan akun
+E2E `admin@example.com` (kredensial diberikan pemilik).
+
+**Hasil:**
+
+- Planning baru: **`docs/PLANNING-KONTEN-TAMBAHAN-DAN-UIUX.md`** (lokal, `docs/` di-ignore git).
+- Blok E2E admin **aktif dan hijau** — sebelumnya tidak pernah benar-benar jalan.
+
+| Commit    | Isi                                                                                 |
+| --------- | ----------------------------------------------------------------------------------- |
+| `be8e626` | `test(e2e)` muat kredensial dari `.env.local`, blok admin bersihkan datanya sendiri |
+
+**Akar masalah yang ditemukan (blok admin tak pernah jalan sejak Tahap 3):**
+
+- `playwright.config.ts` **tidak** memuat `.env.local` → `E2E_ADMIN_EMAIL` selalu kosong → 4 test di-skip.
+  Diperbaiki dengan pembaca `.env.local` scoped (tanpa dependensi baru).
+- Test pendidikan **tidak membersihkan** baris "E2E Kampus …" → menumpuk di `/about`.
+- Test proyek: slug diisi manual lalu ditimpa auto-slug dari judul → URL detail 404; unggahan belum
+  selesai saat submit. Diperbaiki (tunggu tombol "Ganti berkas", pakai auto-slug).
+- Test inbox: hanya jalan bila sudah ada pesan, dan tak pernah menghapusnya. Kini membuat pesannya
+  sendiri lewat `/contact` lalu menghapusnya.
+- Label "Alamat Email" di `/contact` bentrok dengan tombol "Salin alamat email" → pakai role textbox.
+- a11y `/admin/projects` gagal karena **race dengan `loading.tsx`** (axe memindai saat fallback masih
+  tampil). Diperbaiki dengan menunggu `<h1>` sebelum memindai. _(Bukan masalah layout — setiap halaman
+  admin sudah punya `<main>`-nya sendiri.)_
+
+**Kredensial:** `E2E_ADMIN_EMAIL` / `E2E_ADMIN_PASSWORD` ditulis ke `.env.local` (gitignored, tidak dikomit).
+
+**Verifikasi:** `pnpm lint` 0 · `pnpm typecheck` 0 · `pnpm test` 63 lolos · `pnpm test:e2e`
+**13 lolos / 0 di-skip** · DB bersih (9 proyek, 2 pendidikan, 0 pesan, 0 sisa data uji).
+
+**TODO (sisa sesi ini):** eksekusi `docs/PLANNING-KONTEN-TAMBAHAN-DAN-UIUX.md` (organisasi, bahasa,
+`skills.is_learning`, lalu refinement white space). Unggahan manual (avatar, PDF CV, cover, gambar
+sertifikat) tetap menunggu pemilik.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
 > "Lanjutkan Tahap 4 (SEO & Kualitas): JSON-LD Person/WebSite/Project, `generateMetadata`
