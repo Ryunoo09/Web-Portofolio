@@ -24,3 +24,14 @@ export function formatPeriod(start: string | null, end: string | null): string {
   const to = end ? new Date(end).getFullYear() : "Sekarang";
   return from ? `${from} — ${to}` : String(to);
 }
+
+/**
+ * Pecah teks deskripsi menjadi poin: satu baris = satu poin. Penanda daftar di
+ * awal baris (`-`, `•`, `*`) dibuang agar penulisan bebas tetap rapi.
+ */
+export function toListItems(value: string | null | undefined): string[] {
+  return (value ?? "")
+    .split("\n")
+    .map((line) => line.trim().replace(/^[-•*]\s+/, ""))
+    .filter(Boolean);
+}

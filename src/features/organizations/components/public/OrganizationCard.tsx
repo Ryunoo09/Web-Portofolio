@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Building2, Calendar, Users } from "lucide-react";
+import { BulletPoints } from "@/shared/components";
 import { Card } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
 import { formatPeriod } from "@/shared/lib/utils";
@@ -48,9 +49,10 @@ export function OrganizationCard({ organization }: OrganizationCardProps) {
       </div>
 
       {organization.description && (
-        <p className="text-muted-foreground mt-4 text-xs leading-relaxed sm:text-sm">
-          {organization.description}
-        </p>
+        <BulletPoints
+          text={organization.description}
+          className="text-muted-foreground mt-4 text-xs leading-relaxed sm:text-sm"
+        />
       )}
     </Card>
   );

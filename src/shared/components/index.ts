@@ -1,6 +1,7 @@
 export { PageContainer } from "./common/PageContainer";
 export { SectionHeading } from "./common/SectionHeading";
 export { AdminPageHeader } from "./common/AdminPageHeader";
+export { BulletPoints } from "./common/BulletPoints";
 export { ConfirmDeleteDialog } from "./common/ConfirmDeleteDialog";
 export { FieldError } from "./common/FieldError";
 export { FormField } from "./common/FormField";

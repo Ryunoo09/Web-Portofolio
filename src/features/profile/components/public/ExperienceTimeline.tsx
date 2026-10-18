@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Calendar, MapPin } from "lucide-react";
+import { BulletPoints } from "@/shared/components";
 import { Badge } from "@/shared/components/ui/badge";
 import { Card } from "@/shared/components/ui/card";
 import { formatPeriod } from "@/shared/lib/utils";
@@ -49,9 +50,10 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
             </div>
 
             {exp.description && (
-              <p className="text-muted-foreground mt-4 text-sm leading-relaxed">
-                {exp.description}
-              </p>
+              <BulletPoints
+                text={exp.description}
+                className="text-muted-foreground mt-4 text-sm leading-relaxed"
+              />
             )}
           </Card>
         </div>

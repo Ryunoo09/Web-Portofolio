@@ -101,7 +101,12 @@ export function OrganizationForm({ organization }: OrganizationFormProps) {
         )}
       </FormField>
 
-      <FormField label="Deskripsi" name="description" error={errors.description?.message}>
+      <FormField
+        label="Deskripsi"
+        name="description"
+        error={errors.description?.message}
+        hint="Satu poin per baris — tampil sebagai daftar berbutir di /about."
+      >
         {(props) => <Textarea rows={5} {...props} {...register("description")} />}
       </FormField>
 
