@@ -12,6 +12,8 @@ export const ROUTES = {
     skills: "/admin/skills",
     experiences: "/admin/experiences",
     education: "/admin/education",
+    organizations: "/admin/organizations",
+    languages: "/admin/languages",
     certificates: "/admin/certificates",
     profile: "/admin/profile",
     messages: "/admin/messages",

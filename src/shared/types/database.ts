@@ -201,6 +201,81 @@ export type Database = {
         };
         Relationships: [];
       };
+      languages: {
+        Row: {
+          created_at: string;
+          id: string;
+          is_published: boolean;
+          level: string;
+          name: string;
+          score: string | null;
+          sort_order: number;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          is_published?: boolean;
+          level: string;
+          name: string;
+          score?: string | null;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          is_published?: boolean;
+          level?: string;
+          name?: string;
+          score?: string | null;
+          sort_order?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      organizations: {
+        Row: {
+          created_at: string;
+          description: string | null;
+          ended_at: string | null;
+          id: string;
+          is_published: boolean;
+          member_count: number | null;
+          name: string;
+          role: string;
+          sort_order: number;
+          started_at: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          description?: string | null;
+          ended_at?: string | null;
+          id?: string;
+          is_published?: boolean;
+          member_count?: number | null;
+          name: string;
+          role: string;
+          sort_order?: number;
+          started_at?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          description?: string | null;
+          ended_at?: string | null;
+          id?: string;
+          is_published?: boolean;
+          member_count?: number | null;
+          name?: string;
+          role?: string;
+          sort_order?: number;
+          started_at?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       posts: {
         Row: {
           content_html: string | null;
@@ -458,6 +533,7 @@ export type Database = {
           created_at: string;
           icon: string | null;
           id: string;
+          is_learning: boolean;
           is_published: boolean;
           level: number | null;
           name: string;
@@ -469,6 +545,7 @@ export type Database = {
           created_at?: string;
           icon?: string | null;
           id?: string;
+          is_learning?: boolean;
           is_published?: boolean;
           level?: number | null;
           name: string;
@@ -480,6 +557,7 @@ export type Database = {
           created_at?: string;
           icon?: string | null;
           id?: string;
+          is_learning?: boolean;
           is_published?: boolean;
           level?: number | null;
           name?: string;
