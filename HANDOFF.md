@@ -88,7 +88,7 @@
 | 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan   |
 | 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub   |
 | 5. Testing            | 🟢 Unit + komponen + E2E publik & axe jalan; E2E admin menunggu akun uji |
-| 6. Deployment         | 🔴 File ada, belum dijalankan                                            |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets            |
 
 ### Detail Fase 3
 
@@ -188,10 +188,19 @@ JSON-LD (Person, WebSite, Project) · `generateMetadata` semua halaman · `openg
 nyata memakai cover proyek · header keamanan + CSP · rate-limit login ·
 drag & drop urutan (A-12) · CRUD Blog (A-13)
 
-### Tahap 5 — Deployment
+### Tahap 5 — Deployment 🟡 (tertulis, menunggu dijalankan)
 
-CI/CD (GitHub Actions → GHCR → VPS) · setup VPS · DNS Cloudflare · monitoring uptime ·
-Google Search Console
+Panduan operasional lengkap: **`DEPLOY.md`** (di root repo, ikut ter-commit).
+
+Arsitektur: `Cloudflare → Nginx Proxy Manager → container portfolio-web:3000`.
+
+- ✅ `Dockerfile` (standalone, build-args `NEXT_PUBLIC_*`)
+- ✅ `docker-compose.yml` — **NPM** (Caddyfile dihapus), network eksternal `npm-net`,
+  `container_name: portfolio-web`, healthcheck `/api/health`, rotasi log, `IMAGE_TAG` untuk rollback
+- ✅ `.github/workflows/ci.yml` — lint/typecheck/test/build tiap PR & push
+- ✅ `.github/workflows/deploy.yml` — push ke `main` → build+push GHCR → SSH → `compose pull/up`
+  → tunggu healthcheck. Di-gate oleh Variable `DEPLOY_ENABLED=true` agar push sebelum setup tidak gagal.
+- ⏳ Sisa: setup VPS, `npm-net`, proxy host NPM, Variables/Secrets GitHub, package GHCR dijadikan Public
 
 ---
 
@@ -486,6 +495,38 @@ pemilik — Sensor DHT11, Sensor PIR, Relay 5V, Motor DC & Servo, LCD 16x2, Grap
 2026-10-18). Asalnya klik manual pada sakelar status (`updated_at` berubah satu per satu ±1 detik).
 Efek yang memang diinginkan: kartu "Hardware & IoT" berisi 1 skill dan "Sedang Dipelajari" menampilkan
 3 chip. Total skill tersimpan 56 (49 terbit + 7 draf).
+
+---
+
+### Sesi 2026-10-18 (lanjutan 6) — Deployment VPS: NPM + CI/CD
+
+**Permintaan:** bantu deploy ke VPS yang sudah ada Nginx Proxy Manager (tersambung Cloudflare) +
+Docker, dan setel CI/CD agar tidak perlu masuk server tiap update.
+
+**Keputusan pemilik:** (1) app ↔ NPM lewat **network Docker bersama** (`npm-net`, bukan port ke
+host); (2) package GHCR **Public** (VPS tak perlu `docker login`/PAT); (3) domain diisi menyusul —
+dipakai lewat GitHub Variable `NEXT_PUBLIC_SITE_URL`, bukan hardcode di file.
+
+| Perubahan                      | Isi                                                                                                                                                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `docker-compose.yml`           | Ditulis ulang: `web` saja (Caddy dihapus) di network eksternal `npm-net`, `container_name: portfolio-web`, healthcheck `/api/health`, rotasi log 10 MB × 3, `IMAGE_TAG` untuk rollback                                          |
+| `Caddyfile`                    | **Dihapus** — TLS/header kini di NPM (snippet "Advanced" ada di `DEPLOY.md` §2)                                                                                                                                                 |
+| `.github/workflows/deploy.yml` | Diisi penuh: buildx + cache GHA → push `:latest` & `:<sha-7>` ke GHCR → `scp` compose → SSH `compose pull/up` + `image prune` → tunggu status `healthy`, gagal = log 60 baris + exit 1. Di-gate `vars.DEPLOY_ENABLED == 'true'` |
+| `DEPLOY.md` (baru, commit)     | Runbook: `npm-net`, `.env` VPS, proxy host NPM, Cloudflare Full (strict), Variables/Secrets, GHCR Public, deploy pertama, rollback, perawatan, troubleshooting                                                                  |
+| `.env.example`                 | Catatan blok produksi + `IMAGE_TAG`                                                                                                                                                                                             |
+
+**Catatan teknis penting:**
+
+- Nama image GHCR wajib huruf kecil → workflow memakai `${GITHUB_REPOSITORY,,}`
+  (`ghcr.io/ryunoo09/web-portofolio`), cocok dengan `docker-compose.yml`.
+- Karena container membuka **hanya `expose` (bukan `ports`)**, verifikasi healthcheck dari VPS
+  memakai `docker inspect --format '{{.State.Health.Status}}' portfolio-web`, bukan `curl localhost`.
+- `SUPABASE_SERVICE_ROLE_KEY` **tidak pernah** ditaruh di GitHub Secrets — hanya di
+  `/opt/portfolio/.env` (chmod 600). Build CI hanya butuh 3 nilai publik.
+- Deploy build **tanpa** `SKIP_DB_FETCH` supaya halaman ter-prerender dengan data Supabase asli.
+
+**Belum dijalankan:** semua langkah di `DEPLOY.md` (setup VPS, NPM proxy host, Variables/Secrets,
+jalankan workflow). Belum diverifikasi: deploy sungguhan ke VPS + HTTPS via Cloudflare.
 
 ---
 
