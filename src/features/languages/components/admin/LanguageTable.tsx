@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { Edit } from "lucide-react";
-import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { ConfirmDeleteDialog } from "@/shared/components";
-import { deleteLanguage } from "../../server/actions";
+import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components";
+import { deleteLanguage, toggleLanguagePublish } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
 import {
   Table,
@@ -59,7 +58,8 @@ function LanguageRow({ language }: { language: Language }) {
       <TableCell>
         <Link
           href={editHref}
-          className="hover:text-gold focus-visible:ring-ring rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          title={language.name}
+          className="hover:text-gold focus-visible:ring-ring block max-w-[22rem] truncate rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {language.name}
         </Link>
@@ -68,15 +68,12 @@ function LanguageRow({ language }: { language: Language }) {
       <TableCell className="font-mono text-xs">{language.score ?? "—"}</TableCell>
       <TableCell className="font-mono text-xs">{language.sortOrder}</TableCell>
       <TableCell>
-        {language.isPublished ? (
-          <Badge variant="default" className="bg-green-600 text-xs">
-            Terbit
-          </Badge>
-        ) : (
-          <Badge variant="secondary" className="text-xs">
-            Draf
-          </Badge>
-        )}
+        <StatusToggle
+          id={language.id}
+          name={language.name}
+          isPublished={language.isPublished}
+          action={toggleLanguagePublish}
+        />
       </TableCell>
       <TableCell className="bg-card sticky right-0">
         <div className="flex justify-end gap-1">

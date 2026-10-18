@@ -87,3 +87,24 @@ export async function deleteSkill(id: string): Promise<ActionResult> {
     return { ok: false, error: e instanceof Error ? e.message : "Gagal menghapus keahlian." };
   }
 }
+
+export async function toggleSkillPublish(id: string, isPublished: boolean): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+
+    const supabase = await createServerSupabase();
+    const { error } = await supabase
+      .from("skills")
+      .update({ is_published: isPublished })
+      .eq("id", id);
+    if (error) return { ok: false, error: error.message };
+
+    revalidateSkills();
+    return { ok: true, data: undefined };
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Gagal mengubah status publikasi.",
+    };
+  }
+}

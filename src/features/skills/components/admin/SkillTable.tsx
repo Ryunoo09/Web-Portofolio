@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Edit } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { ConfirmDeleteDialog } from "@/shared/components";
-import { deleteSkill } from "../../server/actions";
+import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components";
+import { deleteSkill, toggleSkillPublish } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
 import {
   Table,
@@ -60,7 +60,8 @@ function SkillRowComponent({ skill }: { skill: Skill }) {
       <TableCell>
         <Link
           href={editHref}
-          className="hover:text-gold focus-visible:ring-ring rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          title={skill.name}
+          className="hover:text-gold focus-visible:ring-ring block max-w-[22rem] truncate rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {skill.name}
         </Link>
@@ -80,15 +81,12 @@ function SkillRowComponent({ skill }: { skill: Skill }) {
       <TableCell className="font-mono text-xs">{skill.level}/5</TableCell>
       <TableCell className="font-mono text-xs">{skill.sortOrder}</TableCell>
       <TableCell>
-        {skill.isPublished ? (
-          <Badge variant="default" className="bg-green-600 text-xs">
-            Terbit
-          </Badge>
-        ) : (
-          <Badge variant="secondary" className="text-xs">
-            Draf
-          </Badge>
-        )}
+        <StatusToggle
+          id={skill.id}
+          name={skill.name}
+          isPublished={skill.isPublished}
+          action={toggleSkillPublish}
+        />
       </TableCell>
       <TableCell className="bg-card sticky right-0">
         <div className="flex justify-end gap-1">

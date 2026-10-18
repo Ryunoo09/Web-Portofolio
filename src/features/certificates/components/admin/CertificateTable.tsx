@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { Edit } from "lucide-react";
-import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { ConfirmDeleteDialog } from "@/shared/components";
-import { deleteCertificate } from "../../server/actions";
+import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components";
+import { deleteCertificate, toggleCertificatePublish } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
 import { formatDate } from "@/shared/lib/utils";
 import {
@@ -62,7 +61,8 @@ function CertificateRow({ certificate }: { certificate: Certificate }) {
       <TableCell>
         <Link
           href={editHref}
-          className="hover:text-gold focus-visible:ring-ring block rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          title={certificate.title}
+          className="hover:text-gold focus-visible:ring-ring block max-w-[22rem] truncate rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {certificate.title}
         </Link>
@@ -87,15 +87,12 @@ function CertificateRow({ certificate }: { certificate: Certificate }) {
       </TableCell>
       <TableCell className="font-mono text-xs">{certificate.sortOrder}</TableCell>
       <TableCell>
-        {certificate.isPublished ? (
-          <Badge variant="default" className="bg-green-600 text-xs">
-            Terbit
-          </Badge>
-        ) : (
-          <Badge variant="secondary" className="text-xs">
-            Draf
-          </Badge>
-        )}
+        <StatusToggle
+          id={certificate.id}
+          name={certificate.title}
+          isPublished={certificate.isPublished}
+          action={toggleCertificatePublish}
+        />
       </TableCell>
       <TableCell className="bg-card sticky right-0">
         <div className="flex justify-end gap-1">

@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Edit } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { ConfirmDeleteDialog } from "@/shared/components";
-import { deleteProject } from "../../server/actions";
+import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components";
+import { deleteProject, toggleProjectPublish } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
 import {
   Table,
@@ -68,21 +68,19 @@ function ProjectRowComponent({ project }: { project: ProjectRow }) {
       <TableCell>
         <Link
           href={editHref}
-          className="hover:text-gold focus-visible:ring-ring rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          title={project.title}
+          className="hover:text-gold focus-visible:ring-ring block max-w-[22rem] truncate rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {project.title}
         </Link>
       </TableCell>
       <TableCell>
-        {project.isPublished ? (
-          <Badge variant="default" className="bg-green-600 text-xs">
-            Terbit
-          </Badge>
-        ) : (
-          <Badge variant="secondary" className="text-xs">
-            Draf
-          </Badge>
-        )}
+        <StatusToggle
+          id={project.id}
+          name={project.title}
+          isPublished={project.isPublished}
+          action={toggleProjectPublish}
+        />
       </TableCell>
       <TableCell>
         {project.isFeatured ? (

@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Edit } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { ConfirmDeleteDialog } from "@/shared/components";
-import { deleteOrganization } from "../../server/actions";
+import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components";
+import { deleteOrganization, toggleOrganizationPublish } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
 import { formatPeriod } from "@/shared/lib/utils";
 import {
@@ -66,7 +66,8 @@ function OrganizationRow({ organization }: { organization: Organization }) {
       <TableCell>
         <Link
           href={editHref}
-          className="hover:text-gold focus-visible:ring-ring block rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+          title={organization.name}
+          className="hover:text-gold focus-visible:ring-ring block max-w-[22rem] truncate rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
         >
           {organization.name}
         </Link>
@@ -78,15 +79,12 @@ function OrganizationRow({ organization }: { organization: Organization }) {
       </TableCell>
       <TableCell className="font-mono text-xs">{organization.sortOrder}</TableCell>
       <TableCell>
-        {organization.isPublished ? (
-          <Badge variant="default" className="bg-green-600 text-xs">
-            Terbit
-          </Badge>
-        ) : (
-          <Badge variant="secondary" className="text-xs">
-            Draf
-          </Badge>
-        )}
+        <StatusToggle
+          id={organization.id}
+          name={organization.name}
+          isPublished={organization.isPublished}
+          action={toggleOrganizationPublish}
+        />
       </TableCell>
       <TableCell className="bg-card sticky right-0">
         <div className="flex justify-end gap-1">
