@@ -481,11 +481,11 @@ component tanpa state klien.
 **Verifikasi:** `pnpm lint` 0 · `pnpm typecheck` 0 · `pnpm test` **85 lolos** (+4 test
 `SkillsByCategory`) · `pnpm build` sukses · `pnpm test:e2e` **18 lolos** (+1 test pengelompokan).
 
-**⚠️ Temuan yang butuh keputusan pemilik:** 7 skill sedang berstatus **draf** — Sensor DHT11, Sensor PIR,
-Relay 5V, Motor DC & Servo, LCD 16x2, GraphQL, NestJS. `updated_at`-nya berubah satu per satu (±1 detik)
-pada 08:44, jejak **klik manual pada sakelar status** (bukan bug). Efek tampilan: kartu "Hardware & IoT"
-hanya berisi 1 skill dan "Sedang Dipelajari" hanya menampilkan 3 chip. Kalau tidak disengaja, cukup
-dinyalakan lagi dari `/admin/skills` — belum diubah otomatis agar tidak menimpa pilihan pemilik.
+**Catatan data (BUKAN bug — jangan "diperbaiki"):** 7 skill **sengaja** dibiarkan berstatus draf oleh
+pemilik — Sensor DHT11, Sensor PIR, Relay 5V, Motor DC & Servo, LCD 16x2, GraphQL, NestJS (dikonfirmasi
+2026-10-18). Asalnya klik manual pada sakelar status (`updated_at` berubah satu per satu ±1 detik).
+Efek yang memang diinginkan: kartu "Hardware & IoT" berisi 1 skill dan "Sedang Dipelajari" menampilkan
+3 chip. Total skill tersimpan 56 (49 terbit + 7 draf).
 
 ---
 
