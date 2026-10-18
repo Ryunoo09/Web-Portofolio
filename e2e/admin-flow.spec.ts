@@ -2,9 +2,9 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
 /**
- * Keputusan D3: alur admin diverifikasi manual dulu. Isi
- * `E2E_ADMIN_EMAIL` & `E2E_ADMIN_PASSWORD` di `.env.local` (jangan pernah dikomit)
- * agar blok ini ikut berjalan otomatis.
+ * Blok alur admin. Kredensial dibaca dari `.env.local` oleh `playwright.config.ts`
+ * (`E2E_ADMIN_EMAIL` / `E2E_ADMIN_PASSWORD`); tanpa itu blok ini di-skip.
+ * Setiap test membersihkan datanya sendiri agar database tidak terisi sampah uji.
  */
 const email = process.env.E2E_ADMIN_EMAIL;
 const password = process.env.E2E_ADMIN_PASSWORD;
@@ -24,46 +24,61 @@ async function login(page: Page) {
   await expect(page).toHaveURL(/\/admin$/);
 }
 
+/** Tekan konfirmasi di `ConfirmDeleteDialog` bersama, lalu pastikan dialognya tutup. */
+async function confirmDelete(page: Page) {
+  await page.getByRole("button", { name: "Hapus", exact: true }).click();
+  // Server action + `router.refresh()` bisa lambat saat dev server baru meng-compile.
+  await expect(page.getByRole("dialog")).toBeHidden({ timeout: 25_000 });
+}
+
 test.describe("alur admin", () => {
+  // Alur admin menempuh banyak navigasi + aksi server; beri ruang lebih dari 30 detik bawaan.
+  test.describe.configure({ timeout: 60_000 });
+
   test.skip(!hasCredentials, "Butuh E2E_ADMIN_EMAIL dan E2E_ADMIN_PASSWORD di .env.local.");
 
   test("login, unggah cover, lalu tampil di /projects dan bisa dihapus", async ({ page }) => {
     await login(page);
 
+    const stamp = Date.now();
+    const title = `E2E Proyek ${stamp}`;
+    // Slug terisi otomatis dari judul saat judul kehilangan fokus.
+    const slug = `e2e-proyek-${stamp}`;
+
     await page.goto("/admin/projects/new");
-    const slug = `e2e-proyek-${Date.now()}`;
-    await page.getByLabel("Judul").fill(`E2E Proyek ${slug}`);
-    await page.getByLabel("Slug").fill(slug);
+    await page.getByLabel("Judul").fill(title);
     await page
       .getByLabel("Ringkasan")
       .fill("Proyek uji otomatis untuk memverifikasi unggah gambar cover.");
+    await expect(page.getByLabel("Slug")).toHaveValue(slug);
+
     await page.locator('input[type="file"]').first().setInputFiles({
       name: "cover.png",
       mimeType: "image/png",
       buffer: TINY_PNG,
     });
+    // Unggahan selesai ketika pratinjau menggantikan tombol "Pilih berkas".
+    await expect(page.getByRole("button", { name: "Ganti berkas" })).toBeVisible();
+
     await page.getByLabel("Teks Alternatif Cover").fill("Cover proyek uji");
     await page.getByLabel("Publikasikan").check();
+    await expect(page.getByLabel("Publikasikan")).toBeChecked();
     await page.getByRole("button", { name: "Buat Proyek" }).click();
 
     await expect(page).toHaveURL(/\/admin\/projects$/);
     await page.goto(`/projects/${slug}`);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("E2E Proyek");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(title);
 
     await page.goto("/admin/projects");
-    await page
-      .getByRole("button", { name: /hapus proyek E2E Proyek/ })
-      .first()
-      .click();
-    await page.getByRole("button", { name: "Hapus" }).click();
-    await expect(page.getByRole("dialog")).toBeHidden();
+    await page.getByRole("button", { name: `Hapus proyek ${title}` }).click();
+    await confirmDelete(page);
   });
 
-  test("tambah pendidikan lalu muncul di /about", async ({ page }) => {
+  test("tambah pendidikan lalu muncul di /about, lalu dibersihkan lagi", async ({ page }) => {
     await login(page);
 
-    await page.goto("/admin/education/new");
     const institution = `E2E Kampus ${Date.now()}`;
+    await page.goto("/admin/education/new");
     await page.getByLabel("Institusi").fill(institution);
     await page.getByLabel("Jenjang / Gelar").fill("S1 Teknik Informatika");
     await page.getByRole("button", { name: "Buat Pendidikan" }).click();
@@ -71,22 +86,42 @@ test.describe("alur admin", () => {
     await expect(page).toHaveURL(/\/admin\/education$/);
     await page.goto("/about");
     await expect(page.getByText(institution)).toBeVisible();
+
+    // Bersihkan jejak uji agar tidak menumpuk di /about.
+    await page.goto("/admin/education");
+    await page
+      .getByRole("row", { name: new RegExp(institution) })
+      .getByRole("button", { name: /Hapus pendidikan/ })
+      .click();
+    await confirmDelete(page);
   });
 
-  test("inbox pesan: tandai dibaca", async ({ page }) => {
+  test("pesan kontak: kirim lewat /contact lalu tandai dibaca dan hapus", async ({ page }) => {
+    const subject = `E2E Pesan ${Date.now()}`;
+
+    await page.goto("/contact");
+    await page.getByLabel("Nama Lengkap").fill("E2E Pengirim");
+    await page.getByRole("textbox", { name: /alamat email/i }).fill("e2e@example.com");
+    await page.getByLabel("Subjek / Topik Diskusi").fill(subject);
+    await page.getByLabel("Pesan Anda").fill("Pesan uji otomatis dari Playwright.");
+    await page.getByRole("button", { name: "Kirim Pesan Sekarang" }).click();
+    await expect(page.getByText("Pesan Berhasil Terkirim")).toBeVisible();
+
     await login(page);
     await page.goto("/admin/messages");
-
-    const emptyState = page.getByText("Kotak masuk masih kosong");
-    if (await emptyState.isVisible()) test.skip(true, "Belum ada pesan untuk diuji.");
-
-    await page.locator("ul li button").first().click();
+    await page.getByRole("button", { name: new RegExp(subject) }).click();
+    // Membuka pesan langsung menandainya terbaca.
     await expect(page.getByText("Sudah dibaca")).toBeVisible();
+
+    await page.getByRole("button", { name: "Hapus pesan" }).click();
+    await confirmDelete(page);
   });
 
   test("tidak ada pelanggaran aksesibilitas di /admin/projects", async ({ page }) => {
     await login(page);
     await page.goto("/admin/projects");
+    // Pastikan shell admin selesai render sebelum memindai.
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
