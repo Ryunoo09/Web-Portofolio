@@ -460,6 +460,35 @@ screenshot tabel admin diperiksa manual · DB bersih (0 sisa data uji).
 
 ---
 
+### Sesi 2026-10-18 (lanjutan 5) — Keahlian dikelompokkan per kategori
+
+**Permintaan:** lanjutkan opsi B — skill dikelompokkan per kategori (9 kartu, bukan 51).
+
+**Hasil:** komponen baru `SkillsByCategory` menggantikan `SkillsGrid` (berkas lama **dihapus**, barrel
+diperbarui). Satu kartu per kategori berisi: nama kategori, jumlah skill, dan daftar skill dengan
+5 titik tingkat (teks `sr-only` "Tingkat X dari 5" tetap ada untuk pembaca layar). Filter kategori
+dihapus karena jadi redundan — kartunya sendiri sudah per kategori, dan komponennya kini server
+component tanpa state klien.
+
+**Dampak (screenshot full-page 1440×900):**
+
+| Tahap                     | Tinggi `/skills`                                   |
+| ------------------------- | -------------------------------------------------- |
+| 51 kartu (awal)           | 3756 px                                            |
+| setelah rapatkan spacing  | 3385 px                                            |
+| **setelah dikelompokkan** | **1936 px (−42,8% vs sebelumnya, −48,5% vs awal)** |
+
+**Verifikasi:** `pnpm lint` 0 · `pnpm typecheck` 0 · `pnpm test` **85 lolos** (+4 test
+`SkillsByCategory`) · `pnpm build` sukses · `pnpm test:e2e` **18 lolos** (+1 test pengelompokan).
+
+**⚠️ Temuan yang butuh keputusan pemilik:** 7 skill sedang berstatus **draf** — Sensor DHT11, Sensor PIR,
+Relay 5V, Motor DC & Servo, LCD 16x2, GraphQL, NestJS. `updated_at`-nya berubah satu per satu (±1 detik)
+pada 08:44, jejak **klik manual pada sakelar status** (bukan bug). Efek tampilan: kartu "Hardware & IoT"
+hanya berisi 1 skill dan "Sedang Dipelajari" hanya menampilkan 3 chip. Kalau tidak disengaja, cukup
+dinyalakan lagi dari `/admin/skills` — belum diubah otomatis agar tidak menimpa pilihan pemilik.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
 > "Lanjutkan Tahap 4 (SEO & Kualitas): JSON-LD Person/WebSite/Project, `generateMetadata`
