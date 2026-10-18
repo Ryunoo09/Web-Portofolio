@@ -202,3 +202,32 @@ GitHub → Packages → `web-portofolio` → tab _Versions_.
 | Container `unhealthy`              | Lihat `docker logs portfolio-web`; healthcheck memanggil `/api/health` pada port 3000                                                    |
 | Halaman admin/logout aneh di HTTPS | Sudah Full (strict)? `NEXT_PUBLIC_SITE_URL` harus `https://…` tanpa trailing slash                                                       |
 | Build di CI lambat                 | Cache `type=gha` sudah aktif; wajar bila cache kosong pada run pertama                                                                   |
+
+---
+
+## 10. Kendala nyata yang sudah pernah terjadi
+
+Dicatat dari setup pertama, supaya tidak mengulang kesalahan yang sama.
+
+| Gejala di GitHub Actions                                                                     | Sebab                                                                                                                                                    | Perbaikan                                                                                                                                                         |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tar: docker-compose.yml: Cannot open: Permission denied`                                    | `VPS_APP_DIR` (`/opt/portfolio`) milik `root`, sedangkan `VPS_USER` user lain — `/opt` memang milik root                                                 | Pakai `VPS_USER=root`, atau `usermod -aG docker <user>` + `chown -R <user>:<user> /opt/portfolio`                                                                 |
+| `ssh: unable to authenticate, attempted methods [none publickey]`                            | Public key tidak ada di `~/.ssh/authorized_keys` **milik user yang dipakai**. Saat setup VPS kunci sering terpasang di user lain (user default penyedia) | `Get-Content $HOME\.ssh\id_ed25519.pub \| ssh root@IP "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"` |
+| Job `deploy` menggantung lalu gagal `unhealthy`, padahal log container bersih (`Ready in …`) | Healthcheck memakai `wget http://localhost:3000` — `localhost` di Alpine bisa di-resolve ke IPv6 `::1`, sementara Next hanya mendengarkan IPv4           | Healthcheck kini memakai `node` + `127.0.0.1` (sudah diperbaiki di `docker-compose.yml`)                                                                          |
+| Warning `Unexpected input(s) 'script_stop'`                                                  | Input itu tidak ada di `appleboy/ssh-action@v1`                                                                                                          | Sudah dihapus                                                                                                                                                     |
+
+**Cara memeriksa healthcheck dengan cepat** (di VPS):
+
+```bash
+docker ps --filter name=portfolio-web
+docker inspect --format '{{.State.Status}} exit={{.State.ExitCode}} restarts={{.RestartCount}}' portfolio-web
+docker inspect --format '{{range .State.Health.Log}}exit={{.ExitCode}} {{.Output}}{{end}}' portfolio-web
+```
+
+`restarts=0` + log container hanya satu banner `Ready` = aplikasi sehat, masalahnya di healthcheck — bukan di aplikasi.
+
+**Bukti kunci SSH berlaku** (harus keluar `OK` tanpa prompt password):
+
+```powershell
+ssh -i $HOME\.ssh\id_ed25519 <VPS_USER>@<IP> "echo OK"
+```

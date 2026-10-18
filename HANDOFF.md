@@ -525,8 +525,25 @@ dipakai lewat GitHub Variable `NEXT_PUBLIC_SITE_URL`, bukan hardcode di file.
   `/opt/portfolio/.env` (chmod 600). Build CI hanya butuh 3 nilai publik.
 - Deploy build **tanpa** `SKIP_DB_FETCH` supaya halaman ter-prerender dengan data Supabase asli.
 
-**Belum dijalankan:** semua langkah di `DEPLOY.md` (setup VPS, NPM proxy host, Variables/Secrets,
-jalankan workflow). Belum diverifikasi: deploy sungguhan ke VPS + HTTPS via Cloudflare.
+**Status deploy pertama (dijalankan pemilik):** image berhasil di-push ke GHCR, container
+`portfolio-web` **berjalan normal di VPS**, SSH dari Actions sudah lolos.
+
+**Empat kendala nyata yang sudah dilewati (semua sudah diperbaiki, detail di `DEPLOY.md` §10):**
+
+1. `tar: docker-compose.yml: Cannot open: Permission denied` — `/opt/portfolio` milik root
+   sedangkan `VPS_USER` user lain → pakai `root` atau `chown` + grup `docker`.
+2. `ssh: unable to authenticate ... no supported methods remain` — public key belum ada di
+   `authorized_keys` milik user yang dipakai (kunci saat setup VPS terpasang di user lain).
+3. Job `deploy` gagal `unhealthy` **padahal aplikasi sehat** — healthcheck memakai
+   `wget http://localhost:3000`, dan `localhost` di Alpine di-resolve ke IPv6 `::1` sementara Next
+   hanya mendengarkan IPv4. **Diperbaiki:** healthcheck kini `node` + `127.0.0.1` (compose),
+   tunggu maksimum 150 s, plus diagnostik lengkap (`docker ps -a`, `RestartCount`,
+   `State.Health.Log`) saat gagal.
+4. Warning `Unexpected input(s) 'script_stop'` — input itu tidak ada di `appleboy/ssh-action@v1`,
+   sudah dihapus.
+
+**Belum diverifikasi:** `portfolio-web` `healthy` (perlu run deploy setelah perbaikan healthcheck),
+proxy host NPM + HTTPS Cloudflare, dan situs diakses dari domain asli.
 
 ---
 
