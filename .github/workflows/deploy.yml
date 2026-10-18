@@ -84,24 +84,33 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
-          script_stop: true
           script: |
             cd "${{ vars.VPS_APP_DIR || '/opt/portfolio' }}"
             docker compose pull web
             docker compose up -d --remove-orphans web
             docker image prune -f
 
-            echo "Menunggu healthcheck..."
-            for i in $(seq 1 12); do
-              STATUS=$(docker inspect --format '{{.State.Health.Status}}' portfolio-web 2>/dev/null || echo starting)
-              echo "  percobaan $i: $STATUS"
+            echo "Menunggu container sehat..."
+            STATUS=""
+            for i in $(seq 1 30); do
+              RUNNING=$(docker inspect --format '{{.State.Running}}' portfolio-web 2>/dev/null || echo unknown)
+              STATUS=$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' portfolio-web 2>/dev/null || echo missing)
+              echo "  percobaan $i: running=$RUNNING health=$STATUS"
+
+              [ "$RUNNING" != "true" ] && break
               [ "$STATUS" = "healthy" ] && break
+              [ "$STATUS" = "unhealthy" ] && break
               sleep 5
             done
 
             if [ "$STATUS" != "healthy" ]; then
-              echo "::error::Container tidak sehat setelah deploy. Log terakhir:"
-              docker logs --tail 60 portfolio-web
+              echo "::error::Deploy gagal (running=$RUNNING health=$STATUS). Diagnostik:"
+              docker ps -a --filter name=portfolio-web
+              docker inspect --format 'status={{.State.Status}} exit={{.State.ExitCode}} restarts={{.RestartCount}}' portfolio-web || true
+              echo "--- hasil healthcheck terakhir ---"
+              docker inspect --format '{{range .State.Health.Log}}exit={{.ExitCode}} {{.Output}}{{end}}' portfolio-web || true
+              echo "--- log container ---"
+              docker logs --tail 80 portfolio-web || true
               exit 1
             fi
             echo "Deploy selesai: ${{ needs.build-and-push.outputs.image }}:${{ needs.build-and-push.outputs.tag }}"
