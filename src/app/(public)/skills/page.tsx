@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageContainer, SectionHeading } from "@/shared/components";
 import { Badge } from "@/shared/components/ui/badge";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
-import { getLearningSkills, getSkills, SkillsGrid } from "@/features/skills";
+import { getLearningSkills, getSkills, SkillsByCategory } from "@/features/skills";
 
 export const revalidate = 3600;
 
@@ -26,7 +26,7 @@ export default async function SkillsPage() {
         description="Teknologi dan tools yang saya pakai untuk membangun backend, mengolah data, dan mengembangkan solusi IoT."
       />
 
-      <SkillsGrid skills={skills} />
+      <SkillsByCategory skills={skills} />
 
       {learningSkills.length > 0 && (
         <section className="space-y-4">
