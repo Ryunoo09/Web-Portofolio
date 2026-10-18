@@ -1,12 +1,107 @@
 name: Deploy
 
-# TODO (Fase 6): build image dengan build-args -> push ke GHCR -> SSH ke VPS
-# -> docker compose pull && docker compose up -d -> cek /api/health
+# Build image di runner GitHub (bukan di VPS 1 GB RAM) → push ke GHCR → VPS
+# menarik image & me-restart container. Dipicu otomatis setiap push ke `main`.
+#
+# Job hanya jalan bila repository Variable `DEPLOY_ENABLED` = "true", supaya
+# push sebelum VPS/secrets disiapkan tidak menghasilkan run yang gagal.
+# Lihat DEPLOY.md untuk daftar Variable, Secret, dan langkah setup VPS.
+
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
+  build-and-push:
+    if: vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.meta.outputs.image }}
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Nama image GHCR wajib huruf kecil (repo "Web-Portofolio" tidak valid).
+      - name: Tentukan nama & tag image
+        id: meta
+        run: |
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
+          TAG="${GITHUB_SHA::7}"
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG"   >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.image }}:latest
+            ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL }}
+            NEXT_PUBLIC_SUPABASE_URL=${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
   deploy:
+    needs: build-and-push
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Belum dikonfigurasi. Lihat PLANNING-PORTOFOLIO.md bagian 17.5."
+      - uses: actions/checkout@v4
+
+      - name: Salin docker-compose.yml ke VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          source: docker-compose.yml
+          target: ${{ vars.VPS_APP_DIR || '/opt/portfolio' }}
+          overwrite: true
+
+      - name: Pull image & restart container
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script_stop: true
+          script: |
+            cd "${{ vars.VPS_APP_DIR || '/opt/portfolio' }}"
+            docker compose pull web
+            docker compose up -d --remove-orphans web
+            docker image prune -f
+
+            echo "Menunggu healthcheck..."
+            for i in $(seq 1 12); do
+              STATUS=$(docker inspect --format '{{.State.Health.Status}}' portfolio-web 2>/dev/null || echo starting)
+              echo "  percobaan $i: $STATUS"
+              [ "$STATUS" = "healthy" ] && break
+              sleep 5
+            done
+
+            if [ "$STATUS" != "healthy" ]; then
+              echo "::error::Container tidak sehat setelah deploy. Log terakhir:"
+              docker logs --tail 60 portfolio-web
+              exit 1
+            fi
+            echo "Deploy selesai: ${{ needs.build-and-push.outputs.image }}:${{ needs.build-and-push.outputs.tag }}"
