@@ -74,6 +74,43 @@ test.describe("alur admin", () => {
     await confirmDelete(page);
   });
 
+  test("sakelar status di tabel proyek langsung mengubah tayangan publik", async ({ page }) => {
+    await login(page);
+
+    const stamp = Date.now();
+    const title = `E2E Status ${stamp}`;
+    const slug = `e2e-status-${stamp}`;
+
+    await page.goto("/admin/projects/new");
+    await page.getByLabel("Judul").fill(title);
+    await page.getByLabel("Ringkasan").fill("Proyek uji sakelar status terbit/draf.");
+    await expect(page.getByLabel("Slug")).toHaveValue(slug);
+    await page.getByLabel("Publikasikan").check();
+    await page.getByRole("button", { name: "Buat Proyek" }).click();
+    await expect(page).toHaveURL(/\/admin\/projects$/);
+
+    const toggleName = `Ubah status terbit: ${title}`;
+    const heading = page.getByRole("heading", { name: title });
+
+    // Terbit → draf: hilang dari daftar publik tanpa membuka halaman edit.
+    await page.getByRole("switch", { name: toggleName }).click();
+    await expect(page.getByRole("switch", { name: toggleName })).not.toBeChecked();
+    await page.goto("/projects");
+    await expect(heading).toHaveCount(0);
+
+    // Draf → terbit: muncul lagi.
+    await page.goto("/admin/projects");
+    await page.getByRole("switch", { name: toggleName }).click();
+    await expect(page.getByRole("switch", { name: toggleName })).toBeChecked();
+    await page.goto("/projects");
+    await expect(heading).toBeVisible();
+
+    // Bersihkan.
+    await page.goto("/admin/projects");
+    await page.getByRole("button", { name: `Hapus proyek ${title}` }).click();
+    await confirmDelete(page);
+  });
+
   test("tambah pendidikan lalu muncul di /about, lalu dibersihkan lagi", async ({ page }) => {
     await login(page);
 
