@@ -412,6 +412,32 @@ didominasi konten kartu (judul + ringkasan + chip teknologi). Lever berikutnya b
 
 ---
 
+### Sesi 2026-10-18 (lanjutan 3) — Deskripsi pengalaman & organisasi jadi poin
+
+**Pertanyaan pemilik:** bisakah deskripsi pengalaman kerja & organisasi dibuat poin, tidak paragraf panjang?
+Apakah terkesan aneh?
+
+**Jawaban:** tidak aneh — justru lebih baik. NN Group: ±79% pengunjung _scanning_, bukan membaca, dan
+blok paragraf panjang di bagian pengalaman adalah penyebab umum isi terlewat. Yang membuat terkesan aneh
+bukan format poinnya, melainkan eksekusinya (poin berupa kalimat panjang, tidak paralel, atau >6 poin).
+Aturan yang dipakai: **3–5 poin, satu ide per poin, dimulai kata kerja, struktur paralel.**
+
+**Implementasi (tanpa migrasi baru):**
+
+- `shared/lib/utils.ts` → `toListItems()` (satu baris = satu poin, penanda `-`/`•` dibuang).
+- `shared/components/common/BulletPoints.tsx` (baru, diekspor dari barrel) — merender `<ul>` bila ≥2 baris,
+  dan **paragraf biasa bila hanya 1 baris** supaya kalimat panjang tidak jadi "poin tunggal" yang janggal.
+- Dipakai di `ExperienceTimeline` dan `OrganizationCard`; hint form admin: "Satu poin per baris".
+- Data DB diperbarui via REST (service role): pengalaman 5 poin, organisasi 2 poin; file seed
+  `03_seed_dari_cv.sql` & `04_seed_organisasi_bahasa.sql` disinkronkan.
+
+**Verifikasi:** `pnpm lint` 0 · `pnpm typecheck` 0 · `pnpm test` **78 lolos** (+4 test `toListItems`) ·
+`pnpm build` sukses · `pnpm test:e2e` **16 lolos** · screenshot `/about` memastikan poin tampil rapi.
+
+> Kolom tetap `text` dan dipecah saat render, jadi **tidak ada SQL yang perlu dijalankan pemilik**.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
 > "Lanjutkan Tahap 4 (SEO & Kualitas): JSON-LD Person/WebSite/Project, `generateMetadata`
