@@ -19,6 +19,11 @@
 | `frontend-design`     | Arah visual (font, layout, warna)                                         |
 | `frontend-developer`  | Implementasi UI kompleks                                                  |
 | `senior-frontend`     | Kualitas frontend                                                         |
+| `ui-design-system`    | Token/komponen baru ikut design system (permintaan 2026-10-18)            |
+| `ui-ux-designer`      | Audit visual & a11y setelah UI berubah                                    |
+| `senior-security`     | RLS/policy, sanitasi, validasi input di batas kepercayaan                 |
+| `webapp-testing`      | Verifikasi manual alur publik & admin di browser                          |
+| `test-engineer`       | Update/perluas unit & komponen test, cek regresi                          |
 
 ### 2. Workflow Git (permintaan eksplisit)
 
@@ -278,6 +283,49 @@ percakapan agar sesi berikutnya tahu apa yang sudah dikerjakan".
 sertifikat bergambar, dan inbox pesan.
 
 **Titik mulai berikutnya:** Tahap 4 (SEO & Kualitas) — lihat bagian di bawah.
+
+---
+
+### Sesi 2026-10-18 — Mengisi data asli dari CV ke website (Fase 1–3 kode selesai)
+
+**Permintaan:** pahami `docs/isi_website/02_DATA_DIRI_CV.md` lalu buat planning memasukkan datanya ke
+website (gambar diunggah manual nanti); wajib pakai skill `clean-code`, `ponytail`, `code-reviewer`,
+`senior-fullstack`, `ui-design-system`, `ui-ux-designer`, `senior-security`, `webapp-testing`,
+`test-engineer`.
+
+**Planning:** `docs/PLANNING-ISI-DATA-CV.md` (lokal — `docs/` di-ignore git).
+
+**Keputusan pemilik:** (1) tambah kolom detail proyek + tampilkan di UI; (2) input via file SQL baru
+`docs/isi_website/03_seed_dari_cv.sql`; (3) organisasi/bahasa/prestasi ditunda; (4) level skill
+dipetakan rasional (M=4–5, C=3, D=2); (5) data dummy diganti total; (6) FastAPI (4) & Flutter (2)
+ditampilkan; (7) `credential_url` sertifikat Dicoding diisi pola resmi; (8) unggulan = Skripsi +
+Elang HUB + Big Data.
+
+| Commit    | Isi                                                                                                                                  |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `3166d8f` | `feat(projects)` migrasi `0004_project_details.sql` (9 kolom) + tipe, mapper, query, Zod, form admin, UI detail + badge kartu + test |
+| `d45de38` | `chore(config)` identitas situs (nama, kontak, sosial), prinsip `AboutContent`, salinan halaman publik                               |
+
+**9 kolom baru `projects`:** `project_type`, `role`, `team_size`, `problem`, `solution`,
+`features[]`, `outcomes[]`, `challenges`, `is_deployed`. RLS lama sudah aman (level baris).
+
+**Verifikasi:** `pnpm lint` 0 · `pnpm typecheck` 0 · `pnpm test` 63 lolos (17 file) ·
+`pnpm build` sukses (24 route, `SKIP_DB_FETCH=1`). **Belum** diverifikasi terhadap DB asli.
+
+**⚠️ MENUNGGU TINDAKAN MANUAL (butuh password DB / SQL Editor):**
+
+1. Jalankan `supabase/migrations/0004_project_details.sql` (atau `pnpm exec supabase db push`).
+2. Jalankan `docs/isi_website/03_seed_dari_cv.sql` (Supabase SQL Editor → Run).
+3. `pnpm db:types` (regen tipe; `database.ts` sekarang sudah dipatch manual dengan bentuk yang sama).
+4. Baru `pnpm build` + `pnpm test:e2e` (yang menyentuh DB) bisa diverifikasi jujur.
+
+**TODO:**
+
+- Jalankan langkah 1–4 di atas.
+- Unggah manual: avatar, PDF CV (⚠️ `resume_url` null → tombol "Unduh CV" menunjuk `/resume.pdf`
+  yang belum ada), cover + galeri 9 proyek, 10 gambar sertifikat.
+- Verifikasi 1–2 URL sertifikat Dicoding (`https://www.dicoding.com/certificates/<ID>`).
+- Ditunda: organisasi PCC, bahasa + TOEIC 685, prestasi/lomba, skill yang sedang dipelajari.
 
 ---
 
