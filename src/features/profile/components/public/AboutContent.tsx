@@ -42,7 +42,7 @@ export function AboutContent({ bio }: AboutContentProps) {
   return (
     <div className="space-y-12">
       {/* Bio Paragraphs */}
-      <div className="text-muted-foreground space-y-6 text-base leading-relaxed sm:text-lg">
+      <div className="text-muted-foreground max-w-3xl space-y-6 text-base leading-relaxed sm:text-lg">
         {paragraphs.length > 0 ? (
           paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)
         ) : (

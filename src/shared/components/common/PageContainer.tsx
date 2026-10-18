@@ -13,9 +13,9 @@ export function PageContainer({
   ...props
 }: PageContainerProps) {
   const sizeClasses = {
-    narrow: "max-w-4xl",
-    default: "max-w-6xl",
-    wide: "max-w-7xl",
+    narrow: "max-w-5xl",
+    default: "max-w-7xl",
+    wide: "max-w-[90rem]",
   };
 
   return (

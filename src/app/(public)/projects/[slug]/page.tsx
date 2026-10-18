@@ -36,7 +36,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   }
 
   return (
-    <PageContainer size="narrow" className="py-12 md:py-16">
+    <PageContainer size="narrow" className="py-8 md:py-12">
       <ProjectDetail project={project} />
     </PageContainer>
   );

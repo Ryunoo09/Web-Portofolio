@@ -16,7 +16,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <PageContainer className="space-y-24 py-8 md:py-12">
+    <PageContainer className="space-y-14 py-8 md:space-y-20 md:py-12">
       {/* 1. Hero Section */}
       <HeroSection profile={profile} />
 
@@ -42,7 +42,7 @@ export default async function HomePage() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {featuredProjects.map((p) => (
             <ProjectCard key={p.id} project={p} />
           ))}

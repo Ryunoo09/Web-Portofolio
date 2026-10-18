@@ -7,6 +7,8 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   locale: "id_ID",
   role: "Backend Developer & Data Engineer",
+  tagline:
+    "Saya mengubah proses manual menjadi sistem dan otomasi yang rapi — dari backend dan pengolahan data hingga computer vision.",
   location: "Brebes, Jawa Tengah, Indonesia",
   availability: "Terbuka untuk posisi Junior Software, Backend & Data",
   socials: {

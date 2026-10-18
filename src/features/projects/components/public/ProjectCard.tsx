@@ -5,6 +5,7 @@ import { ArrowUpRight, Sparkles, FolderGit2 } from "lucide-react";
 import { GithubIcon } from "@/shared/components";
 import { TechStackList } from "./TechStackList";
 import { Card } from "@/shared/components/ui/card";
+import { cn } from "@/shared/lib/utils";
 import type { Project } from "../../types";
 
 interface ProjectCardProps {
@@ -17,8 +18,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <Card className="group card-luxury border-border/80 bg-card relative flex flex-col justify-between overflow-hidden rounded-xl border p-0 transition-all duration-300">
-      {/* Cover terunggah, atau placeholder dekoratif bila belum ada gambar. */}
-      <div className="border-border/60 relative aspect-video w-full overflow-hidden border-b bg-gradient-to-br from-slate-900 to-slate-950">
+      {/* Cover terunggah; tanpa cover pakai header kompak agar tidak ada area kosong besar. */}
+      <div
+        className={cn(
+          "border-border/60 relative w-full overflow-hidden border-b bg-gradient-to-br from-slate-900 to-slate-950",
+          project.coverImageUrl ? "aspect-video" : "h-32",
+        )}
+      >
         {project.coverImageUrl ? (
           <>
             <Image
@@ -34,17 +40,17 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <>
             <div className="absolute inset-0 bg-[radial-gradient(#e5c158_1px,transparent_1px)] [background-size:16px_16px] opacity-15" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="border-gold/30 bg-card/50 text-gold group-hover:border-gold flex size-14 items-center justify-center rounded-2xl border shadow-lg backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
-                <FolderGit2 className="size-7" aria-hidden="true" />
+              <div className="border-gold/30 bg-card/50 text-gold group-hover:border-gold flex size-12 items-center justify-center rounded-2xl border shadow-lg backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+                <FolderGit2 className="size-6" aria-hidden="true" />
               </div>
             </div>
           </>
         )}
 
-        <div className="relative z-10 flex items-center justify-between p-6">
-          <span className="text-muted-foreground font-mono text-xs">{project.slug}</span>
+        <div className="relative z-10 flex items-center justify-between gap-2 p-4">
+          <span className="text-muted-foreground truncate font-mono text-xs">{project.slug}</span>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             {project.projectType && (
               <span className="border-border/40 bg-background/60 text-muted-foreground inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-semibold backdrop-blur-md">
                 {project.projectType}
@@ -61,7 +67,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         {!project.coverImageUrl && (
-          <div className="text-muted-foreground absolute inset-x-0 bottom-0 z-10 flex items-center justify-between p-6 font-mono text-xs">
+          <div className="text-muted-foreground absolute inset-x-0 bottom-0 z-10 flex items-center justify-between px-4 pb-1 font-mono text-[11px]">
             <span>Arsitektur Web</span>
             <span>{year}</span>
           </div>
@@ -75,7 +81,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             href={`/projects/${project.slug}`}
             className="group-hover:text-gold focus-visible:ring-ring inline-block rounded-sm transition-colors focus-visible:ring-2 focus-visible:outline-none"
           >
-            <h2 className="text-foreground font-heading line-clamp-1 text-xl font-bold tracking-tight">
+            <h2 className="text-foreground font-heading line-clamp-2 text-xl font-bold tracking-tight">
               {project.title}
             </h2>
           </Link>

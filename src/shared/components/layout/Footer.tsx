@@ -10,8 +10,8 @@ export function Footer() {
 
   return (
     <footer className="border-border/40 bg-card/40 mt-auto border-t transition-colors">
-      <PageContainer className="py-12 md:py-16">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-4 lg:gap-12">
+      <PageContainer className="py-10 md:py-12">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4 lg:gap-10">
           {/* Brand Info */}
           <div className="space-y-4 md:col-span-2">
             <div className="flex items-center gap-2.5">
@@ -97,7 +97,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-border/30 text-muted-foreground mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 text-xs sm:flex-row">
+        <div className="border-border/30 text-muted-foreground mt-8 flex flex-col items-center justify-between gap-4 border-t pt-6 text-xs sm:flex-row">
           <p>
             &copy; {currentYear} {siteConfig.name}. Hak Cipta Dilindungi Undang-Undang.
           </p>

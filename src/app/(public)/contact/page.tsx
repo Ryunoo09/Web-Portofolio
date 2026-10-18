@@ -12,7 +12,7 @@ export const metadata: Metadata = buildMetadata({
 
 export default function ContactPage() {
   return (
-    <PageContainer className="space-y-10 py-12 md:py-16">
+    <PageContainer className="space-y-10 py-8 md:py-12">
       <SectionHeading
         as="h1"
         badge="Saluran Komunikasi"

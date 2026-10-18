@@ -26,7 +26,7 @@ export function SectionHeading({
   return (
     <div
       className={cn(
-        "mb-10 flex flex-col md:mb-14",
+        "mb-8 flex flex-col md:mb-10",
         isCenter ? "items-center text-center" : "items-start text-left",
         className,
       )}

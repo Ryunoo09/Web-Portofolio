@@ -25,7 +25,7 @@ export function ProjectGrid({ projects, showFilter = true }: ProjectGridProps) {
   }, [projects, selectedSkill]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {showFilter && skills.length > 1 && (
         <div className="flex flex-wrap items-center gap-2">
           {skills.map((skill) => {
@@ -56,7 +56,7 @@ export function ProjectGrid({ projects, showFilter = true }: ProjectGridProps) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

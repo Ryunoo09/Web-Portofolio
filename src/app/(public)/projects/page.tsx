@@ -16,7 +16,7 @@ export default async function ProjectsPage() {
   const projects = await getPublishedProjects();
 
   return (
-    <PageContainer className="space-y-10 py-12 md:py-16">
+    <PageContainer className="space-y-8 py-8 md:py-12">
       <SectionHeading
         as="h1"
         badge="Portofolio Rekayasa"
