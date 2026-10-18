@@ -309,19 +309,16 @@ Elang HUB + Big Data.
 **9 kolom baru `projects`:** `project_type`, `role`, `team_size`, `problem`, `solution`,
 `features[]`, `outcomes[]`, `challenges`, `is_deployed`. RLS lama sudah aman (level baris).
 
-**Verifikasi:** `pnpm lint` 0 · `pnpm typecheck` 0 · `pnpm test` 63 lolos (17 file) ·
-`pnpm build` sukses (24 route, `SKIP_DB_FETCH=1`). **Belum** diverifikasi terhadap DB asli.
+**Verifikasi (DB asli, setelah migrasi + seed dijalankan):** `pnpm lint` 0 · `pnpm typecheck` 0 ·
+`pnpm test` 63 lolos (17 file) · `pnpm build` sukses (24 route, 9 proyek ter-prerender) ·
+`pnpm test:e2e` 9 lolos + 4 di-skip (blok admin) · `pnpm db:types` menghasilkan berkas **identik**
+dengan patch manual `database.ts` (diff kosong).
 
-**⚠️ MENUNGGU TINDAKAN MANUAL (butuh password DB / SQL Editor):**
-
-1. Jalankan `supabase/migrations/0004_project_details.sql` (atau `pnpm exec supabase db push`).
-2. Jalankan `docs/isi_website/03_seed_dari_cv.sql` (Supabase SQL Editor → Run).
-3. `pnpm db:types` (regen tipe; `database.ts` sekarang sudah dipatch manual dengan bentuk yang sama).
-4. Baru `pnpm build` + `pnpm test:e2e` (yang menyentuh DB) bisa diverifikasi jujur.
+**Data DB (diverifikasi via REST):** 9 proyek (unggulan: Skripsi, Big Data, Elang HUB), 51 skill,
+1 pengalaman, 2 pendidikan, 10 sertifikat, profil terisi — data dummy sudah 0.
 
 **TODO:**
 
-- Jalankan langkah 1–4 di atas.
 - Unggah manual: avatar, PDF CV (⚠️ `resume_url` null → tombol "Unduh CV" menunjuk `/resume.pdf`
   yang belum ada), cover + galeri 9 proyek, 10 gambar sertifikat.
 - Verifikasi 1–2 URL sertifikat Dicoding (`https://www.dicoding.com/certificates/<ID>`).
