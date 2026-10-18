@@ -1,29 +1,38 @@
+# Compose untuk VPS.
+#
+# Reverse proxy + TLS TIDAK ada di sini: ditangani Nginx Proxy Manager (NPM) yang
+# sudah jalan di VPS. Container `web` menempel ke network eksternal `npm-net`
+# supaya NPM bisa mem-forward ke `portfolio-web:3000` lewat nama container.
+# Port tidak dibuka ke host, jadi app tidak bisa diakses langsung dari internet.
+#
+# Sekali di VPS:  docker network create npm-net
+#                 docker network connect npm-net <nama-container-npm>
+#
+# Rollback: set IMAGE_TAG=<tag-sha> di .env lalu `docker compose up -d web`.
+
 services:
   web:
-    image: ghcr.io/<username>/portfolio:latest
+    image: ghcr.io/ryunoo09/web-portofolio:${IMAGE_TAG:-latest}
+    container_name: portfolio-web
     restart: unless-stopped
     env_file: .env
     expose:
       - "3000"
+    networks:
+      - npm-net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 5s
       retries: 3
+      start_period: 20s
 
-  caddy:
-    image: caddy:2
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - web
-
-volumes:
-  caddy_data:
-  caddy_config:
+networks:
+  npm-net:
+    external: true
+    name: npm-net
