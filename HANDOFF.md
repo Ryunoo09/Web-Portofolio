@@ -64,7 +64,7 @@
 | Akun admin   | Email: `admin@example.com` · user_id: `3840f40e-6746-4256-83d5-b407b96d98b2` · **password: lihat password manager (JANGAN commit!)** |
 
 **Tabel:** `admins`, `profile`, `skills`, `projects`, `project_images`, `project_skills`,
-`experiences`, `education`, `certificates`, `contact_messages`, `posts`.
+`experiences`, `education`, `organizations`, `languages`, `certificates`, `contact_messages`, `posts`.
 
 > 🔴 **Tindakan yang belum dipastikan:** matikan **"Allow new users to sign up"** di Supabase Auth,
 > dan ganti password admin.
@@ -363,6 +363,52 @@ E2E `admin@example.com` (kredensial diberikan pemilik).
 **TODO (sisa sesi ini):** eksekusi `docs/PLANNING-KONTEN-TAMBAHAN-DAN-UIUX.md` (organisasi, bahasa,
 `skills.is_learning`, lalu refinement white space). Unggahan manual (avatar, PDF CV, cover, gambar
 sertifikat) tetap menunggu pemilik.
+
+---
+
+### Sesi 2026-10-18 (lanjutan 2) — Eksekusi konten tambahan + refinement UI/UX
+
+**Permintaan:** setujui planning lalu eksekusi: organisasi, bahasa, dll (buat skema bila belum ada) dan
+rapatkan white space halaman publik.
+
+**Planning yang dieksekusi:** `docs/PLANNING-KONTEN-TAMBAHAN-DAN-UIUX.md`.
+
+| Commit    | Isi                                                                                                                                                                                                            |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `78bb74c` | `feat(db)` migrasi `0005_extra_sections.sql`: tabel `organizations` + `languages`, kolom `skills.is_learning`, RLS + trigger, patch `database.ts` & `routes.ts`                                                |
+| `fe0c19d` | `feat(content)` fitur `organizations` & `languages` lengkap (tipe→schemas→queries→mappers→actions→admin CRUD→publik), section di `/about`, section "Sedang Dipelajari" di `/skills`, sidebar + ringkasan admin |
+| `5053741` | `style(ui)` rapatkan white space (container, irama vertikal, hero 2 kolom, kartu proyek `h-32`, kartu skill `p-4`, footer)                                                                                     |
+| `45276a8` | `test(e2e)` alur CRUD organisasi & bahasa + cek a11y halaman admin baru                                                                                                                                        |
+
+**Data baru (diverifikasi via REST):** 1 organisasi (PCC), 2 bahasa (Indonesia/Native, Inggris/Intermediate
+· TOEIC 685), 5 skill `is_learning` (Next.js, GraphQL, NestJS, Playwright, Express JS) → total skill **56**.
+
+**Dampak UI (screenshot full-page 1440×900, sebelum → sesudah):**
+
+| Halaman       | Sebelum | Sesudah | Delta                                 |
+| ------------- | ------- | ------- | ------------------------------------- |
+| Beranda       | 3034 px | 2720 px | **−10,3%**                            |
+| `/projects`   | 2383 px | 2123 px | **−10,9%**                            |
+| `/skills`     | 3756 px | 3385 px | **−9,9%**                             |
+| `/about`      | 3482 px | 3601 px | +3,4% (2 section baru, bukan regresi) |
+| detail proyek | 2284 px | 2242 px | −1,8%                                 |
+
+Perubahan konkret: `PageContainer` default `max-w-6xl → max-w-7xl` (gutter 144px → 80px di 1440),
+`space-y-24 → space-y-14 md:space-y-20`, hero `pt-20 pb-32 → pt-14 pb-16`, `SectionHeading mb-14 → mb-10`,
+halaman `py-16 → py-12`, kartu proyek tanpa cover `aspect-video` → `h-32`, judul kartu `line-clamp-2`,
+kartu skill `p-5/6 → p-4`, hero **2 kolom** dengan kartu profil (mengisi separuh kanan yang tadinya kosong).
+
+**Verifikasi:** `pnpm lint` 0 · `pnpm typecheck` 0 · `pnpm test` **74 lolos** (21 file) ·
+`pnpm build` sukses (9 proyek ter-prerender) · `pnpm test:e2e` **16 lolos / 0 di-skip** ·
+`pnpm db:types` identik dengan patch manual (diff kosong) · DB bersih (9 proyek, 2 pendidikan,
+1 organisasi, 2 bahasa, 0 pesan).
+
+**Catatan jujur:** target mandiri "tinggi `/projects` turun ≥20%" **tidak tercapai** (−10,9%). Sisa tinggi
+didominasi konten kartu (judul + ringkasan + chip teknologi). Lever berikutnya bila masih dirasa longgar:
+**opsi B** — skill dikelompokkan per kategori (9 kartu, bukan 51) dan/atau kartu proyek 1 baris lebih pendek.
+
+**TODO:** unggahan manual belum berubah (avatar, PDF CV, cover + galeri 9 proyek, 10 gambar sertifikat).
+`docs/design-system/portfolio/MASTER.md` belum ditambahi aturan jarak antar-seksi maksimal 80px.
 
 ---
 
