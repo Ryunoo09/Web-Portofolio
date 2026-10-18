@@ -438,6 +438,28 @@ Aturan yang dipakai: **3–5 poin, satu ide per poin, dimulai kata kerja, strukt
 
 ---
 
+### Sesi 2026-10-18 (lanjutan 4) — Sakelar status & judul tabel admin
+
+**Permintaan:** (1) nama proyek yang panjang di tabel admin dipotong dengan "…", (2) status jadi sakelar
+on/off agar tidak perlu masuk halaman edit untuk mengubahnya.
+
+**Implementasi:**
+
+- Komponen baru: `ui/switch.tsx` (Radix Switch, gaya gold/navy) + `common/StatusToggle.tsx` — memanggil
+  Server Action, punya state pending, toast sukses/gagal, lalu `router.refresh()`. Teks "Terbit/Draf"
+  tetap ditampilkan di samping sakelar supaya status tidak hanya dikodekan lewat warna (a11y).
+- Dipakai di **7 tabel admin** (proyek, keahlian, pengalaman, pendidikan, organisasi, sertifikat, bahasa).
+  Keahlian satu-satunya yang belum punya action toggle → ditambahkan `toggleSkillPublish`.
+- Kolom pertama tiap tabel (judul/nama) kini `truncate` maksimal 22rem + atribut `title` untuk tooltip
+  teks lengkap; import `Badge` yang jadi tak terpakai dibersihkan di 4 tabel.
+
+**Verifikasi:** `pnpm lint` 0 · `pnpm typecheck` 0 · `pnpm test` **81 lolos** (22 file, +3 test
+`StatusToggle`) · `pnpm build` sukses · `pnpm test:e2e` **17 lolos** (test baru: sakelar status di tabel
+proyek langsung menyembunyikan/menampilkan proyek di `/projects` tanpa membuka halaman edit) ·
+screenshot tabel admin diperiksa manual · DB bersih (0 sisa data uji).
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
 > "Lanjutkan Tahap 4 (SEO & Kualitas): JSON-LD Person/WebSite/Project, `generateMetadata`
