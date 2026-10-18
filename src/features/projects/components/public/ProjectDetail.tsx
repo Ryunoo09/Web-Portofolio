@@ -1,7 +1,15 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ArrowUpRight, Calendar, Layers } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  BadgeCheck,
+  Calendar,
+  CheckCircle2,
+  Layers,
+  Users,
+} from "lucide-react";
 import { GithubIcon } from "@/shared/components";
 import { TechStackList } from "./TechStackList";
 import { ProjectGallery } from "./ProjectGallery";
@@ -93,6 +101,37 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
             <TechStackList stack={stack} />
           </div>
         )}
+
+        <div className="flex flex-wrap items-center gap-2 pt-1">
+          {project.projectType && (
+            <Badge variant="outline" className="border-border/80 text-muted-foreground">
+              {project.projectType}
+            </Badge>
+          )}
+          {project.role && (
+            <Badge variant="outline" className="border-border/80 text-muted-foreground">
+              {project.role}
+            </Badge>
+          )}
+          {project.teamSize && (
+            <Badge
+              variant="outline"
+              className="border-border/80 text-muted-foreground flex items-center gap-1"
+            >
+              <Users className="size-3" aria-hidden="true" />
+              <span>{project.teamSize} orang</span>
+            </Badge>
+          )}
+          {project.isDeployed && (
+            <Badge
+              variant="outline"
+              className="border-gold/40 text-gold bg-gold/5 flex items-center gap-1"
+            >
+              <BadgeCheck className="size-3" aria-hidden="true" />
+              <span>Digunakan pengguna</span>
+            </Badge>
+          )}
+        </div>
       </div>
 
       {/* Cover terunggah; placeholder arsitektur hanya bila belum ada gambar. */}
@@ -151,6 +190,61 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <p className="text-muted-foreground text-base leading-relaxed">{project.summary}</p>
         )}
       </div>
+
+      {(project.problem || project.solution) && (
+        <div className="grid gap-6 sm:grid-cols-2">
+          {project.problem && (
+            <div className="space-y-2">
+              <h2 className="text-foreground font-heading text-xl font-bold">Latar Belakang</h2>
+              <p className="text-muted-foreground text-base leading-relaxed">{project.problem}</p>
+            </div>
+          )}
+          {project.solution && (
+            <div className="space-y-2">
+              <h2 className="text-foreground font-heading text-xl font-bold">Solusi</h2>
+              <p className="text-muted-foreground text-base leading-relaxed">{project.solution}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {project.features.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-foreground font-heading text-xl font-bold">Fitur Utama</h2>
+          <ul className="text-muted-foreground grid gap-2 text-base leading-relaxed sm:grid-cols-2">
+            {project.features.map((feature) => (
+              <li key={feature} className="flex gap-2">
+                <span className="bg-gold mt-2 size-1.5 shrink-0 rounded-full" aria-hidden="true" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {project.outcomes.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-foreground font-heading text-xl font-bold">Hasil &amp; Dampak</h2>
+          <ul className="grid gap-2 text-base leading-relaxed sm:grid-cols-2">
+            {project.outcomes.map((outcome) => (
+              <li
+                key={outcome}
+                className="border-gold/30 bg-gold/5 text-muted-foreground flex gap-2 rounded-lg border p-3"
+              >
+                <CheckCircle2 className="text-gold mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                <span>{outcome}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {project.challenges && (
+        <div className="space-y-2">
+          <h2 className="text-foreground font-heading text-xl font-bold">Tantangan</h2>
+          <p className="text-muted-foreground text-base leading-relaxed">{project.challenges}</p>
+        </div>
+      )}
 
       <ProjectGallery images={project.images} projectTitle={project.title} />
     </article>

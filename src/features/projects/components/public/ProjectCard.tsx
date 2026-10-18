@@ -44,12 +44,20 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div className="relative z-10 flex items-center justify-between p-6">
           <span className="text-muted-foreground font-mono text-xs">{project.slug}</span>
 
-          {project.isFeatured && (
-            <span className="border-gold/40 bg-gold/15 text-gold inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold">
-              <Sparkles className="size-3" aria-hidden="true" />
-              <span>Unggulan</span>
-            </span>
-          )}
+          <div className="flex items-center gap-2">
+            {project.projectType && (
+              <span className="border-border/40 bg-background/60 text-muted-foreground inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-semibold backdrop-blur-md">
+                {project.projectType}
+              </span>
+            )}
+
+            {project.isFeatured && (
+              <span className="border-gold/40 bg-gold/15 text-gold inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold">
+                <Sparkles className="size-3" aria-hidden="true" />
+                <span>Unggulan</span>
+              </span>
+            )}
+          </div>
         </div>
 
         {!project.coverImageUrl && (

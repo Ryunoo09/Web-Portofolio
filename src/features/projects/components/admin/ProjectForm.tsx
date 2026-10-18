@@ -20,6 +20,8 @@ import { Checkbox } from "@/shared/components/ui/checkbox";
 import type { Skill } from "@/features/skills";
 import type { Project } from "../../types";
 
+const PROJECT_TYPES = ["Skripsi", "Tugas Kuliah", "Lomba", "Freelance", "Pribadi"];
+
 interface ProjectFormProps {
   project?: Project;
   skills: Skill[];
@@ -43,6 +45,15 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
       skillIds: project?.skills.map((skill) => skill.id) ?? [],
       isFeatured: project?.isFeatured ?? false,
       isPublished: project?.isPublished ?? false,
+      projectType: project?.projectType ?? "",
+      role: project?.role ?? "",
+      teamSize: project?.teamSize ?? undefined,
+      problem: project?.problem ?? "",
+      solution: project?.solution ?? "",
+      challenges: project?.challenges ?? "",
+      features: project?.features ?? [],
+      outcomes: project?.outcomes ?? [],
+      isDeployed: project?.isDeployed ?? false,
     },
   });
 
@@ -151,6 +162,117 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
         {/* shortcut: ganti dengan Tiptap editor nanti */}
         <Textarea id="descriptionHtml" rows={8} {...register("descriptionHtml")} />
       </div>
+
+      <div className="grid gap-6 sm:grid-cols-2">
+        <FormField
+          label="Jenis Proyek"
+          name="projectType"
+          error={errors.projectType?.message}
+          hint="Skripsi, Tugas Kuliah, Lomba, Freelance, atau Pribadi."
+        >
+          {(props) => (
+            <>
+              <Input
+                list="project-types"
+                placeholder="Freelance"
+                {...props}
+                {...register("projectType")}
+              />
+              <datalist id="project-types">
+                {PROJECT_TYPES.map((type) => (
+                  <option key={type} value={type} />
+                ))}
+              </datalist>
+            </>
+          )}
+        </FormField>
+
+        <FormField label="Peran" name="role" error={errors.role?.message}>
+          {(props) => <Input placeholder="Backend Developer" {...props} {...register("role")} />}
+        </FormField>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2">
+        <FormField
+          label="Ukuran Tim"
+          name="teamSize"
+          error={errors.teamSize?.message}
+          hint="Jumlah orang; kosongkan bila dikerjakan sendiri."
+        >
+          {(props) => (
+            <Input
+              type="number"
+              min={1}
+              {...props}
+              {...register("teamSize", {
+                setValueAs: (value) => (value === "" ? undefined : Number(value)),
+              })}
+            />
+          )}
+        </FormField>
+
+        <Controller
+          control={control}
+          name="isDeployed"
+          render={({ field }) => (
+            <label className="flex cursor-pointer items-center gap-2 self-end text-sm">
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={(value) => field.onChange(value === true)}
+              />
+              Sudah dipakai pihak lain
+            </label>
+          )}
+        />
+      </div>
+
+      <FormField label="Masalah yang Diselesaikan" name="problem" error={errors.problem?.message}>
+        {(props) => <Textarea rows={3} {...props} {...register("problem")} />}
+      </FormField>
+
+      <FormField label="Solusi yang Dibangun" name="solution" error={errors.solution?.message}>
+        {(props) => <Textarea rows={3} {...props} {...register("solution")} />}
+      </FormField>
+
+      <Controller
+        control={control}
+        name="features"
+        render={({ field }) => (
+          <div className="space-y-2">
+            <Label htmlFor="features">Fitur Utama</Label>
+            <Textarea
+              id="features"
+              rows={4}
+              placeholder="Satu fitur per baris"
+              value={(field.value ?? []).join("\n")}
+              onChange={(event) => field.onChange(event.target.value.split("\n"))}
+              onBlur={field.onBlur}
+            />
+          </div>
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="outcomes"
+        render={({ field }) => (
+          <div className="space-y-2">
+            <Label htmlFor="outcomes">Hasil &amp; Dampak</Label>
+            <Textarea
+              id="outcomes"
+              rows={3}
+              placeholder="Satu hasil per baris"
+              value={(field.value ?? []).join("\n")}
+              onChange={(event) => field.onChange(event.target.value.split("\n"))}
+              onBlur={field.onBlur}
+            />
+          </div>
+        )}
+      />
+
+      <FormField label="Tantangan Terbesar" name="challenges" error={errors.challenges?.message}>
+        {(props) => <Textarea rows={2} {...props} {...register("challenges")} />}
+      </FormField>
 
       <FormField label="URL Repositori" name="repoUrl" error={errors.repoUrl?.message}>
         {(props) => (

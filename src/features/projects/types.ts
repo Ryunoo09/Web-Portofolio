@@ -21,6 +21,15 @@ export type Project = {
   isPublished: boolean;
   createdAt: string;
   sortOrder: number;
+  projectType: string | null;
+  role: string | null;
+  teamSize: number | null;
+  problem: string | null;
+  solution: string | null;
+  features: string[];
+  outcomes: string[];
+  challenges: string | null;
+  isDeployed: boolean;
   skills: { id: string; name: string }[];
   images: ProjectImage[];
 };

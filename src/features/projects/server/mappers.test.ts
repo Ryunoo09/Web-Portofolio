@@ -21,6 +21,15 @@ const projectRow: ProjectRow = {
   is_featured: true,
   is_published: true,
   sort_order: 1,
+  project_type: "Freelance",
+  role: "Backend Developer",
+  team_size: 3,
+  problem: "Pelaporan manual.",
+  solution: "Otomasi pelaporan.",
+  features: ["Check-in", "Peta FAT"],
+  outcomes: ["Hemat 8 menit per surat"],
+  challenges: "Data vendor tidak konsisten.",
+  is_deployed: true,
   seo_title: null,
   seo_description: null,
   created_at: "2024-01-01T00:00:00Z",
@@ -61,6 +70,13 @@ describe("toProject", () => {
     expect(project.coverImageAlt).toBe("Beranda Nexus");
     expect(project.createdAt).toBe("2024-01-01T00:00:00Z");
     expect(project.endedAt).toBeNull();
+    expect(project.projectType).toBe("Freelance");
+    expect(project.role).toBe("Backend Developer");
+    expect(project.teamSize).toBe(3);
+    expect(project.features).toEqual(["Check-in", "Peta FAT"]);
+    expect(project.outcomes).toEqual(["Hemat 8 menit per surat"]);
+    expect(project.challenges).toBe("Data vendor tidak konsisten.");
+    expect(project.isDeployed).toBe(true);
     expect(project.skills).toEqual([{ id: "s1", name: "Laravel" }]);
     expect(project.images.map((image) => image.id)).toEqual(["i1", "i2"]);
   });

@@ -39,6 +39,15 @@ export function toProject(row: ProjectWithRelations): Project {
     isPublished: row.is_published,
     createdAt: row.created_at,
     sortOrder: row.sort_order,
+    projectType: row.project_type,
+    role: row.role,
+    teamSize: row.team_size,
+    problem: row.problem,
+    solution: row.solution,
+    features: row.features ?? [],
+    outcomes: row.outcomes ?? [],
+    challenges: row.challenges,
+    isDeployed: row.is_deployed,
     skills: (row.project_skills ?? [])
       .map((ps) => ps.skills)
       .filter((s): s is { id: string; name: string } => s !== null),

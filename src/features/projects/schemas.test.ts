@@ -13,6 +13,7 @@ const valid = {
   skillIds: [],
   isFeatured: false,
   isPublished: true,
+  isDeployed: false,
   seoTitle: "",
   seoDescription: "",
 };
@@ -20,6 +21,26 @@ const valid = {
 describe("projectFormSchema", () => {
   it("menerima proyek tanpa gambar cover", () => {
     expect(projectFormSchema.safeParse(valid).success).toBe(true);
+  });
+
+  it("menerima detail proyek (jenis, peran, tim, fitur, hasil)", () => {
+    const result = projectFormSchema.safeParse({
+      ...valid,
+      projectType: "Freelance",
+      role: "Backend Developer",
+      teamSize: 4,
+      problem: "Pelaporan kunjungan masih manual.",
+      solution: "Sistem check-in dengan verifikasi AI.",
+      challenges: "Data pihak ketiga tidak konsisten.",
+      features: ["Check-in kunjungan", "Peta tiang FAT"],
+      outcomes: ["Laporan tidak lagi manual"],
+      isDeployed: true,
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("menolak ukuran tim kurang dari 1", () => {
+    expect(projectFormSchema.safeParse({ ...valid, teamSize: 0 }).success).toBe(false);
   });
 
   it("menerima cover lengkap dengan teks alternatif", () => {

@@ -21,6 +21,11 @@ function invalidInput<T = void>(fieldErrors: Record<string, string[]>): ActionRe
   return { ok: false, error: "Data tidak valid.", fieldErrors };
 }
 
+/** Buang entri kosong dari daftar fitur/hasil (textarea satu baris = satu item). */
+function cleanList(items: string[]): string[] {
+  return items.map((item) => item.trim()).filter(Boolean);
+}
+
 function toColumns(project: Omit<ParsedProject, "skillIds">) {
   const coverImageUrl = project.coverImageUrl || null;
 
@@ -35,6 +40,15 @@ function toColumns(project: Omit<ParsedProject, "skillIds">) {
     cover_image_alt: coverImageUrl ? project.coverImageAlt?.trim() || null : null,
     is_featured: project.isFeatured,
     is_published: project.isPublished,
+    project_type: project.projectType || null,
+    role: project.role || null,
+    team_size: project.teamSize ?? null,
+    problem: project.problem || null,
+    solution: project.solution || null,
+    challenges: project.challenges || null,
+    features: cleanList(project.features),
+    outcomes: cleanList(project.outcomes),
+    is_deployed: project.isDeployed,
     seo_title: project.seoTitle || null,
     seo_description: project.seoDescription || null,
   };
