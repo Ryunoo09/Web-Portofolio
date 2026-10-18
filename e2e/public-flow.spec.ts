@@ -39,3 +39,13 @@ test("halaman proyek menampilkan galeri bila gambarnya ada", async ({ page }) =>
     expect(await galleryImages.count()).toBeGreaterThan(0);
   }
 });
+
+test("halaman keahlian dikelompokkan per kategori", async ({ page }) => {
+  await page.goto("/skills");
+
+  await expect(page.getByRole("heading", { name: "Bahasa Pemrograman" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Data & ML" })).toBeVisible();
+  // Sejak dikelompokkan, nama skill bukan lagi heading (dulu satu kartu per skill).
+  await expect(page.getByRole("heading", { name: "Python" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Sedang Dipelajari" })).toBeVisible();
+});
