@@ -126,6 +126,10 @@ h3,
   background: linear-gradient(135deg, #f5d47a 0%, #d4af37 50%, #aa771c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  /* Overhang italic keluar dari kotak background-clip; beri ruang agar glyph terakhir utuh. */
+  padding-right: 0.12em;
+  padding-left: 0.03em;
+  margin-right: -0.12em;
 }
 
 .gold-gradient-subtle {
