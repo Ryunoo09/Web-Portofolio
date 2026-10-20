@@ -547,6 +547,46 @@ proxy host NPM + HTTPS Cloudflare, dan situs diakses dari domain asli.
 
 ---
 
+### Sesi 2026-10-21 — Heading terpotong, periode proyek, kriteria skill
+
+**Permintaan:** (1) perbaiki "Spesialisasi Teknologi" di beranda dan "Keahlian & Penguasaan
+Teknologi" di `/skills` yang terpotong di ujung; (2) tulis periode proyek dalam format bulan-tahun
+(mulai & selesai); (3) tampilkan kriteria level skill (Mahir/Sedang/Dasar, dst); (4) commit setiap
+perubahan, **jangan push**.
+
+**Planning:** `docs/PLANNING-PERBAIKAN-UI-PROYEK-SKILL.md` (lokal, `docs/` di-ignore git).
+
+| Commit    | Isi                                                                                     |
+| --------- | --------------------------------------------------------------------------------------- |
+| `89d8fcd` | `fix(ui)` padding `.gold-gradient-text` — overhang italic tidak lagi terpotong          |
+| `81459c7` | `feat(projects)` `formatMonthPeriod` + periode di kartu/detail + input tanggal di admin |
+| `b58b41e` | `feat(skills)` label kriteria dari skala 1–5 yang sudah ada, tampil di publik & admin   |
+
+**Akar masalah heading:** `.gold-gradient-text` memakai `background-clip: text` pada `<span>` inline
+tanpa padding; overhang huruf italic "i" terakhir keluar dari kotak background → terpotong.
+Diperbaiki dengan `padding-right: .12em` + `padding-left: .03em` + `margin-right: -.12em`
+(bukan `inline-block`, karena judul harus tetap wrap di mobile).
+
+**Keputusan:** skala label tetap 5 tingkat (Pemula/Dasar/Menengah/Mahir/Ahli) agar konsisten dengan
+dropdown admin dan data DB; label dipusatkan di `features/skills/levels.ts`. Tanggal proyek memakai
+format singkat `Mar 2026 — Agu 2026` dengan `timeZone: "UTC"` agar tidak bergeser bulan.
+`formatPeriod` (tahun saja) **tidak** diubah karena masih dipakai pengalaman/pendidikan/organisasi.
+
+**Dampak UI:** kartu proyek mendapat satu baris periode (hapus tahun duplikat di strip placeholder);
+detail proyek menampilkan rentang penuh (sebelumnya hanya "Mulai"); `/skills` menampilkan label rata
+kanan sebelum titik; kartu skill beranda menampilkan `Mahir · 4/5`; tabel admin `4/5 · Mahir`.
+
+**Verifikasi:** `pnpm lint` 0 · `pnpm typecheck` 0 · `pnpm test` **101 lolos** (25 file, +16 tes) ·
+`pnpm build` sukses (37 halaman statis) · `pnpm test:e2e` **18 lolos** · DB bersih (9 proyek,
+2 pendidikan, 1 organisasi, 2 bahasa, 0 pesan). Screenshot manual: heading 1440/375, kartu proyek
+desktop/mobile, hero detail, input tanggal admin, tabel keahlian admin.
+
+> ⚠️ **Commit belum di-push ke GitHub** — sesuai permintaan pemilik sesi ini.
+
+**Titik mulai berikutnya:** tunggu instruksi pemilik untuk `git push`; lanjut Tahap 4 (SEO).
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
 > "Lanjutkan Tahap 4 (SEO & Kualitas): JSON-LD Person/WebSite/Project, `generateMetadata`
