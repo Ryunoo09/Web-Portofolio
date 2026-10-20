@@ -5,6 +5,8 @@ const valid = {
   title: "Nexus Commerce",
   slug: "nexus-commerce",
   summary: "Platform e-commerce headless dengan Next.js dan Supabase.",
+  startedAt: "",
+  endedAt: "",
   descriptionHtml: "",
   repoUrl: "",
   demoUrl: "",
@@ -63,5 +65,23 @@ describe("projectFormSchema", () => {
 
   it("menolak slug yang bukan huruf kecil dan tanda hubung", () => {
     expect(projectFormSchema.safeParse({ ...valid, slug: "Nexus Commerce" }).success).toBe(false);
+  });
+
+  it("menerima periode proyek yang berurutan", () => {
+    const result = projectFormSchema.safeParse({
+      ...valid,
+      startedAt: "2026-03-01",
+      endedAt: "2026-08-31",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("menolak tanggal selesai sebelum tanggal mulai", () => {
+    const result = projectFormSchema.safeParse({
+      ...valid,
+      startedAt: "2026-08-01",
+      endedAt: "2026-03-01",
+    });
+    expect(result.success).toBe(false);
   });
 });

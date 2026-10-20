@@ -1,11 +1,11 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Sparkles, FolderGit2 } from "lucide-react";
+import { ArrowUpRight, Calendar, Sparkles, FolderGit2 } from "lucide-react";
 import { GithubIcon } from "@/shared/components";
 import { TechStackList } from "./TechStackList";
 import { Card } from "@/shared/components/ui/card";
-import { cn } from "@/shared/lib/utils";
+import { cn, formatMonthPeriod } from "@/shared/lib/utils";
 import type { Project } from "../../types";
 
 interface ProjectCardProps {
@@ -14,7 +14,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
   const stack = project.skills.map((s) => s.name);
-  const year = project.startedAt ? new Date(project.startedAt).getFullYear() : "";
+  const period = formatMonthPeriod(project.startedAt, project.endedAt);
 
   return (
     <Card className="group card-luxury border-border/80 bg-card relative flex flex-col justify-between overflow-hidden rounded-xl border p-0 transition-all duration-300">
@@ -69,7 +69,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {!project.coverImageUrl && (
           <div className="text-muted-foreground absolute inset-x-0 bottom-0 z-10 flex items-center justify-between px-4 pb-1 font-mono text-[11px]">
             <span>Arsitektur Web</span>
-            <span>{year}</span>
           </div>
         )}
       </div>
@@ -85,6 +84,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
               {project.title}
             </h2>
           </Link>
+          {period && (
+            <p className="text-muted-foreground mt-1.5 flex items-center gap-1 font-mono text-[11px]">
+              <Calendar className="size-3" aria-hidden="true" />
+              <span>{period}</span>
+            </p>
+          )}
           <p className="text-muted-foreground mt-2 line-clamp-2 text-xs leading-relaxed sm:text-sm">
             {project.summary}
           </p>

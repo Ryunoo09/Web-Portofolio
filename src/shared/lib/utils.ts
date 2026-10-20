@@ -25,6 +25,19 @@ export function formatPeriod(start: string | null, end: string | null): string {
   return from ? `${from} — ${to}` : String(to);
 }
 
+/** Rentang bulan-tahun, mis. "Mar 2026 — Agu 2026". Akhir kosong berarti masih berjalan. */
+export function formatMonthPeriod(start: string | null, end: string | null): string {
+  const format = (value: string) =>
+    new Intl.DateTimeFormat("id-ID", {
+      month: "short",
+      year: "numeric",
+      timeZone: "UTC",
+    }).format(new Date(value));
+
+  if (!start) return end ? format(end) : "";
+  return `${format(start)} — ${end ? format(end) : "Sekarang"}`;
+}
+
 /**
  * Pecah teks deskripsi menjadi poin: satu baris = satu poin. Penanda daftar di
  * awal baris (`-`, `•`, `*`) dibuang agar penulisan bebas tetap rapi.

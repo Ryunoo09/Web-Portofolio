@@ -37,6 +37,8 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
       title: project?.title ?? "",
       slug: project?.slug ?? "",
       summary: project?.summary ?? "",
+      startedAt: project?.startedAt ?? "",
+      endedAt: project?.endedAt ?? "",
       descriptionHtml: project?.descriptionHtml ?? "",
       repoUrl: project?.repoUrl ?? "",
       demoUrl: project?.demoUrl ?? "",
@@ -126,6 +128,21 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
       <FormField label="Ringkasan" name="summary" error={errors.summary?.message}>
         {(props) => <Textarea rows={3} {...props} {...register("summary")} />}
       </FormField>
+
+      <div className="grid gap-6 sm:grid-cols-2">
+        <FormField label="Mulai" name="startedAt" error={errors.startedAt?.message}>
+          {(props) => <Input type="date" {...props} {...register("startedAt")} />}
+        </FormField>
+
+        <FormField
+          label="Selesai"
+          name="endedAt"
+          error={errors.endedAt?.message}
+          hint="Kosongkan bila masih berjalan."
+        >
+          {(props) => <Input type="date" {...props} {...register("endedAt")} />}
+        </FormField>
+      </div>
 
       <Controller
         control={control}

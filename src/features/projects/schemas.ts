@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { urlOrEmpty } from "@/shared/lib/validation";
+import { optionalDateInput, urlOrEmpty } from "@/shared/lib/validation";
 
 export const projectFormSchema = z
   .object({
@@ -8,6 +8,8 @@ export const projectFormSchema = z
       .string()
       .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Slug hanya huruf kecil, angka, dan tanda hubung"),
     summary: z.string().min(10).max(300),
+    startedAt: optionalDateInput,
+    endedAt: optionalDateInput,
     descriptionHtml: z.string().optional(),
     repoUrl: urlOrEmpty,
     demoUrl: urlOrEmpty,
@@ -34,6 +36,14 @@ export const projectFormSchema = z
         code: "custom",
         path: ["coverImageAlt"],
         message: "Teks alternatif wajib diisi bila cover diunggah.",
+      });
+    }
+
+    if (values.endedAt && values.endedAt < values.startedAt) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["endedAt"],
+        message: "Tanggal selesai tidak boleh sebelum tanggal mulai.",
       });
     }
   });

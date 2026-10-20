@@ -16,6 +16,7 @@ import { ProjectGallery } from "./ProjectGallery";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { sanitizeHtml } from "@/shared/lib/sanitize";
+import { formatMonthPeriod } from "@/shared/lib/utils";
 import type { Project } from "../../types";
 
 interface ProjectDetailProps {
@@ -25,6 +26,7 @@ interface ProjectDetailProps {
 export function ProjectDetail({ project }: ProjectDetailProps) {
   const stack = project.skills.map((s) => s.name);
   const description = project.descriptionHtml ? sanitizeHtml(project.descriptionHtml) : null;
+  const period = formatMonthPeriod(project.startedAt, project.endedAt);
 
   return (
     <article className="space-y-12">
@@ -75,15 +77,12 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           </Badge>
         )}
 
-        {project.startedAt && (
-          <span className="text-muted-foreground flex items-center gap-1 text-xs">
-            <Calendar className="size-3.5" />
+        {period && (
+          <span className="text-muted-foreground flex items-center gap-1.5 text-xs">
+            <Calendar className="size-3.5" aria-hidden="true" />
             <span>
-              Mulai:{" "}
-              {new Date(project.startedAt).toLocaleDateString("id-ID", {
-                month: "long",
-                year: "numeric",
-              })}
+              <span className="sr-only">Periode proyek: </span>
+              {period}
             </span>
           </span>
         )}

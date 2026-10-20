@@ -33,6 +33,8 @@ function toColumns(project: Omit<ParsedProject, "skillIds">) {
     title: project.title,
     slug: project.slug,
     summary: project.summary,
+    started_at: project.startedAt || null,
+    ended_at: project.endedAt || null,
     description_html: project.descriptionHtml ? sanitizeHtml(project.descriptionHtml) : null,
     repo_url: project.repoUrl || null,
     demo_url: project.demoUrl || null,

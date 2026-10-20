@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatPeriod, slugify, toListItems } from "./utils";
+import { formatMonthPeriod, formatPeriod, slugify, toListItems } from "./utils";
 
 describe("slugify", () => {
   it("mengubah teks menjadi slug", () => {
@@ -18,6 +18,28 @@ describe("formatPeriod", () => {
 
   it("menampilkan 'Sekarang' bila tanggal akhir kosong", () => {
     expect(formatPeriod("2024-01-01", null)).toBe("2024 — Sekarang");
+  });
+});
+
+describe("formatMonthPeriod", () => {
+  it("menampilkan rentang bulan dan tahun", () => {
+    expect(formatMonthPeriod("2026-03-01", "2026-08-31")).toBe("Mar 2026 — Agu 2026");
+  });
+
+  it("menampilkan 'Sekarang' bila tanggal akhir kosong", () => {
+    expect(formatMonthPeriod("2026-03-01", null)).toBe("Mar 2026 — Sekarang");
+  });
+
+  it("tetap menampilkan tanggal akhir bila tanggal mulai kosong", () => {
+    expect(formatMonthPeriod(null, "2026-08-31")).toBe("Agu 2026");
+  });
+
+  it("mengembalikan teks kosong bila kedua tanggal kosong", () => {
+    expect(formatMonthPeriod(null, null)).toBe("");
+  });
+
+  it("tidak menggeser bulan karena zona waktu", () => {
+    expect(formatMonthPeriod("2026-03-01", "2026-03-31")).toBe("Mar 2026 — Mar 2026");
   });
 });
 
