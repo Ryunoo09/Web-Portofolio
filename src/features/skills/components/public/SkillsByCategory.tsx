@@ -2,6 +2,7 @@ import * as React from "react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Card } from "@/shared/components/ui/card";
 import { cn } from "@/shared/lib/utils";
+import { getSkillLevelLabel } from "../../levels";
 import type { Skill } from "../../types";
 
 const LEVEL_STEPS = [1, 2, 3, 4, 5];
@@ -55,19 +56,28 @@ export function SkillsByCategory({ skills }: SkillsByCategoryProps) {
           <ul className="mt-4 space-y-2.5">
             {items.map((skill) => (
               <li key={skill.id} className="flex items-center justify-between gap-3">
-                <span className="text-foreground/90 text-sm">{skill.name}</span>
-                <span className="flex shrink-0 items-center gap-1">
+                <span
+                  className="text-foreground/90 min-w-0 flex-1 truncate text-sm"
+                  title={skill.name}
+                >
+                  {skill.name}
+                </span>
+                <span className="flex shrink-0 items-center gap-2">
                   <span className="sr-only">Tingkat {skill.level} dari 5</span>
-                  {LEVEL_STEPS.map((step) => (
-                    <span
-                      key={step}
-                      aria-hidden="true"
-                      className={cn(
-                        "size-1.5 rounded-full",
-                        step <= skill.level ? "bg-gold" : "bg-border",
-                      )}
-                    />
-                  ))}
+                  <span className="text-muted-foreground w-[4.5rem] text-right text-[11px]">
+                    {getSkillLevelLabel(skill.level)}
+                  </span>
+                  <span className="flex items-center gap-1" aria-hidden="true">
+                    {LEVEL_STEPS.map((step) => (
+                      <span
+                        key={step}
+                        className={cn(
+                          "size-1.5 rounded-full",
+                          step <= skill.level ? "bg-gold" : "bg-border",
+                        )}
+                      />
+                    ))}
+                  </span>
                 </span>
               </li>
             ))}

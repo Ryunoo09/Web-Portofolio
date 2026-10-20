@@ -60,6 +60,9 @@ describe("SkillsByCategory", () => {
     // Tingkat tetap terbaca pembaca layar walau penandanya hanya titik-titik visual.
     expect(screen.getAllByText("Tingkat 4 dari 5")).toHaveLength(2);
     expect(screen.getByText("Tingkat 3 dari 5")).toBeInTheDocument();
+    // Kriteria tingkat tampil sebagai teks, bukan hanya warna/titik.
+    expect(screen.getAllByText("Mahir")).toHaveLength(2);
+    expect(screen.getByText("Menengah")).toBeInTheDocument();
   });
 
   it("tidak merender apa pun bila daftar skill kosong", () => {

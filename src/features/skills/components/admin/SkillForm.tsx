@@ -19,15 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
+import { SKILL_LEVELS } from "../../levels";
 import type { Skill } from "../../types";
-
-const LEVELS = [
-  { value: 1, label: "Pemula" },
-  { value: 2, label: "Dasar" },
-  { value: 3, label: "Menengah" },
-  { value: 4, label: "Mahir" },
-  { value: 5, label: "Ahli" },
-];
 
 interface SkillFormProps {
   skill?: Skill;
@@ -111,7 +104,7 @@ export function SkillForm({ skill, categories }: SkillFormProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {LEVELS.map((option) => (
+                  {SKILL_LEVELS.map((option) => (
                     <SelectItem key={option.value} value={String(option.value)}>
                       {option.value} — {option.label}
                     </SelectItem>

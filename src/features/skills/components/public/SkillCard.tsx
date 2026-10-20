@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Card } from "@/shared/components/ui/card";
+import { getSkillLevelLabel } from "../../levels";
 import type { Skill } from "../../types";
 
 interface SkillCardProps {
@@ -27,7 +28,10 @@ export function SkillCard({ skill }: SkillCardProps) {
       <div className="border-border/40 mt-3 space-y-1.5 border-t pt-3">
         <div className="flex items-center justify-between font-mono text-[11px]">
           <span className="text-muted-foreground">Kemahiran</span>
-          <span className="text-gold font-semibold">{skill.level}/5</span>
+          <span>
+            <span className="text-gold font-semibold">{getSkillLevelLabel(skill.level)}</span>
+            {skill.level >= 1 && <span className="text-muted-foreground"> · {skill.level}/5</span>}
+          </span>
         </div>
         <div className="bg-secondary/80 h-1.5 w-full overflow-hidden rounded-full">
           <div

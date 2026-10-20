@@ -6,6 +6,7 @@ import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components";
 import { deleteSkill, toggleSkillPublish } from "../../server/actions";
+import { getSkillLevelLabel } from "../../levels";
 import { ROUTES } from "@/shared/constants/routes";
 import {
   Table,
@@ -78,7 +79,9 @@ function SkillRowComponent({ skill }: { skill: Skill }) {
           )}
         </div>
       </TableCell>
-      <TableCell className="font-mono text-xs">{skill.level}/5</TableCell>
+      <TableCell className="font-mono text-xs">
+        {skill.level}/5 · {getSkillLevelLabel(skill.level)}
+      </TableCell>
       <TableCell className="font-mono text-xs">{skill.sortOrder}</TableCell>
       <TableCell>
         <StatusToggle
