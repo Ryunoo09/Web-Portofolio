@@ -46,7 +46,7 @@ test.describe("alur admin", () => {
     const slug = `e2e-proyek-${stamp}`;
 
     await page.goto("/admin/projects/new");
-    await page.getByLabel("Judul").fill(title);
+    await page.getByLabel("Judul", { exact: true }).fill(title);
     await page
       .getByLabel("Ringkasan")
       .fill("Proyek uji otomatis untuk memverifikasi unggah gambar cover.");
@@ -82,12 +82,18 @@ test.describe("alur admin", () => {
     const slug = `e2e-status-${stamp}`;
 
     await page.goto("/admin/projects/new");
-    await page.getByLabel("Judul").fill(title);
+    await page.getByLabel("Judul", { exact: true }).fill(title);
     await page.getByLabel("Ringkasan").fill("Proyek uji sakelar status terbit/draf.");
     await expect(page.getByLabel("Slug")).toHaveValue(slug);
+    await page.getByLabel("Domain").click();
+    await page.getByRole("option", { name: "Backend & API" }).click();
     await page.getByLabel("Publikasikan").check();
     await page.getByRole("button", { name: "Buat Proyek" }).click();
     await expect(page).toHaveURL(/\/admin\/projects$/);
+
+    await page.getByRole("link", { name: `Ubah proyek ${title}` }).click();
+    await expect(page.getByLabel("Domain")).toHaveText("Backend & API");
+    await page.goto("/admin/projects");
 
     const toggleName = `Ubah status terbit: ${title}`;
     const heading = page.getByRole("heading", { name: title });

@@ -21,7 +21,7 @@ export function buildMetadata({ title, description, path, image }: BuildMetadata
       siteName: siteConfig.name,
       type: "website",
       locale: siteConfig.locale,
-      images: image ? [{ url: image }] : undefined,
+      ...(image ? { images: [{ url: image }] } : {}),
     },
     twitter: { card: "summary_large_image", title, description },
   };

@@ -13,4 +13,6 @@ export { TechStackList } from "./components/public/TechStackList";
 export { ProjectTable } from "./components/admin/ProjectTable";
 export { ProjectForm } from "./components/admin/ProjectForm";
 export { ProjectGalleryManager } from "./components/admin/ProjectGalleryManager";
+export { projectMetadata, ProjectJsonLd } from "./seo";
+export type { ProjectDomain } from "@/shared/lib/taxonomy";
 export type { Project, ProjectImage } from "./types";

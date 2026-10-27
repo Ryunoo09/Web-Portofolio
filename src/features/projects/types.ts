@@ -1,3 +1,5 @@
+import type { ProjectDomain } from "@/shared/lib/taxonomy";
+
 export type ProjectImage = {
   id: string;
   url: string;
@@ -30,6 +32,9 @@ export type Project = {
   outcomes: string[];
   challenges: string | null;
   isDeployed: boolean;
+  domain: ProjectDomain | null;
+  seoTitle: string | null;
+  seoDescription: string | null;
   skills: { id: string; name: string }[];
   images: ProjectImage[];
 };

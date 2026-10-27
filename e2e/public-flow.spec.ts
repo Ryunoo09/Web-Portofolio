@@ -14,6 +14,12 @@ test("daftar proyek membuka detail proyek", async ({ page }) => {
 
   await expect(page).toHaveURL(/\/projects\/[^/]+$/);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toBeVisible();
+
+  const jsonLd = (await page.locator('script[type="application/ld+json"]').allTextContents()).join(
+    " ",
+  );
+  expect(jsonLd).toContain("CreativeWork");
 });
 
 test("setiap gambar proyek punya teks alternatif", async ({ page }) => {

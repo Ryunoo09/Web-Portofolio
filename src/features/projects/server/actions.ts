@@ -51,6 +51,7 @@ function toColumns(project: Omit<ParsedProject, "skillIds">) {
     features: cleanList(project.features),
     outcomes: cleanList(project.outcomes),
     is_deployed: project.isDeployed,
+    domain: project.domain ?? null,
     seo_title: project.seoTitle || null,
     seo_description: project.seoDescription || null,
   };

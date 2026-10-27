@@ -1,4 +1,5 @@
 import type { Database } from "@/shared/types/database";
+import { resolveProjectDomain } from "@/shared/lib/taxonomy";
 import type { Project, ProjectImage } from "../types";
 
 type ProjectRow = Database["public"]["Tables"]["projects"]["Row"];
@@ -48,6 +49,9 @@ export function toProject(row: ProjectWithRelations): Project {
     outcomes: row.outcomes ?? [],
     challenges: row.challenges,
     isDeployed: row.is_deployed,
+    domain: resolveProjectDomain(row.slug, row.domain),
+    seoTitle: row.seo_title,
+    seoDescription: row.seo_description,
     skills: (row.project_skills ?? [])
       .map((ps) => ps.skills)
       .filter((s): s is { id: string; name: string } => s !== null),

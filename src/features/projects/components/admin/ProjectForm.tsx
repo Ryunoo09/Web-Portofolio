@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { projectFormSchema, type ProjectFormValues } from "../../schemas";
 import { createProject, updateProject, uploadProjectImage } from "../../server/actions";
 import { slugify } from "@/shared/lib/utils";
+import { PROJECT_DOMAIN_OPTIONS, type ProjectDomain } from "@/shared/lib/taxonomy";
 import { IMAGE_ACCEPT } from "@/shared/constants/media";
 import { ROUTES } from "@/shared/constants/routes";
 import { FormField, ImageUploadField } from "@/shared/components";
@@ -17,10 +18,20 @@ import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Label } from "@/shared/components/ui/label";
 import { Checkbox } from "@/shared/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select";
 import type { Skill } from "@/features/skills";
 import type { Project } from "../../types";
 
 const PROJECT_TYPES = ["Skripsi", "Tugas Kuliah", "Lomba", "Freelance", "Pribadi"];
+
+/** Radix Select tidak mengizinkan item bernilai string kosong. */
+const DOMAIN_UNSET = "none";
 
 interface ProjectFormProps {
   project?: Project;
@@ -56,6 +67,9 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
       features: project?.features ?? [],
       outcomes: project?.outcomes ?? [],
       isDeployed: project?.isDeployed ?? false,
+      domain: project?.domain ?? null,
+      seoTitle: project?.seoTitle ?? "",
+      seoDescription: project?.seoDescription ?? "",
     },
   });
 
@@ -209,6 +223,40 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
         </FormField>
       </div>
 
+      <FormField
+        label="Domain"
+        name="domain"
+        error={errors.domain?.message}
+        hint="Kapabilitas utama proyek; dipakai untuk filter di halaman publik."
+      >
+        {(props) => (
+          <Controller
+            control={control}
+            name="domain"
+            render={({ field }) => (
+              <Select
+                value={field.value ?? DOMAIN_UNSET}
+                onValueChange={(value) =>
+                  field.onChange(value === DOMAIN_UNSET ? null : (value as ProjectDomain))
+                }
+              >
+                <SelectTrigger {...props} className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={DOMAIN_UNSET}>Belum ditentukan</SelectItem>
+                  {PROJECT_DOMAIN_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+        )}
+      </FormField>
+
       <div className="grid gap-6 sm:grid-cols-2">
         <FormField
           label="Ukuran Tim"
@@ -334,6 +382,28 @@ export function ProjectForm({ project, skills }: ProjectFormProps) {
           Gambar galeri bisa ditambahkan setelah proyek disimpan.
         </p>
       )}
+
+      <fieldset className="border-border/70 space-y-4 rounded-lg border p-4">
+        <legend className="px-1 text-sm font-medium">SEO (opsional)</legend>
+        <FormField
+          label="Judul SEO"
+          name="seoTitle"
+          error={errors.seoTitle?.message}
+          hint="Kosongkan untuk memakai judul proyek."
+        >
+          {(props) => <Input maxLength={70} {...props} {...register("seoTitle")} />}
+        </FormField>
+        <FormField
+          label="Deskripsi SEO"
+          name="seoDescription"
+          error={errors.seoDescription?.message}
+          hint="Kosongkan untuk memakai ringkasan proyek. Maksimal 160 karakter."
+        >
+          {(props) => (
+            <Textarea rows={2} maxLength={160} {...props} {...register("seoDescription")} />
+          )}
+        </FormField>
+      </fieldset>
 
       <div className="flex flex-wrap gap-6">
         <label className="flex cursor-pointer items-center gap-2 text-sm">
