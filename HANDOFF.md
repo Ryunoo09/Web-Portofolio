@@ -145,6 +145,8 @@ ditunda ke Fase 2; Tiptap (A-10) dilewati, deskripsi proyek tetap `<Textarea>` H
 2. **Setelah memindah/menghapus file route, hapus `.next`:**
    `Remove-Item -Recurse -Force .next` → jika tidak, `typecheck` error
    "Cannot find module .next/types/validator".
+   `pnpm typecheck` sekarang menjalankan `next typegen` lebih dulu; jika
+   `.next/dev/types/validator.ts` korup, hapus `.next` lalu ulangi `pnpm typecheck`.
 3. **`supabase link`** hanya butuh **20 huruf ref** (tanpa URL, tanpa `<>`).
    Untuk `supabase gen types` di Windows pakai `cmd /c "... > file"` agar encoding tidak rusak.
 4. **Di-ignore git:** `.env.local`, `.opencode/`, `.agents/`, `docs/`, `node_modules/`,
