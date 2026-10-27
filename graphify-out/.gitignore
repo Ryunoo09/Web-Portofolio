@@ -1,0 +1,5 @@
+# Machine-specific + regenerable graphify files.
+# Committed: graph.json, GRAPH_REPORT.md, manifest.json, labels, graph.html.
+.graphify_python
+.graphify_root
+cache/
