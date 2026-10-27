@@ -82,15 +82,15 @@
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                          |
-| --------------------- | ------------------------------------------------------------------------------- |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                  |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**            |
-| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan          |
-| 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub          |
-| 5. Testing            | 🟢 Unit + komponen + E2E publik & axe jalan; E2E admin menunggu akun uji        |
-| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                   |
-| 7. Redesign 2026      | 🟡 **M0–M2 selesai** — token, primitive, layout & shared pattern; M3 berikutnya |
+| Fase                  | Status                                                                                          |
+| --------------------- | ----------------------------------------------------------------------------------------------- |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                  |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                            |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                          |
+| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)               |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                    |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                   |
+| 7. Redesign 2026      | 🟡 **M0–M3 selesai** — token, primitive, layout, shared pattern, data/SEO/domain; M4 berikutnya |
 
 ### Detail Fase 3
 
@@ -188,8 +188,8 @@ ditunda ke Fase 2; Tiptap (A-10) dilewati, deskripsi proyek tetap `<Textarea>` H
 
 ### Tahap 4 — SEO & Kualitas (lanjutkan di sini)
 
-JSON-LD (Person, WebSite, Project) · `generateMetadata` semua halaman · `opengraph-image`
-nyata memakai cover proyek · header keamanan + CSP · rate-limit login ·
+JSON-LD `Person`/`WebSite`/schema halaman lain · `generateMetadata` semua halaman · OG semua rute
+(detail proyek sudah dinamis di M3) · header keamanan + CSP · rate-limit login ·
 drag & drop urutan (A-12) · CRUD Blog (A-13)
 
 ### Tahap 5 — Deployment 🟡 (tertulis, menunggu dijalankan)
@@ -232,15 +232,15 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
 - **Kolom `icon` keahlian** belum dirender di UI mana pun, jadi belum diekspos di form
   admin (update tidak menyentuh kolom itu, nilai lama tetap utuh). Lihat
   `features/skills/server/actions.ts`.
-- **`opengraph-image.tsx`** masih teks statis "Portofolio"; cover proyek belum dipakai
-  sebagai OG image.
+- **OG image** baru ada untuk detail proyek (`opengraph-image.tsx` dinamis, judul + domain +
+  outcome). Beranda/about/skills/contact belum punya OG; cover proyek belum dipakai sebagai
+  gambar OG. Alt OG masih statis. Dikerjakan di M7.
 - **Login belum ada rate-limit kustom.**
 - **Proxy tidak me-redirect admin yang sudah login** dari `/admin/login` (sengaja, hindari loop).
 - **AboutContent** — grid "Prinsip & Filosofi" masih hardcoded (DB tak punya kolomnya).
-- **`features/projects/seo.ts`** & **`shared/lib/seo/jsonLd.ts`** masih stub.
+- **JSON-LD baru di detail proyek** (`CreativeWork` + `BreadcrumbList`). `Person`/`WebSite` di
+  beranda dan schema halaman lain belum dipasang (M7).
 - **`getTopSkills(4)`** = 4 skill pertama by `sort_order` (skema skill tak punya `featured`).
-- **E2E alur admin di-skip** sampai ada akun uji: isi `E2E_ADMIN_EMAIL` &
-  `E2E_ADMIN_PASSWORD` di `.env.local`, lalu `e2e/admin-flow.spec.ts` ikut berjalan.
 - **Duplikasi tipe/mapper** antara `features/profile` (konsumsi halaman publik) dan
   `features/{experiences,education,certificates}` (CRUD admin) untuk tabel yang sama.
   Menyatukan ownership domain perlu refactor terpisah.
@@ -643,14 +643,42 @@ sampai M8, baru merge `redesign/signal-room` ke `main`.
 
 ---
 
+### Sesi 2026-10-28 — M3 data, SEO, dan domain
+
+**M3:** `docs/redesign/baseline/M3-REPORT.md` (lokal). Migrasi `0006_project_domain.sql` **diterapkan**
+ke Supabase linked setelah backup `docs/redesign/backup/2026-10-28-pre-m3.json`; 9 proyek terisi
+domain. Riwayat migrasi remote diperbaiki (`0004`/`0005` ditandai applied karena sebelumnya dijalankan
+manual) agar `db push` tidak mengulang migrasi lama.
+
+| Perubahan                    | Isi                                                                                                                                            |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/shared/lib/taxonomy.ts` | `PROJECT_DOMAINS` (6), label, `resolveProjectDomain(slug, stored)` fallback 9 slug, `getProjectDomainLabel`                                    |
+| Data proyek                  | `Project.domain`, `seoTitle`, `seoDescription`; query select kolomnya; mapper menyelesaikan fallback; Zod enum/null                            |
+| Admin                        | `ProjectForm` dapat memilih **Domain** + mengisi **Judul/Deskripsi SEO** (sebelumnya edit menimpa kolom SEO jadi null)                         |
+| SEO                          | `projectMetadata`, `projectJsonLd`, `ProjectJsonLd` (`CreativeWork`), `Breadcrumbs` di detail, OG dinamis 1200×630 berisi judul/domain/outcome |
+| Perbaikan                    | `buildMetadata` tidak lagi menulis kunci `images: undefined` (kunci itu memblokir merge `opengraph-image.tsx`); test regresi ditambahkan       |
+
+**Keputusan:** `seo_title`/`seo_description` di DB **dibiarkan kosong** (tidak mengarang klaim) —
+metadata memakai fallback `title`/`summary`. OG alt masih statis dan route OG masih dinamis; masuk M7.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **31 file / 134 test** · `pnpm build` 37 static page · `pnpm test:e2e` **18 lulus**
+(termasuk simpan domain di admin + cek `CreativeWork` di detail). Gate OG: HTTP 200 `image/png`
+55.870 byte, `og:image`/`twitter:image` 1200×630.
+
+**Titik mulai berikutnya:** M4 — Beranda baru (hero `3 sistem operasional`, metric rail, signal panel,
+ticker, featured work, capabilities), lanjut sampai M8 baru merge ke `main`.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan redesain Signal Room **M3 (data, SEO, dan domain)**: buat `Project.domain` nullable +
-> select admin + fallback `taxonomy.ts`, map `seo_title`/`seo_description`, isi `projectMetadata`
-> dan `ProjectJsonLd`, pasang breadcrumb di halaman proyek. Terapkan `ponytail`, `clean-code`,
-> `code-reviewer`, `senior-fullstack`. Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm
-typecheck`, `pnpm test`, `pnpm build`, `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu
-> commit + push ke `redesign/signal-room`."
+> "Lanjutkan redesain Signal Room **M4 (Beranda)**: hero, `MetricRail`, `SignalPanel`,
+> `SignalTicker`, `ProofStrip`, `FeaturedWork`/`CaseCard`, `Capabilities`/`AboutStrip`/`ContactCta`;
+> hero memakai `3 sistem operasional` dari `siteConfig` dan `500+` tidak boleh tampil. Terapkan
+> `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`. Jangan ubah
+> konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:e2e`
+> (PowerShell tidak mendukung `&&`), lalu commit + push ke `redesign/signal-room`."
 >
 > Saat akun uji sudah siap: isi `E2E_ADMIN_EMAIL` & `E2E_ADMIN_PASSWORD` di `.env.local`,
 > jalankan `pnpm test:e2e`, dan pastikan blok admin di `e2e/admin-flow.spec.ts` hijau.
