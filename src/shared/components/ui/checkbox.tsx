@@ -10,7 +10,7 @@ function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxP
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "peer border-input data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 h-4 w-4 shrink-0 rounded-[4px] border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+        "peer border-input bg-surface data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground aria-invalid:border-destructive focus-visible:border-ring focus-visible:outline-ring aria-invalid:focus-visible:outline-destructive h-5 w-5 shrink-0 rounded-[4px] border transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       {...props}
@@ -20,9 +20,9 @@ function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxP
         className="flex items-center justify-center text-current transition-none"
       >
         {props.checked === "indeterminate" ? (
-          <Minus className="size-3" />
+          <Minus className="size-3.5" />
         ) : (
-          <Check className="size-3" />
+          <Check className="size-3.5" />
         )}
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

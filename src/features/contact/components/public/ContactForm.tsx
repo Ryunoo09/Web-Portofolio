@@ -55,7 +55,7 @@ export function ContactForm() {
 
   if (isSuccess) {
     return (
-      <Card className="card-luxury border-gold/30 bg-card space-y-5 p-8 text-center sm:p-10">
+      <Card className="border-gold/30 bg-card space-y-5 p-8 text-center sm:p-10">
         <div className="border-gold/40 bg-gold/10 text-gold mx-auto flex size-14 items-center justify-center rounded-2xl border shadow-md">
           <CheckCircle2 className="size-8" />
         </div>
@@ -80,7 +80,7 @@ export function ContactForm() {
   }
 
   return (
-    <Card className="card-luxury border-border/80 bg-card p-6 sm:p-8">
+    <Card className="border-border/80 bg-card p-6 sm:p-8">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Honeypot field (hidden from real users, traps bots) */}
         <input

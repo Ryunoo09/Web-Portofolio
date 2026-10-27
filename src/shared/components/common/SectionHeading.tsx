@@ -32,14 +32,14 @@ export function SectionHeading({
       )}
     >
       {badge && (
-        <div className="border-gold/30 bg-gold/5 text-gold mb-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold tracking-wider uppercase">
+        <div className="border-gold/30 bg-gold/5 text-gold-muted mb-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold tracking-wider uppercase">
           <span className="bg-gold size-1.5 animate-pulse rounded-full" />
           <span>{badge}</span>
         </div>
       )}
 
-      <Heading className="text-foreground font-heading text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
-        {title} {highlight && <span className="gold-gradient-text italic">{highlight}</span>}
+      <Heading className="text-foreground font-heading text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+        {title} {highlight && <span className="text-gold-muted">{highlight}</span>}
       </Heading>
 
       {description && (
@@ -48,12 +48,7 @@ export function SectionHeading({
         </p>
       )}
 
-      <div
-        className={cn(
-          "from-gold via-gold/60 mt-4 h-0.5 w-12 bg-gradient-to-r to-transparent",
-          isCenter && "mx-auto",
-        )}
-      />
+      <div className={cn("bg-gold/40 mt-4 h-px w-12", isCenter && "mx-auto")} />
     </div>
   );
 }

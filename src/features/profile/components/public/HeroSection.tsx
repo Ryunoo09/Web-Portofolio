@@ -26,7 +26,7 @@ export function HeroSection({ profile }: HeroSectionProps) {
       <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
         {/* Kolom kiri: judul utama (left-side bias dipertahankan) */}
         <div className="flex flex-col items-start space-y-7">
-          <div className="border-gold/30 bg-gold/10 text-gold inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md">
+          <div className="border-gold/30 bg-gold/10 text-gold-muted inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-xs font-semibold backdrop-blur-md">
             <span className="bg-gold size-2 animate-ping rounded-full" />
             <span>{siteConfig.availability}</span>
           </div>
@@ -87,7 +87,7 @@ export function HeroSection({ profile }: HeroSectionProps) {
         </div>
 
         {/* Kolom kanan: kartu profil — mengisi ruang yang tadinya kosong. */}
-        <aside className="card-luxury border-border/80 bg-card w-full rounded-2xl border p-6">
+        <aside className="border-border/80 bg-card w-full rounded-2xl border p-6">
           <div className="flex items-center gap-4">
             <div className="border-gold/30 bg-gold/10 text-gold relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl border">
               {avatarUrl ? (

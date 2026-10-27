@@ -61,7 +61,7 @@ export function AboutContent({ bio }: AboutContentProps) {
             return (
               <Card
                 key={idx}
-                className="card-luxury border-border/80 bg-card flex flex-col justify-between p-6"
+                className="border-border/80 bg-card flex flex-col justify-between p-6"
               >
                 <div>
                   <div className="border-gold/30 bg-gold/10 text-gold mb-4 flex size-10 items-center justify-center rounded-xl border">

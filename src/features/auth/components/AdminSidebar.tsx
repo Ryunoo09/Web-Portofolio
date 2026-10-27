@@ -75,7 +75,7 @@ function NavLinks({ unreadCount, onNavigate }: NavProps) {
             className={cn(
               linkClass,
               active
-                ? "bg-gold/10 text-gold font-semibold"
+                ? "bg-gold/10 text-gold-muted font-semibold"
                 : "text-muted-foreground hover:bg-secondary hover:text-foreground",
             )}
           >

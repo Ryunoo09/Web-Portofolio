@@ -12,7 +12,7 @@ export default function NotFound() {
         </div>
 
         <div className="space-y-3">
-          <span className="text-gold font-mono text-sm font-bold tracking-widest uppercase">
+          <span className="text-gold-muted font-mono text-sm font-bold tracking-widest uppercase">
             Error 404
           </span>
           <h1 className="text-foreground font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">

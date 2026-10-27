@@ -20,7 +20,7 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
             <div className="bg-gold size-2 rounded-full" />
           </div>
 
-          <Card className="card-luxury border-border/80 bg-card w-full p-6">
+          <Card className="border-border/80 bg-card w-full p-6">
             <div className="border-border/40 flex flex-col gap-2 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <span className="text-gold font-mono text-xs font-medium tracking-wider uppercase">

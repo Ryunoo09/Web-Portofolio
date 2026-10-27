@@ -40,7 +40,7 @@ export function SkillsByCategory({ skills }: SkillsByCategoryProps) {
   return (
     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
       {groups.map(({ category, skills: items }) => (
-        <Card key={category} className="card-luxury border-border/80 bg-card flex flex-col p-5">
+        <Card key={category} className="border-border/80 bg-card flex flex-col p-5">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-foreground font-heading text-base font-bold tracking-tight">
               {category}

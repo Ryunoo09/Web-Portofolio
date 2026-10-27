@@ -13,7 +13,7 @@ export function EducationCard({ education }: EducationCardProps) {
   const period = formatPeriod(education.startedAt, education.endedAt);
 
   return (
-    <Card className="card-luxury border-border/80 bg-card p-6">
+    <Card className="border-border/80 bg-card p-6">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3.5">
           <div className="border-gold/30 bg-gold/10 text-gold flex size-11 shrink-0 items-center justify-center rounded-xl border">
@@ -23,7 +23,7 @@ export function EducationCard({ education }: EducationCardProps) {
             <h3 className="text-foreground font-heading text-lg font-bold sm:text-xl">
               {education.degree}
             </h3>
-            <p className="text-gold/90 text-sm font-medium">{education.institution}</p>
+            <p className="text-gold-muted text-sm font-medium">{education.institution}</p>
             {education.field && (
               <p className="text-muted-foreground mt-0.5 text-xs">{education.field}</p>
             )}

@@ -25,7 +25,7 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
 
           return (
             <li key={image.id}>
-              <figure className="card-luxury border-border/80 bg-card overflow-hidden rounded-xl border">
+              <figure className="border-border/80 bg-card overflow-hidden rounded-xl border">
                 <a
                   href={image.url}
                   target="_blank"

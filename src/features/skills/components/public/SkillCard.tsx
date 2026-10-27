@@ -10,7 +10,7 @@ interface SkillCardProps {
 
 export function SkillCard({ skill }: SkillCardProps) {
   return (
-    <Card className="card-luxury border-border/80 bg-card relative flex flex-col justify-between overflow-hidden rounded-xl border p-4 transition-all duration-300">
+    <Card className="border-border/80 bg-card relative flex flex-col justify-between overflow-hidden rounded-xl border p-4 transition-all duration-300">
       <div className="space-y-2.5">
         <Badge
           variant="outline"

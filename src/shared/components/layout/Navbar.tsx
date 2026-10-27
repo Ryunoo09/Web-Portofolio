@@ -71,7 +71,7 @@ export function Navbar() {
           <Button
             asChild
             size="sm"
-            className="bg-gold/15 text-gold border-gold/40 hover:bg-gold hover:text-primary-foreground cursor-pointer rounded-full border px-4 text-xs font-semibold transition-all duration-200"
+            className="bg-gold/15 text-gold-muted border-gold/40 hover:bg-gold hover:text-primary-foreground cursor-pointer rounded-full border px-4 text-xs font-semibold transition-all duration-200"
           >
             <Link href="/contact" className="flex items-center gap-1.5">
               <span>Konsultasi</span>
@@ -113,7 +113,7 @@ export function Navbar() {
                   className={cn(
                     "flex items-center justify-between rounded-lg px-3 py-2 text-base transition-colors",
                     isActive
-                      ? "bg-gold/10 text-gold font-semibold"
+                      ? "bg-gold/10 text-gold-muted font-semibold"
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground",
                   )}
                 >

@@ -74,21 +74,23 @@
 ## 🎨 DESAIN
 
 - **Font heading:** ~~Playfair Display~~ → **Space Grotesk** (CSS var `--font-heading`, class `font-heading`)
-- Body: **Plus Jakarta Sans** · Mono: **JetBrains Mono**
+- Body: **Plus Jakarta Sans** · Mono: **JetBrains Mono** (`--font-jetbrains` → `--font-mono`)
 - Design system: `design-system/portfolio/MASTER.md`
+- Redesign 2026: arah **Signal Room** (dark-first) + light **Daylight Ledger**; rencana di `docs/redesign/` (lokal). M1 memasang token baru di `src/app/globals.css`.
 
 ---
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                   |
-| --------------------- | ------------------------------------------------------------------------ |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                           |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**     |
-| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan   |
-| 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub   |
-| 5. Testing            | 🟢 Unit + komponen + E2E publik & axe jalan; E2E admin menunggu akun uji |
-| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets            |
+| Fase                  | Status                                                                                 |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                         |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                   |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                 |
+| 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub                 |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik & axe jalan; E2E admin menunggu akun uji               |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                          |
+| 7. Redesign 2026      | 🟡 **M0–M1 selesai** — branch `redesign/signal-room`; token + primitive; M2 berikutnya |
 
 ### Detail Fase 3
 
@@ -587,13 +589,44 @@ desktop/mobile, hero detail, input tanggal admin, tabel keahlian admin.
 
 ---
 
+### Sesi 2026-10-27/28 — Redesign M0 baseline + M1 token & primitive
+
+**Permintaan:** mulai implementasi redesain Signal Room; M0 hanya baseline, M1 perubahan kode pertama;
+setiap PR memakai `clean-code`, `code-reviewer`, `ponytail`; verifikasi 5 perintah lalu commit + push.
+
+**Branch:** `redesign/signal-room` (dari `main` `41d9902`). Tag baseline: `pre-redesign-2026-10`.
+
+**M0:** `baseline/M0-BASELINE.md`. Baseline 5 perintah lulus (lint 0 error/1 warning, test 101,
+build 37 halaman, e2e 18). Tidak ada source code diubah.
+
+**M1:** `baseline/M1-REPORT.md`. Token Signal Room/Daylight Ledger di `globals.css`; `@theme inline`;
+radius 4/6; focus ring; reduced-motion; `.site-aura`/`.site-grid`; utility lama
+(`gold-gradient-text`, `card-luxury`, `luxury-glow-top`) dihapus dari publik + admin; mono menjadi
+`--font-jetbrains`; metadata “Backend & Data Engineer”; `enableSystem={false}`; delapan primitive
+direstyle; test primitive baru.
+
+**Verifikasi M1:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **27 file / 111 test** · `pnpm build` 37 static page · `pnpm test:e2e` **18 lulus** ·
+axe light 7/7 path OK · kontras token terukur · screenshot di
+`docs/redesign/screenshots/m1/` (lokal).
+
+**Tidak diubah:** database/migrasi, foto/cover, `/resume.pdf`, halaman publik M4–M7. Inline
+gradient/shadow dekoratif halaman lama sengaja menunggu M4/M5.
+
+**Titik mulai berikutnya:** M2 — `SectionIntro`, Navbar/Footer/skip link, StatusBadge, StackList,
+EmptyState; lanjutkan sampai M8, baru merge `redesign/signal-room` ke `main`.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan Tahap 4 (SEO & Kualitas): JSON-LD Person/WebSite/Project, `generateMetadata`
-> lengkap, `opengraph-image` memakai cover proyek, dan header keamanan/CSP. Terapkan skill
-> clean-code, ponytail, fullstack-developer, senior-fullstack, code-reviewer,
-> frontend-developer, senior-frontend, ui-ux-pro-max. Verifikasi `pnpm lint && pnpm typecheck
-&& pnpm test && pnpm build && pnpm test:e2e`, lalu commit + push setiap perubahan."
+> "Lanjutkan redesain Signal Room **M2 (layout & shared pattern)**: ganti `SectionHeading` dengan
+> `SectionIntro`, rapikan Navbar/Footer/mobile nav + skip link, buat `Section`/`Container`,
+> `StatusBadge`, `StackList`, dan `EmptyState` sesuai `docs/redesign/05-COMPONENTS.md`.
+> Terapkan skill `ponytail` (scope), `clean-code` (implementasi), `code-reviewer` (review),
+> `ui-ux-pro-max`, `ui-styling`. Jangan ubah DB/konten/SEO. Verifikasi `pnpm lint`, `pnpm typecheck`,
+> `pnpm test`, `pnpm build`, `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push
+> ke `redesign/signal-room`."
 >
 > Saat akun uji sudah siap: isi `E2E_ADMIN_EMAIL` & `E2E_ADMIN_PASSWORD` di `.env.local`,
 > jalankan `pnpm test:e2e`, dan pastikan blok admin di `e2e/admin-flow.spec.ts` hijau.

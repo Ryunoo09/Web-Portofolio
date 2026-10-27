@@ -28,8 +28,8 @@ export function Footer() {
               clean code dan arsitektur modern berbasis Next.js dan TypeScript.
             </p>
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
-              <span className="size-2 animate-pulse rounded-full bg-emerald-400" />
+            <div className="border-mint/30 bg-mint/10 text-mint inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium">
+              <span className="bg-mint size-2 animate-pulse rounded-full" />
               <span>{siteConfig.availability}</span>
             </div>
           </div>

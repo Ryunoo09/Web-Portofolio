@@ -93,7 +93,7 @@ export default async function AdminDashboardPage() {
             href={href}
             className="focus-visible:ring-ring rounded-xl focus-visible:ring-2 focus-visible:outline-none"
           >
-            <Card className="card-luxury border-border/80 bg-card flex flex-row items-center gap-4 p-5">
+            <Card className="border-border/80 bg-card flex flex-row items-center gap-4 p-5">
               <div className="border-gold/30 bg-gold/10 text-gold flex size-11 shrink-0 items-center justify-center rounded-xl border">
                 <Icon className="size-5" aria-hidden="true" />
               </div>

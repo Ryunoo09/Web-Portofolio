@@ -13,7 +13,7 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
   const year = certificate.issuedAt ? new Date(certificate.issuedAt).getFullYear() : "";
 
   return (
-    <Card className="card-luxury border-border/80 bg-card flex flex-col justify-between overflow-hidden p-0">
+    <Card className="border-border/80 bg-card flex flex-col justify-between overflow-hidden p-0">
       {certificate.imageUrl && (
         <div className="bg-secondary relative aspect-video w-full">
           <Image
@@ -45,7 +45,7 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
           <h3 className="text-foreground font-heading mt-4 line-clamp-2 text-base font-bold sm:text-lg">
             {certificate.title}
           </h3>
-          <p className="text-gold/90 mt-1 text-xs font-medium">{certificate.issuer}</p>
+          <p className="text-gold-muted mt-1 text-xs font-medium">{certificate.issuer}</p>
         </div>
 
         {certificate.credentialUrl && (

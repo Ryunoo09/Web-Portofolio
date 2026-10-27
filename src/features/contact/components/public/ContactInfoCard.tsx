@@ -23,7 +23,7 @@ export function ContactInfoCard() {
   };
 
   return (
-    <Card className="card-luxury border-border/80 bg-card space-y-6 p-6 sm:p-8">
+    <Card className="border-border/80 bg-card space-y-6 p-6 sm:p-8">
       <div>
         <h2 className="text-foreground font-heading text-xl font-bold sm:text-2xl">
           Informasi Kontak
@@ -58,7 +58,7 @@ export function ContactInfoCard() {
             className="text-muted-foreground hover:text-foreground size-8 cursor-pointer rounded-md"
             aria-label="Salin alamat email"
           >
-            {copied ? <Check className="size-4 text-emerald-400" /> : <Copy className="size-4" />}
+            {copied ? <Check className="text-mint size-4" /> : <Copy className="size-4" />}
           </Button>
         </div>
 

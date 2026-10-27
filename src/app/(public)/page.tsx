@@ -82,7 +82,7 @@ export default async function HomePage() {
       <section className="border-gold/30 from-card via-card to-gold/5 relative space-y-6 overflow-hidden rounded-3xl border bg-gradient-to-br p-8 text-center shadow-xl sm:p-12 md:p-16">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#e5c158_1px,transparent_1px)] [background-size:20px_20px] opacity-10" />
         <div className="relative z-10 mx-auto max-w-2xl space-y-4">
-          <span className="border-gold/40 bg-gold/10 text-gold inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold">
+          <span className="border-gold/40 bg-gold/10 text-gold-muted inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold">
             Terbuka untuk Peluang
           </span>
           <h2 className="text-foreground font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">

@@ -20,7 +20,7 @@ const jakarta = Plus_Jakarta_Sans({
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains",
   display: "swap",
 });
 
@@ -32,14 +32,14 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "Full-Stack Developer",
-    "Next.js",
-    "React",
-    "TypeScript",
+    "Backend & Data Engineer",
+    "Backend Engineer",
+    "Data Engineer",
+    "Python",
+    "FastAPI",
+    "Laravel",
     "PostgreSQL",
-    "Tailwind CSS",
     "Portofolio Developer Indonesia",
-    "Software Engineer",
   ],
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
@@ -66,8 +66,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${spaceGrotesk.variable} ${jakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="bg-background text-foreground selection:bg-gold/30 selection:text-gold flex min-h-full flex-col font-sans">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+      <body className="bg-background text-foreground selection:bg-gold/30 selection:text-foreground flex min-h-full flex-col font-sans">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
           {children}
           <Toaster richColors position="top-right" />
         </ThemeProvider>

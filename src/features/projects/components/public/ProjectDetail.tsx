@@ -157,7 +157,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
                 https://{project.slug}.dev
               </span>
             </div>
-            <span className="text-gold/80 font-mono text-xs">Architecture Preview</span>
+            <span className="text-gold-muted font-mono text-xs">Architecture Preview</span>
           </div>
 
           <div className="relative z-10 my-auto flex flex-col items-center justify-center p-6 text-center">

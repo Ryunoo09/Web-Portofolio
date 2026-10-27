@@ -17,7 +17,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const period = formatMonthPeriod(project.startedAt, project.endedAt);
 
   return (
-    <Card className="group card-luxury border-border/80 bg-card relative flex flex-col justify-between overflow-hidden rounded-xl border p-0 transition-all duration-300">
+    <Card className="group border-border/80 bg-card relative flex flex-col justify-between overflow-hidden rounded-xl border p-0 transition-all duration-300">
       {/* Cover terunggah; tanpa cover pakai header kompak agar tidak ada area kosong besar. */}
       <div
         className={cn(
@@ -58,7 +58,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             )}
 
             {project.isFeatured && (
-              <span className="border-gold/40 bg-gold/15 text-gold inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold">
+              <span className="border-gold/40 bg-gold/15 text-gold-muted inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold">
                 <Sparkles className="size-3" aria-hidden="true" />
                 <span>Unggulan</span>
               </span>

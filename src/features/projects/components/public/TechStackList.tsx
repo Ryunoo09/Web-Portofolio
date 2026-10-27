@@ -18,7 +18,7 @@ export function TechStackList({ stack, className, limit }: TechStackListProps) {
         <Badge
           key={item}
           variant="secondary"
-          className="border-border/60 bg-secondary/60 text-foreground hover:border-gold/50 hover:bg-gold/10 hover:text-gold rounded-md border px-2 py-0.5 font-mono text-[11px] font-medium transition-colors"
+          className="border-border/60 bg-secondary/60 text-foreground hover:border-gold/50 hover:bg-gold/10 hover:text-gold-muted rounded-md border px-2 py-0.5 font-mono text-[11px] font-medium transition-colors"
         >
           {item}
         </Badge>
