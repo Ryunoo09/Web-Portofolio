@@ -1,5 +1,4 @@
 {
-  "4": "Admin Shell & Layout Chrome",
   "6": "Project Docs & Architecture Rules",
   "7": "GitHub Deploy Workflow",
   "8": "Dev Dependencies Manifest",
@@ -16,7 +15,6 @@
   "26": "Vitest Environment Setup",
   "28": "ESLint Configuration",
   "29": "Project Scaffold Script",
-  "30": "Dynamic OpenGraph Image Route",
   "31": "Public SVG Brand Icons",
   "32": "Commit & Verification Workflow",
   "34": "pnpm Workspace Build Approvals",
@@ -26,7 +24,6 @@
   "38": "Design System Visual Rules",
   "39": "PostCSS Configuration",
   "40": "Admin Loading State",
-  "41": "SEO Metadata Helpers",
   "42": "Pointer Capture Mock (has)",
   "43": "Pointer Capture Mock (release)",
   "44": "Pointer Capture Mock (set)"
