@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageContainer, SectionHeading } from "@/shared/components";
+import { PageContainer, SectionIntro } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
 import { ContactForm, ContactInfoCard } from "@/features/contact";
 
@@ -13,9 +13,8 @@ export const metadata: Metadata = buildMetadata({
 export default function ContactPage() {
   return (
     <PageContainer className="space-y-10 py-8 md:py-12">
-      <SectionHeading
+      <SectionIntro
         as="h1"
-        badge="Saluran Komunikasi"
         title="Hubungi"
         highlight="Saya"
         description="Punya pertanyaan atau ingin mendiskusikan rencana proyek? Kirimkan pesan melalui form di bawah atau hubungi saya langsung."

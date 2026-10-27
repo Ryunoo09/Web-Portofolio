@@ -13,14 +13,14 @@ export function PageContainer({
   ...props
 }: PageContainerProps) {
   const sizeClasses = {
-    narrow: "max-w-5xl",
-    default: "max-w-7xl",
+    narrow: "max-w-3xl",
+    default: "max-w-[1200px]",
     wide: "max-w-[90rem]",
   };
 
   return (
     <div
-      className={cn("mx-auto w-full px-4 sm:px-6 lg:px-8", sizeClasses[size], className)}
+      className={cn("mx-auto w-full px-6 md:px-8 lg:px-12", sizeClasses[size], className)}
       {...props}
     >
       {children}

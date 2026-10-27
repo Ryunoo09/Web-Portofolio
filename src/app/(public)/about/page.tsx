@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageContainer, SectionHeading } from "@/shared/components";
+import { PageContainer, SectionIntro } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
 import {
   AboutContent,
@@ -38,9 +38,8 @@ export default async function AboutPage() {
     <PageContainer className="space-y-12 py-8 md:py-12">
       {/* 1. Header & Bio */}
       <section>
-        <SectionHeading
+        <SectionIntro
           as="h1"
-          badge="Profil Profesional"
           title="Tentang"
           highlight="Saya & Filosofi Kerja"
           description="Latar belakang, pengalaman kerja, pendidikan, dan sertifikasi yang membentuk cara saya membangun perangkat lunak."

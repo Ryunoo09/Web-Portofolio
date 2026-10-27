@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageContainer, SectionHeading } from "@/shared/components";
+import { PageContainer, SectionIntro } from "@/shared/components";
 import { Badge } from "@/shared/components/ui/badge";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
 import { getLearningSkills, getSkills, SkillsByCategory } from "@/features/skills";
@@ -18,10 +18,9 @@ export default async function SkillsPage() {
 
   return (
     <PageContainer className="space-y-12 py-8 md:py-12">
-      <SectionHeading
+      <SectionIntro
         as="h1"
-        badge="Kompetensi Teknis"
-        title="Keahlian &amp;"
+        title="Keahlian &"
         highlight="Penguasaan Teknologi"
         description="Teknologi dan tools yang saya pakai untuk membangun backend, mengolah data, dan mengembangkan solusi IoT."
       />

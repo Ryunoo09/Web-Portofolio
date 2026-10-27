@@ -82,15 +82,15 @@
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                                 |
-| --------------------- | -------------------------------------------------------------------------------------- |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                         |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                   |
-| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                 |
-| 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub                 |
-| 5. Testing            | 🟢 Unit + komponen + E2E publik & axe jalan; E2E admin menunggu akun uji               |
-| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                          |
-| 7. Redesign 2026      | 🟡 **M0–M1 selesai** — branch `redesign/signal-room`; token + primitive; M2 berikutnya |
+| Fase                  | Status                                                                          |
+| --------------------- | ------------------------------------------------------------------------------- |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                  |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**            |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan          |
+| 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub          |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik & axe jalan; E2E admin menunggu akun uji        |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                   |
+| 7. Redesign 2026      | 🟡 **M0–M2 selesai** — token, primitive, layout & shared pattern; M3 berikutnya |
 
 ### Detail Fase 3
 
@@ -613,20 +613,42 @@ axe light 7/7 path OK · kontras token terukur · screenshot di
 **Tidak diubah:** database/migrasi, foto/cover, `/resume.pdf`, halaman publik M4–M7. Inline
 gradient/shadow dekoratif halaman lama sengaja menunggu M4/M5.
 
-**Titik mulai berikutnya:** M2 — `SectionIntro`, Navbar/Footer/skip link, StatusBadge, StackList,
-EmptyState; lanjutkan sampai M8, baru merge `redesign/signal-room` ke `main`.
+**Titik mulai berikutnya (M1):** M2 — `SectionIntro`, Navbar/Footer/skip link, StatusBadge, StackList,
+EmptyState.
+
+---
+
+### Sesi 2026-10-28 — M2 layout & shared pattern
+
+**M2:** `baseline/M2-REPORT.md`. `PageContainer` max 1200/gutter 24–48; `SectionIntro` tanpa
+badge/gradient; `StatusBadge`; `StackList`; `MediaFrame` + `ProjectCoverFallback`; `Breadcrumbs` +
+`JsonLd`; `SiteHeader`/`MobileMenu`/`ThemeSwitch`/`SkipLink`; `SiteFooter` 3 kolom. `SectionHeading`,
+`Navbar`, `Footer`, `ThemeToggle` dihapus.
+
+**Gate M2:** header 64px konten + border, 0 overflow di 1440/390 light/dark; skip link → `main`;
+Sheet mobile buka/Escape/fokus kembali; axe light 7/7 path OK; axe dark E2E 18 lulus.
+
+**Verifikasi M2:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **28 file / 119 test** · `pnpm build` 37 static page · `pnpm test:e2e` **18 lulus** ·
+screenshot `docs/redesign/screenshots/m2/` (lokal).
+
+**Known temporary:** `SectionIntro` masih menerima `as="h1"` untuk header halaman; spec final
+H2/H3 dan penggantian halaman dilakukan di M6.
+
+**Titik mulai berikutnya:** M3 — `Project.domain` nullable + admin select + `taxonomy.ts` fallback;
+map `seo_title`/`seo_description`; `projectMetadata` + `ProjectJsonLd`; breadcrumb proyek. Lanjut
+sampai M8, baru merge `redesign/signal-room` ke `main`.
 
 ---
 
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan redesain Signal Room **M2 (layout & shared pattern)**: ganti `SectionHeading` dengan
-> `SectionIntro`, rapikan Navbar/Footer/mobile nav + skip link, buat `Section`/`Container`,
-> `StatusBadge`, `StackList`, dan `EmptyState` sesuai `docs/redesign/05-COMPONENTS.md`.
-> Terapkan skill `ponytail` (scope), `clean-code` (implementasi), `code-reviewer` (review),
-> `ui-ux-pro-max`, `ui-styling`. Jangan ubah DB/konten/SEO. Verifikasi `pnpm lint`, `pnpm typecheck`,
-> `pnpm test`, `pnpm build`, `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push
-> ke `redesign/signal-room`."
+> "Lanjutkan redesain Signal Room **M3 (data, SEO, dan domain)**: buat `Project.domain` nullable +
+> select admin + fallback `taxonomy.ts`, map `seo_title`/`seo_description`, isi `projectMetadata`
+> dan `ProjectJsonLd`, pasang breadcrumb di halaman proyek. Terapkan `ponytail`, `clean-code`,
+> `code-reviewer`, `senior-fullstack`. Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm
+typecheck`, `pnpm test`, `pnpm build`, `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu
+> commit + push ke `redesign/signal-room`."
 >
 > Saat akun uji sudah siap: isi `E2E_ADMIN_EMAIL` & `E2E_ADMIN_PASSWORD` di `.env.local`,
 > jalankan `pnpm test:e2e`, dan pastikan blok admin di `e2e/admin-flow.spec.ts` hijau.

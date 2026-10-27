@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { PageContainer, SectionHeading } from "@/shared/components";
+import { PageContainer, SectionIntro } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
 import { HeroSection, getProfile } from "@/features/profile";
 import { getFeaturedProjects, ProjectCard } from "@/features/projects";
@@ -23,8 +23,7 @@ export default async function HomePage() {
       {/* 2. Featured Projects */}
       <section>
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <SectionHeading
-            badge="Portofolio Karya"
+          <SectionIntro
             title="Proyek"
             highlight="Unggulan"
             description="Koleksi sistem dan aplikasi pilihan — dari computer vision dan analitik data hingga backend yang dipakai di lapangan."
@@ -52,8 +51,7 @@ export default async function HomePage() {
       {/* 3. Core Tech Stack Skills */}
       <section>
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <SectionHeading
-            badge="Keahlian Utama"
+          <SectionIntro
             title="Spesialisasi"
             highlight="Teknologi"
             description="Teknologi inti yang saya pakai untuk membangun backend, mengolah data, dan mengotomasi proses."
