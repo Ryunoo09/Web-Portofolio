@@ -1,4 +1,12 @@
-import { PageContainer } from "@/shared/components";
+import type { Metadata } from "next";
+import { JsonLd, PageContainer } from "@/shared/components";
+import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
+import {
+  jsonLdGraph,
+  personNode,
+  profilePageNode,
+  webSiteNode,
+} from "@/shared/lib/seo/structured-data";
 import { AboutStrip, ContactCta, Hero, getProfile } from "@/features/profile";
 import {
   Capabilities,
@@ -14,6 +22,13 @@ import {
 } from "@/features/projects";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = buildMetadata({
+  title: "Rakha Yuda Wicaksono — Backend & Data Engineer",
+  description:
+    "Portofolio Rakha Yuda Wicaksono, Backend & Data Engineer di Brebes. Python, FastAPI, PostgreSQL, pipeline data, dan computer vision untuk proses yang lebih cepat.",
+  path: "/",
+});
 
 export default async function HomePage() {
   const [profile, projects] = await Promise.all([getProfile(), getPublishedProjects()]);
@@ -36,6 +51,11 @@ export default async function HomePage() {
 
   return (
     <PageContainer className="pb-16 md:pb-24">
+      <JsonLd
+        id="home-jsonld"
+        data={jsonLdGraph([webSiteNode(), personNode(), profilePageNode()])}
+      />
+
       <Hero profile={profile} latestProject={latestSignalProject} />
 
       <SignalTicker items={tickerItems} />

@@ -19,7 +19,8 @@ export function buildMetadata({
 }: BuildMetadataInput): Metadata {
   const url = `${siteConfig.url}${path}`;
   return {
-    title,
+    // Judul sudah lengkap per halaman; jangan ditimpa template `| nama` di root.
+    title: { absolute: title },
     description,
     alternates: { canonical: url },
     ...(robots ? { robots } : {}),

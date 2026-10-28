@@ -17,6 +17,7 @@ export function makeProject(overrides: Partial<Project> = {}): Project {
     isFeatured: true,
     isPublished: true,
     createdAt: "2026-01-01",
+    updatedAt: "2026-01-01T00:00:00Z",
     sortOrder: 1,
     projectType: "Skripsi",
     role: "Full Stack",

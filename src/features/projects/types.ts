@@ -22,6 +22,7 @@ export type Project = {
   isFeatured: boolean;
   isPublished: boolean;
   createdAt: string;
+  updatedAt: string;
   sortOrder: number;
   projectType: string | null;
   role: string | null;

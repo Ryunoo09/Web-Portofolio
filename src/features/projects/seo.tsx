@@ -8,7 +8,7 @@ import type { Project } from "./types";
 /** `seo_title`/`seo_description` menang; fallback judul/ringkasan proyek. */
 export function projectMetadata(project: Project): Metadata {
   return buildMetadata({
-    title: project.seoTitle?.trim() || project.title,
+    title: project.seoTitle?.trim() || `${project.title} — Studi Kasus`,
     description: project.seoDescription?.trim() || project.summary,
     path: `/projects/${project.slug}`,
   });

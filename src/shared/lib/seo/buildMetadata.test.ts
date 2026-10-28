@@ -10,6 +10,7 @@ describe("buildMetadata", () => {
       path: "/projects",
     });
 
+    expect(metadata.title).toEqual({ absolute: "Proyek" });
     expect(metadata.alternates?.canonical).toBe(`${siteConfig.url}/projects`);
     expect(metadata.openGraph).toMatchObject({
       title: "Proyek",

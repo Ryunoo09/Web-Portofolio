@@ -5,7 +5,7 @@ import type { Project, ProjectImage } from "../types";
 import { toProject, toProjectImage, type ProjectWithRelations } from "./mappers";
 
 const PROJECT_SELECT =
-  "id, slug, title, summary, description_html, repo_url, demo_url, cover_image_url, cover_image_alt, started_at, ended_at, is_featured, is_published, created_at, sort_order, project_type, role, team_size, problem, solution, features, outcomes, challenges, is_deployed, domain, seo_title, seo_description, project_skills(skills(id, name)), project_images(id, url, alt, sort_order)";
+  "id, slug, title, summary, description_html, repo_url, demo_url, cover_image_url, cover_image_alt, started_at, ended_at, is_featured, is_published, created_at, updated_at, sort_order, project_type, role, team_size, problem, solution, features, outcomes, challenges, is_deployed, domain, seo_title, seo_description, project_skills(skills(id, name)), project_images(id, url, alt, sort_order)";
 
 function findProjects(): Promise<Project[]> {
   return withOfflineFallback(async () => {

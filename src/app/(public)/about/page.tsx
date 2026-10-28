@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { PageContainer, SectionIntro } from "@/shared/components";
+import { JsonLd, PageContainer, SectionIntro } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
+import { aboutPageNode } from "@/shared/lib/seo/structured-data";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { formatPeriod } from "@/shared/lib/utils";
 import {
@@ -23,9 +24,9 @@ import type { Metadata } from "next";
 export const revalidate = 3600;
 
 export const metadata: Metadata = buildMetadata({
-  title: "Tentang Rakha",
+  title: "Tentang Rakha — Backend & Data Engineer",
   description:
-    "Backend & Data Engineer yang membangun sistem sampai dipakai: pengalaman, prinsip kerja, pendidikan, organisasi, dan sertifikasi.",
+    "Pengalaman backend di Indosat Ooredoo Hutchison, pendidikan Teknologi Rekayasa Komputer, dan cara kerja Rakha Yuda Wicaksono.",
   path: "/about",
 });
 
@@ -53,6 +54,15 @@ export default async function AboutPage() {
 
   return (
     <PageContainer className="space-y-12 py-8 md:py-12">
+      <JsonLd
+        id="about-jsonld"
+        data={aboutPageNode({
+          alumniOf: [...new Set(educationList.map((education) => education.institution))],
+          worksFor: [...new Set(experiences.map((experience) => experience.company))],
+          knowsLanguage: languages.map((language) => language.name),
+        })}
+      />
+
       <header className="space-y-4">
         <p className="text-muted-foreground font-mono text-[11px] tracking-[0.14em] uppercase">
           {siteConfig.location} · {siteConfig.availability}

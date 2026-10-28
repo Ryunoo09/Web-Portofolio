@@ -2,18 +2,25 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { PageContainer, SectionIntro } from "@/shared/components";
+import { JsonLd, PageContainer, SectionIntro } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
-import { CapabilityBoard, getLearningSkills, getSkills } from "@/features/skills";
+import { collectionPageNode } from "@/shared/lib/seo/structured-data";
+import { slugify } from "@/shared/lib/utils";
+import {
+  CAPABILITY_GROUPS,
+  CapabilityBoard,
+  getLearningSkills,
+  getSkills,
+} from "@/features/skills";
 import { getProfile } from "@/features/profile";
 import { getPublishedProjects } from "@/features/projects";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = buildMetadata({
-  title: "Keahlian",
+  title: "Keahlian Backend, Data & AI — Rakha",
   description:
-    "Keahlian teknis yang dipakai di proyek nyata: backend, data, computer vision, dan otomasi — setiap klaim diarahkan ke studi kasus.",
+    "Python, FastAPI, Laravel, PostgreSQL, PySpark, YOLO, dan n8n — dikelompokkan berdasarkan proyek yang membuktikannya.",
   path: "/skills",
 });
 
@@ -30,6 +37,18 @@ export default async function SkillsPage() {
 
   return (
     <PageContainer className="space-y-10 py-8 md:py-12">
+      <JsonLd
+        id="skills-jsonld"
+        data={collectionPageNode({
+          name: "Keahlian",
+          path: "/skills",
+          items: CAPABILITY_GROUPS.map((group) => ({
+            name: group.title,
+            path: `/skills#kemampuan-${slugify(group.title)}`,
+          })),
+        })}
+      />
+
       <SectionIntro
         as="h1"
         title="Keahlian"

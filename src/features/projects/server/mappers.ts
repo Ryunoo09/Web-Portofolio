@@ -39,6 +39,7 @@ export function toProject(row: ProjectWithRelations): Project {
     isFeatured: row.is_featured,
     isPublished: row.is_published,
     createdAt: row.created_at,
+    updatedAt: row.updated_at,
     sortOrder: row.sort_order,
     projectType: row.project_type,
     role: row.role,

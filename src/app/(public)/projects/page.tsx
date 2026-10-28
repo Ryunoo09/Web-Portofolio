@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { PageContainer, SectionIntro } from "@/shared/components";
+import { JsonLd, PageContainer, SectionIntro } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
+import { collectionPageNode } from "@/shared/lib/seo/structured-data";
 import { isProjectDomain, resolveProjectType } from "@/shared/lib/taxonomy";
 import { getPublishedProjects, ProjectExplorer } from "@/features/projects";
 
@@ -25,9 +26,9 @@ export async function generateMetadata({ searchParams }: ProjectsPageProps): Pro
   const params = await searchParams;
 
   return buildMetadata({
-    title: "Karya & Proyek",
+    title: "Proyek Backend, Data & Computer Vision — Rakha",
     description:
-      "Semua sistem yang saya bangun — dari computer vision dan data hingga backend yang dipakai tim sales.",
+      "Sembilan studi kasus backend, data, computer vision, dan otomasi: FTTH, DSE AI, SIRATA, big data kualitas air, dan lainnya.",
     path: "/projects",
     ...(hasActiveFilter(params) ? { robots: { index: false, follow: true } } : {}),
   });
@@ -38,6 +39,18 @@ export default async function ProjectsPage() {
 
   return (
     <PageContainer className="space-y-8 py-8 md:py-12">
+      <JsonLd
+        id="projects-jsonld"
+        data={collectionPageNode({
+          name: "Karya & Proyek",
+          path: "/projects",
+          items: projects.map((project) => ({
+            name: project.title,
+            path: `/projects/${project.slug}`,
+          })),
+        })}
+      />
+
       <SectionIntro
         as="h1"
         title="Karya & Proyek"

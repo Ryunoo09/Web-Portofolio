@@ -18,6 +18,7 @@ const project: Project = {
   isFeatured: true,
   isPublished: true,
   createdAt: "2024-06-01T00:00:00Z",
+  updatedAt: "2025-02-01T00:00:00Z",
   sortOrder: 1,
   projectType: "Tugas Kuliah",
   role: "Backend Developer",
@@ -42,15 +43,15 @@ describe("projectMetadata", () => {
   it("memakai seo_title/seo_description bila tersedia", () => {
     const metadata = projectMetadata(project);
 
-    expect(metadata.title).toBe("SIRATA — Studi Kasus");
+    expect(metadata.title).toEqual({ absolute: "SIRATA — Studi Kasus" });
     expect(metadata.description).toBe("Backend Laravel untuk surat kampus.");
     expect(metadata.alternates?.canonical).toBe(`${siteConfig.url}/projects/sirata`);
   });
 
-  it("jatuh ke judul dan ringkasan proyek saat kolom SEO kosong", () => {
+  it("jatuh ke judul + “Studi Kasus” dan ringkasan saat kolom SEO kosong", () => {
     const metadata = projectMetadata({ ...project, seoTitle: null, seoDescription: "  " });
 
-    expect(metadata.title).toBe(project.title);
+    expect(metadata.title).toEqual({ absolute: `${project.title} — Studi Kasus` });
     expect(metadata.description).toBe(project.summary);
   });
 });
