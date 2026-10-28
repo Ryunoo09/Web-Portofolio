@@ -860,16 +860,28 @@ visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
 
 ---
 
+### Sesi 2026-10-28 (lanjutan) — Avatar di halaman tentang
+
+**Permintaan:** tampilkan foto avatar yang diunggah dari admin di `/about`; tata letak diserahkan ke agent.
+
+**Implementasi:** `ProfilePortrait` (1:1) di header `/about` — potret di kolom kanan 8/4, caption nama + headline, fallback monogram RYW + “Foto menyusul” bila belum ada foto. `MediaFrame.caption` kini menerima `ReactNode`; gambar potret `priority` + `sizes` 320/280. Hero tetap tipografis agar arah Signal Room tidak berubah.
+
+**Catatan:** baseline visual `tentang-*` (8 snapshot) diperbarui dengan foto **dimask**, jadi gambar avatar tidak ikut tersimpan di repo publik dan mengganti avatar tidak mengubah baseline. Layout/caption tetap diuji.
+
+**Verifikasi:** `pnpm test` **195** (2 tes `ProfilePortrait`) · visual 12 tes lulus.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan **rilis Signal Room** setelah M8: (1) pastikan `/resume.pdf` sudah diunggah ke
-> `public/` atau `profile.resume_url`; (2) ukur Lighthouse mobile di CI/host idle sampai LCP <2,5 s
-> (laporan M8 ada di `docs/redesign/baseline/M8-REPORT.md`); (3) merge `redesign/signal-room` → `main`
-> setelah persetujuan, pantau `deploy.yml`, lalu smoke 6 rute + `/api/health` + admin login;
-> (4) siapkan rollback `IMAGE_TAG=<sha7-sebelumnya>` (<10 menit). Terapkan `ponytail`, `clean-code`,
-> `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`. Jangan ubah konten/klaim. Verifikasi `pnpm lint`,
-> `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:e2e` (PowerShell tidak mendukung `&&`),
-> lalu commit + push."
+> "Lanjutkan **rilis Signal Room** setelah M8: (1) unggah/ganti CV lewat `/admin/profile` →
+> Berkas CV (`/resume.pdf` membaca `profile.resume_url`); (2) ukur Lighthouse mobile di CI/host idle
+> sampai LCP <2,5 s (laporan M8 ada di `docs/redesign/baseline/M8-REPORT.md`); (3) merge
+> `redesign/signal-room` → `main` setelah persetujuan, pantau `deploy.yml`, lalu smoke 6 rute +
+> `/api/health` + admin login; (4) siapkan rollback `IMAGE_TAG=<sha7-sebelumnya>` (<10 menit).
+> Terapkan `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`.
+> Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
+> `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push."
 >
 > Visual regression: `pnpm test:e2e` memakai baseline Windows di
 > `e2e/visual.spec.ts-snapshots/`; regenerasi dengan `--update-snapshots` bila UI memang berubah.
