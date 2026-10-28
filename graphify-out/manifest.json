@@ -1326,9 +1326,9 @@
     "semantic_hash": "8ac8f556ff72e091e623fb1d5dd4ed26"
   },
   "HANDOFF.md": {
-    "mtime": 1793178514.7838671,
-    "seen": 1793178535.6740322,
-    "ast_hash": "9a1517c4696d64c2ecd255c6ced6a190",
+    "mtime": 1793179147.7097428,
+    "seen": 1793179173.0006597,
+    "ast_hash": "c402f33725793899ce392b562ed6f1c3",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1602,9 +1602,9 @@
     "semantic_hash": ""
   },
   "src/features/projects/components/public/CaseStudy.tsx": {
-    "mtime": 1793177895.2319882,
-    "seen": 1793178535.6416328,
-    "ast_hash": "2f4c21cb5db062734154fed9eeff2b28",
+    "mtime": 1793179016.0485804,
+    "seen": 1793179172.963819,
+    "ast_hash": "fa44d0cbd7103407eaa710a4cbc6b025",
     "semantic_hash": ""
   },
   "src/features/projects/components/public/CaseToc.test.tsx": {
@@ -1854,9 +1854,9 @@
     "semantic_hash": ""
   },
   "e2e/qa.spec.ts": {
-    "mtime": 1793178048.953434,
-    "seen": 1793178535.5924037,
-    "ast_hash": "2be192359b43b054321aa6011d8e43e9",
+    "mtime": 1793179028.1121733,
+    "seen": 1793179172.9173186,
+    "ast_hash": "9179d2392b40e82b3368e54498665c81",
     "semantic_hash": ""
   },
   "e2e/smoke.spec.ts": {
