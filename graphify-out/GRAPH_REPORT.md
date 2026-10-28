@@ -1,23 +1,23 @@
 # Graph Report - portfolio  (2026-10-28)
 
 ## Corpus Check
-- 305 files · ~68,406 words
+- 311 files · ~70,115 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 33 file(s) not represented in the graph (top: (none) 29, .example 1, .ico 1)
 
 ## Summary
-- 1265 nodes · 4029 edges · 70 communities (57 shown, 13 thin omitted)
+- 1280 nodes · 4055 edges · 69 communities (57 shown, 12 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 41 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7f3a6509`
+- Built from commit: `d5758d70`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- profile/server/actions.ts
-- Project
+- ProfileForm.tsx
+- createPublicClient
 - Button
 - (public)/page.tsx
 - cn
@@ -25,18 +25,18 @@
 - Project Docs & Architecture Rules
 - GitHub Deploy Workflow
 - Dev Dependencies Manifest
-- ProjectForm.tsx
+- SkillForm.tsx
 - EducationForm.tsx
-- server-only
+- react
 - createPublicClient
 - Runtime Dependencies Manifest
 - contact/index.ts
 - (public)/skills/page.tsx
 - Docker Compose Deployment
-- createServerSupabase
+- (dashboard)/page.tsx
 - GitHub CI Quality Workflow
 - TypeScript Compiler Config
-- languages/index.ts
+- createServerSupabase
 - shadcn Component Registry Config
 - Playwright E2E & A11y Tests
 - database.ts
@@ -55,9 +55,9 @@
 - Commitlint Configuration
 - PostCSS Configuration
 - zod
-- projects/server/actions.ts
+- ProjectForm.tsx
 - JsonLd
-- CaseStudy.tsx
+- Project
 - [slug]/page.tsx
 - react
 - components/index.ts
@@ -70,15 +70,14 @@
 - siteConfig.ts
 - experiences/server/queries.ts
 - withOfflineFallback
-- organizations/server/actions.ts
+- structured-data.ts
 - vitest.setup.ts
 - certificates/server/actions.ts
 - CaseCard.tsx
 - app/layout.tsx
-- StackList
-- proxy.ts
+- [slug]/opengraph-image.tsx
+- CaseToc.test.tsx
 - next.config.ts
-- auth/index.ts
 - ErrorSummary.tsx
 
 ## God Nodes (most connected - your core abstractions)
@@ -90,20 +89,20 @@
 6. `lucide-react` - 52 edges
 7. `requireAdmin()` - 50 edges
 8. `AdminPageHeader()` - 50 edges
-9. `vitest` - 44 edges
+9. `vitest` - 47 edges
 10. `Project` - 36 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `generateStaticParams()` --calls--> `getPublishedProjects()`  [EXTRACTED]
+  src/app/(public)/projects/[slug]/page.tsx → src/features/projects/server/queries.ts
 - `getAllCertificates()` --indirect_call--> `toCertificate()`  [INFERRED]
   src/features/certificates/server/queries.ts → src/features/certificates/server/mappers.ts
-- `getContactMessages()` --indirect_call--> `toContactMessage()`  [INFERRED]
-  src/features/contact/server/queries.ts → src/features/contact/server/mappers.ts
-- `getAllEducation()` --indirect_call--> `toEducation()`  [INFERRED]
-  src/features/education/server/queries.ts → src/features/education/server/mappers.ts
-- `getAllExperiences()` --indirect_call--> `toExperience()`  [INFERRED]
-  src/features/experiences/server/queries.ts → src/features/experiences/server/mappers.ts
 - `CaseGridProps` --references--> `Project`  [EXTRACTED]
   src/features/projects/components/public/CaseGrid.tsx → src/features/projects/types.ts
+- `getAllSkills()` --indirect_call--> `toSkill()`  [INFERRED]
+  src/features/skills/server/queries.ts → src/features/skills/server/mappers.ts
+- `SheetFooter()` --calls--> `cn()`  [EXTRACTED]
+  src/shared/components/ui/sheet.tsx → src/shared/lib/utils.ts
 
 ## Import Cycles
 - None detected.
@@ -113,31 +112,31 @@
 - **Visual Identity System (palette, type, spacing, anti-patterns)** — design_system_portfolio_master_color_palette, design_system_portfolio_master_typography, design_system_portfolio_master_spacing, design_system_portfolio_master_anti_patterns, handoff_design_typography [EXTRACTED 1.00]
 - **Layered Architecture and Server Action Convention** — handoff_architecture_rules, handoff_server_action_pattern, readme_architecture_rules, readme_server_action_pattern, readme_admin_defense_layers [INFERRED 0.85]
 
-## Communities (70 total, 13 thin omitted)
+## Communities (69 total, 12 thin omitted)
 
-### Community 0 - "profile/server/actions.ts"
-Cohesion: 0.33
-Nodes (7): ProfileFormValues, invalidInput(), ParsedProfile, updateProfile(), uploadProfileResume(), revalidateProfile(), emptyToNull()
+### Community 0 - "ProfileForm.tsx"
+Cohesion: 0.22
+Nodes (13): ProfileForm(), profileFormSchema, ProfileFormValues, valid, invalidInput(), ParsedProfile, updateProfile(), uploadProfileImage() (+5 more)
 
-### Community 1 - "Project"
-Cohesion: 0.13
-Nodes (17): Hero(), HeroProps, MetricRail(), MetricRailProps, SignalPanel(), SignalPanelProps, CapabilitiesProps, CaseCardProps (+9 more)
+### Community 1 - "createPublicClient"
+Cohesion: 0.21
+Nodes (17): AboutPage(), Row, ProfileRow, toCertificate(), toEducation(), toExperience(), toProfile(), getCertificates() (+9 more)
 
 ### Community 2 - "Button"
 Cohesion: 0.07
-Nodes (76): class-variance-authority, lucide-react, next, AdminCertificateEditPage(), AdminCertificateNewPage(), AdminCertificatesPage(), AdminEducationEditPage(), AdminEducationNewPage() (+68 more)
+Nodes (72): class-variance-authority, lucide-react, next, AdminCertificateEditPage(), AdminCertificateNewPage(), AdminCertificatesPage(), AdminEducationEditPage(), AdminEducationNewPage() (+64 more)
 
 ### Community 3 - "(public)/page.tsx"
-Cohesion: 0.13
-Nodes (27): HomePage(), metadata, revalidate, AboutStrip(), ContactCta(), Capabilities, ProofStrip(), SignalTicker() (+19 more)
+Cohesion: 0.16
+Nodes (22): HomePage(), metadata, revalidate, sitemap(), AboutStrip(), ContactCta(), Capabilities, ProofStrip() (+14 more)
 
 ### Community 4 - "cn"
-Cohesion: 0.10
-Nodes (29): AdminDashboardLayout(), AdminLoginPage(), metadata, AdminSidebar(), AdminSidebarProps, isActive(), links, NavLinks() (+21 more)
+Cohesion: 0.09
+Nodes (30): AdminDashboardLayout(), AdminLoginPage(), metadata, AdminSidebar(), AdminSidebarProps, isActive(), links, NavLinks() (+22 more)
 
 ### Community 5 - "profile/index.ts"
-Cohesion: 0.15
-Nodes (24): ProfileFormProps, experience, AboutFact, AboutProof(), AboutProofProps, toParagraphs(), ExperienceTimeline(), ExperienceTimelineProps (+16 more)
+Cohesion: 0.12
+Nodes (22): AdminProfilePage(), ProfileFormProps, experience, AboutFact, AboutProof(), AboutProofProps, toParagraphs(), CredentialRow() (+14 more)
 
 ### Community 6 - "Project Docs & Architecture Rules"
 Cohesion: 0.05
@@ -149,43 +148,43 @@ Nodes (44): if, outputs, permissions, runs-on, steps, concurrency, cancel-in-pro
 
 ### Community 8 - "Dev Dependencies Manifest"
 Cohesion: 0.07
-Nodes (40): @tiptap/pm@^3.31.4, devDependencies, @commitlint/cli@^21.2.3, @commitlint/config-conventional@^21.2.3, husky@^9.1.7, jsdom@^30.1.2, lint-staged@^17.6.0, prettier@^3.9.9 (+32 more)
+Nodes (38): devDependencies, @commitlint/cli@^21.2.3, @commitlint/config-conventional@^21.2.3, husky@^9.1.7, jsdom@^30.1.2, lint-staged@^17.6.0, prettier@^3.9.9, prettier-plugin-tailwindcss@^0.8.1 (+30 more)
 
-### Community 9 - "ProjectForm.tsx"
-Cohesion: 0.11
-Nodes (42): @hookform/resolvers, radix-ui, react-hook-form, sonner, AdminProfilePage(), AdminProjectEditPage(), AdminProjectNewPage(), AdminSkillEditPage() (+34 more)
+### Community 9 - "SkillForm.tsx"
+Cohesion: 0.20
+Nodes (18): radix-ui, AdminSkillEditPage(), AdminSkillNewPage(), LanguageForm(), LANGUAGE_LEVELS, languageFormSchema, LanguageFormValues, valid (+10 more)
 
 ### Community 10 - "EducationForm.tsx"
-Cohesion: 0.28
-Nodes (11): educationFormSchema, EducationFormValues, valid, createEducation(), deleteEducation(), invalidInput(), ParsedEducation, toColumns() (+3 more)
+Cohesion: 0.19
+Nodes (13): sonner, educationFormSchema, EducationFormValues, valid, createEducation(), invalidInput(), ParsedEducation, toColumns() (+5 more)
 
-### Community 11 - "server-only"
-Cohesion: 0.33
-Nodes (4): server-only@^0.0.1, @supabase/supabase-js@^2.117.2, server-only, @supabase/supabase-js
+### Community 11 - "react"
+Cohesion: 0.25
+Nodes (8): react, metadata, ContactPanel(), ContactPanelProps, GithubIcon(), LinkedinIcon(), PageContainerProps, SiteFooter()
 
 ### Community 12 - "createPublicClient"
-Cohesion: 0.25
-Nodes (10): OrganizationFormProps, OrganizationTableProps, deleteOrganization(), toggleOrganizationPublish(), OrganizationRow, toOrganization(), getAllOrganizations(), getPublishedOrganizations() (+2 more)
+Cohesion: 0.26
+Nodes (9): OrganizationFormProps, OrganizationTableProps, OrganizationRow, OrganizationRow, row, toOrganization(), getAllOrganizations(), getPublishedOrganizations() (+1 more)
 
 ### Community 13 - "Runtime Dependencies Manifest"
 Cohesion: 0.07
-Nodes (27): dependencies, class-variance-authority@^0.7.1, clsx@^2.1.1, cn@^0.4.0, @hookform/resolvers@^5.9.1, lucide-react@^1.52.0, next@16.3.8, next-themes@^0.4.6 (+19 more)
+Nodes (29): dependencies, class-variance-authority@^0.7.1, clsx@^2.1.1, cn@^0.4.0, @hookform/resolvers@^5.9.1, lucide-react@^1.52.0, next@16.3.8, next-themes@^0.4.6 (+21 more)
 
 ### Community 14 - "contact/index.ts"
-Cohesion: 0.13
-Nodes (24): MessageInboxProps, ContactForm(), FIELD_IDS, FieldErrors, FieldKey, readForm(), mockedSubmit, validate() (+16 more)
+Cohesion: 0.11
+Nodes (28): AdminMessagesPage(), formatDateTime(), MessageInbox(), MessageInboxProps, ContactForm(), FIELD_IDS, FieldErrors, FieldKey (+20 more)
 
 ### Community 15 - "(public)/skills/page.tsx"
-Cohesion: 0.13
-Nodes (24): metadata, revalidate, SkillsPage(), ProjectFormProps, CAPABILITY_GROUPS, CapabilityGroup, SkillFormProps, SkillTableProps (+16 more)
+Cohesion: 0.14
+Nodes (20): metadata, revalidate, SkillsPage(), ProjectFormProps, CAPABILITY_GROUPS, CapabilityGroup, SkillFormProps, SkillTableProps (+12 more)
 
 ### Community 16 - "Docker Compose Deployment"
 Cohesion: 0.08
 Nodes (23): interval, retries, start_period, test, timeout, driver, options, networks (+15 more)
 
-### Community 17 - "createServerSupabase"
-Cohesion: 0.25
-Nodes (17): AdminDashboardPage(), countCertificates(), getContactMessages(), countEducation(), createExperience(), deleteExperience(), invalidInput(), ParsedExperience (+9 more)
+### Community 17 - "(dashboard)/page.tsx"
+Cohesion: 0.42
+Nodes (8): AdminDashboardPage(), countCertificates(), countEducation(), countExperiences(), countLanguages(), countOrganizations(), countProjects(), countSkills()
 
 ### Community 18 - "GitHub CI Quality Workflow"
 Cohesion: 0.10
@@ -195,21 +194,21 @@ Nodes (20): HUSKY, NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_PUB
 Cohesion: 0.10
 Nodes (19): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+11 more)
 
-### Community 20 - "languages/index.ts"
-Cohesion: 0.22
-Nodes (11): LANGUAGE_LEVELS, languageFormSchema, LanguageFormValues, valid, createLanguage(), deleteLanguage(), invalidInput(), ParsedLanguage (+3 more)
+### Community 20 - "createServerSupabase"
+Cohesion: 0.23
+Nodes (24): requireAdmin(), deleteCertificate(), toggleCertificatePublish(), deleteEducation(), toggleEducationPublish(), deleteExperience(), toggleExperiencePublish(), createLanguage() (+16 more)
 
 ### Community 21 - "shadcn Component Registry Config"
 Cohesion: 0.11
 Nodes (17): aliases, components, hooks, lib, ui, utils, iconLibrary, rsc (+9 more)
 
 ### Community 22 - "Playwright E2E & A11y Tests"
-Cohesion: 0.13
-Nodes (7): publicPages, hasCredentials, TINY_PNG, @axe-core/playwright@^4.14.0, @playwright/test@^1.63.0, @axe-core/playwright, @playwright/test
+Cohesion: 0.08
+Nodes (11): publicPages, themes, hasCredentials, TINY_PNG, publicRoutes, routes, viewports, @axe-core/playwright@^4.14.0 (+3 more)
 
 ### Community 23 - "database.ts"
 Cohesion: 0.12
-Nodes (14): LanguageRow, row, OrganizationRow, row, CompositeTypes, Constants, Database, DatabaseWithoutInternals (+6 more)
+Nodes (14): @supabase/ssr@^0.12.7, @supabase/supabase-js@^2.117.2, @supabase/ssr, @supabase/supabase-js, CompositeTypes, Constants, Database, DatabaseWithoutInternals (+6 more)
 
 ### Community 25 - "NPM Scripts & Tooling"
 Cohesion: 0.15
@@ -220,8 +219,8 @@ Cohesion: 0.11
 Nodes (25): alt, contentType, OpengraphImage(), size, alt, contentType, OpengraphImage(), size (+17 more)
 
 ### Community 27 - "withOfflineFallback"
-Cohesion: 0.19
-Nodes (14): AboutPage(), metadata, revalidate, LanguageFormProps, LanguageTableProps, LanguageList(), LanguageListProps, LanguageRow (+6 more)
+Cohesion: 0.20
+Nodes (12): AdminLanguagesEditPage(), LanguageFormProps, LanguageTableProps, LanguageList(), LanguageListProps, LanguageRow, LanguageRow, row (+4 more)
 
 ### Community 28 - "ESLint Configuration"
 Cohesion: 0.25
@@ -232,8 +231,8 @@ Cohesion: 0.73
 Nodes (5): keep(), mk(), mkf(), page(), scaffold-portfolio.sh script
 
 ### Community 30 - "taxonomy.ts"
-Cohesion: 0.16
-Nodes (17): CaseGrid(), CaseGridEmpty(), CaseGridProps, DomainChip(), normalizeDomain(), normalizeType(), ProjectExplorer(), DOMAIN_BY_SLUG (+9 more)
+Cohesion: 0.14
+Nodes (21): firstParam(), generateMetadata(), hasActiveFilter(), ProjectsPageProps, CaseGrid(), CaseGridEmpty(), CaseGridProps, DomainChip() (+13 more)
 
 ### Community 31 - "Public SVG Brand Icons"
 Cohesion: 0.40
@@ -248,36 +247,36 @@ Cohesion: 0.50
 Nodes (3): allowBuilds, sharp, unrs-resolver
 
 ### Community 41 - "zod"
-Cohesion: 0.12
-Nodes (16): zod, certificateFormSchema, CertificateFormValues, valid, experienceFormSchema, ExperienceFormValues, valid, profileFormSchema (+8 more)
+Cohesion: 0.13
+Nodes (20): @hookform/resolvers, react-hook-form, zod, experienceFormSchema, ExperienceFormValues, valid, createExperience(), invalidInput() (+12 more)
 
-### Community 45 - "projects/server/actions.ts"
-Cohesion: 0.26
-Nodes (16): requireAdmin(), cleanList(), createProject(), createProjectImage(), deleteProject(), deleteProjectImage(), imageInputSchema, invalidInput() (+8 more)
+### Community 45 - "ProjectForm.tsx"
+Cohesion: 0.15
+Nodes (25): AdminProjectEditPage(), AdminProjectNewPage(), PROJECT_TYPES, ProjectForm(), GalleryItem(), ProjectGalleryManager(), cleanList(), createProject() (+17 more)
 
 ### Community 46 - "JsonLd"
-Cohesion: 0.16
-Nodes (13): BreadcrumbItem, Breadcrumbs(), BreadcrumbsProps, toAbsoluteUrl(), JsonLd(), JsonLdProps, aspectClasses, MediaFrame() (+5 more)
+Cohesion: 0.14
+Nodes (15): BreadcrumbItem, Breadcrumbs(), BreadcrumbsProps, toAbsoluteUrl(), EmptyState(), EmptyStateProps, JsonLdProps, aspectClasses (+7 more)
 
-### Community 47 - "CaseStudy.tsx"
-Cohesion: 0.33
-Nodes (10): resolveProjectStatus(), CaseFacts(), STATUS_LABELS, CaseNext(), CaseSection(), CaseStudy(), toParagraphs(), CaseToc() (+2 more)
+### Community 47 - "Project"
+Cohesion: 0.14
+Nodes (21): SignalPanelProps, resolveProjectStatus(), CapabilitiesProps, CaseCardProps, CaseFacts(), CaseFactsProps, STATUS_LABELS, CaseNext() (+13 more)
 
 ### Community 48 - "[slug]/page.tsx"
-Cohesion: 0.14
-Nodes (18): alt, contentType, ImageProps, OpengraphImage(), size, truncate(), generateMetadata(), generateStaticParams() (+10 more)
+Cohesion: 0.32
+Nodes (7): generateMetadata(), generateStaticParams(), ProjectDetailPage(), ProjectDetailPageProps, revalidate, pickNextProject(), ProjectJsonLd
 
 ### Community 49 - "react"
-Cohesion: 0.26
-Nodes (10): react, SkipLink(), isActivePath(), MobileMenu(), MobileMenuProps, isActivePath(), SiteHeader(), emptySubscribe() (+2 more)
+Cohesion: 0.31
+Nodes (8): isActivePath(), MobileMenu(), MobileMenuProps, isActivePath(), SiteHeader(), emptySubscribe(), ThemeSwitch(), ThemeSwitchProps
 
 ### Community 50 - "components/index.ts"
-Cohesion: 0.20
-Nodes (16): NotFound(), ContactPage(), metadata, revalidate, PublicLayout(), ProjectsPage(), ContactPanel(), ContactPanelProps (+8 more)
+Cohesion: 0.19
+Nodes (13): ErrorPage(), ErrorPageProps, NotFound(), ContactPage(), metadata, revalidate, PublicLayout(), ProjectsPage() (+5 more)
 
 ### Community 51 - "storage.ts"
-Cohesion: 0.20
-Nodes (13): DOCUMENT_MIME_TO_EXTENSION, IMAGE_MIME_TO_EXTENSION, MEDIA_BUCKET, assertAllowedFile(), buildObjectPath(), extensionFor(), EXTENSIONS, KIND_LABELS (+5 more)
+Cohesion: 0.15
+Nodes (16): server-only@^0.0.1, server-only, DOCUMENT_ACCEPT, DOCUMENT_MIME_TO_EXTENSION, IMAGE_MIME_TO_EXTENSION, MAX_UPLOAD_BYTES, MEDIA_BUCKET, assertAllowedFile() (+8 more)
 
 ### Community 52 - "projects/server/queries.ts"
 Cohesion: 0.18
@@ -292,48 +291,48 @@ Cohesion: 0.29
 Nodes (11): skillFormSchema, SkillFormValues, valid, createSkill(), deleteSkill(), invalidInput(), toColumns(), toErrorMessage() (+3 more)
 
 ### Community 55 - "vitest"
-Cohesion: 0.14
-Nodes (11): @testing-library/react, @testing-library/user-event, vitest, MockIntersectionObserver, ObserverCallback, sections, projects, replace (+3 more)
+Cohesion: 0.17
+Nodes (9): @testing-library/react, @testing-library/user-event, vitest, writeText, projects, replace, makeProject(), { refreshMock } (+1 more)
 
 ### Community 56 - "utils.ts"
-Cohesion: 0.18
-Nodes (8): CaseTocProps, CaseTocSection, BulletPoints(), BulletPointsProps, EmptyState(), EmptyStateProps, SectionIntroProps, toListItems()
+Cohesion: 0.29
+Nodes (7): ExperienceTimeline(), CaseTocProps, CaseTocSection, BulletPoints(), BulletPointsProps, formatMonthPeriod(), toListItems()
 
 ### Community 57 - "siteConfig.ts"
-Cohesion: 0.22
-Nodes (8): firstParam(), generateMetadata(), hasActiveFilter(), ProjectsPageProps, siteConfig, buildMetadata(), BuildMetadataInput, serializeJsonLd()
+Cohesion: 0.21
+Nodes (8): metadata, revalidate, projectMetadata(), project, siteConfig, buildMetadata(), BuildMetadataInput, serializeJsonLd()
 
 ### Community 58 - "experiences/server/queries.ts"
 Cohesion: 0.26
-Nodes (8): ExperienceFormProps, ExperienceTableProps, ExperienceRow, ExperienceRow, row, toExperience(), getPublishedExperiences(), Experience
+Nodes (9): ExperienceFormProps, ExperienceTableProps, ExperienceRow, ExperienceRow, row, toExperience(), getAllExperiences(), getPublishedExperiences() (+1 more)
 
 ### Community 59 - "withOfflineFallback"
-Cohesion: 0.23
-Nodes (9): EducationFormProps, EducationTableProps, EducationRow, EducationRow, row, toEducation(), getPublishedEducation(), Education (+1 more)
+Cohesion: 0.26
+Nodes (9): EducationFormProps, EducationTableProps, EducationRow, EducationRow, row, toEducation(), getAllEducation(), getPublishedEducation() (+1 more)
 
-### Community 60 - "organizations/server/actions.ts"
-Cohesion: 0.23
-Nodes (8): organizationFormSchema, OrganizationFormValues, valid, ParsedOrganization, ConfirmDeleteDialogProps, ImageUploadFieldProps, StatusToggleProps, ActionResult
+### Community 60 - "structured-data.ts"
+Cohesion: 0.31
+Nodes (8): aboutPageNode(), CollectionItem, contactPageNode(), personNode(), PersonOptions, SITE, site, PROJECT_DOMAIN_LABELS
 
 ### Community 62 - "certificates/server/actions.ts"
-Cohesion: 0.38
-Nodes (9): createCertificate(), deleteCertificate(), invalidInput(), ParsedCertificate, toColumns(), toggleCertificatePublish(), updateCertificate(), uploadCertificateImage() (+1 more)
+Cohesion: 0.31
+Nodes (10): CertificateForm(), certificateFormSchema, CertificateFormValues, valid, createCertificate(), invalidInput(), ParsedCertificate, toColumns() (+2 more)
 
 ### Community 63 - "CaseCard.tsx"
-Cohesion: 0.54
-Nodes (5): CaseCard(), projectCredits(), projectMeta(), projectYear(), FeaturedWork()
+Cohesion: 0.26
+Nodes (10): CaseCard(), projectCredits(), projectMeta(), projectYear(), FeaturedWork(), MediaFrame(), ProjectCoverFallback(), ProjectCoverFallbackProps (+2 more)
 
 ### Community 64 - "app/layout.tsx"
 Cohesion: 0.24
 Nodes (7): next-themes, jakarta, jetbrainsMono, metadata, RootLayout(), spaceGrotesk, ThemeProvider()
 
-### Community 65 - "StackList"
-Cohesion: 0.47
-Nodes (4): ProjectCoverFallback(), ProjectCoverFallbackProps, StackList(), StackListProps
+### Community 65 - "[slug]/opengraph-image.tsx"
+Cohesion: 0.33
+Nodes (6): alt, contentType, ImageProps, OpengraphImage(), size, truncate()
 
-### Community 66 - "proxy.ts"
+### Community 66 - "CaseToc.test.tsx"
 Cohesion: 0.40
-Nodes (3): @supabase/ssr@^0.12.7, @supabase/ssr, config
+Nodes (3): MockIntersectionObserver, ObserverCallback, sections
 
 ### Community 67 - "next.config.ts"
 Cohesion: 0.50
@@ -345,23 +344,23 @@ Nodes (3): ErrorSummary(), ErrorSummaryEntry, ErrorSummaryProps
 
 ## Knowledge Gaps
 - **12 isolated node(s):** `File / Document Icon (16px monochrome UI glyph)`, `Globe / World Icon (16px monochrome UI glyph)`, `Vercel Triangle Mark (white on transparent, 1155x1000)`, `Cloudflare Proxied DNS with Full (strict) TLS`, `IMAGE_TAG Rollback by Commit SHA` (+7 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 344 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 353 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `next` connect `Button` to `profile/server/actions.ts`, `Project`, `(public)/page.tsx`, `cn`, `Dev Dependencies Manifest`, `ProjectForm.tsx`, `Runtime Dependencies Manifest`, `contact/index.ts`, `(public)/skills/page.tsx`, `createServerSupabase`, `database.ts`, `og-image.tsx`, `withOfflineFallback`, `taxonomy.ts`, `JsonLd`, `CaseStudy.tsx`, `[slug]/page.tsx`, `react`, `components/index.ts`, `siteConfig.ts`, `organizations/server/actions.ts`, `CaseCard.tsx`, `app/layout.tsx`, `proxy.ts`, `next.config.ts`?**
-  _High betweenness centrality (0.145) - this node is a cross-community bridge._
+- **Why does `next` connect `Button` to `ProfileForm.tsx`, `(public)/page.tsx`, `cn`, `profile/index.ts`, `Dev Dependencies Manifest`, `SkillForm.tsx`, `EducationForm.tsx`, `react`, `Runtime Dependencies Manifest`, `contact/index.ts`, `(public)/skills/page.tsx`, `(dashboard)/page.tsx`, `database.ts`, `og-image.tsx`, `withOfflineFallback`, `taxonomy.ts`, `zod`, `ProjectForm.tsx`, `JsonLd`, `Project`, `[slug]/page.tsx`, `react`, `components/index.ts`, `siteConfig.ts`, `certificates/server/actions.ts`, `CaseCard.tsx`, `app/layout.tsx`, `[slug]/opengraph-image.tsx`, `next.config.ts`?**
+  _High betweenness centrality (0.136) - this node is a cross-community bridge._
 - **What connects `File / Document Icon (16px monochrome UI glyph)`, `Globe / World Icon (16px monochrome UI glyph)`, `Vercel Triangle Mark (white on transparent, 1155x1000)` to the rest of the system?**
   _12 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Project` be split into smaller, more focused modules?**
-  _Cohesion score 0.13043478260869565 - nodes in this community are weakly interconnected._
-- **Why does `vitest` connect `vitest` to `Project`, `(public)/page.tsx`, `profile/index.ts`, `Dev Dependencies Manifest`, `ProjectForm.tsx`, `EducationForm.tsx`, `contact/index.ts`, `(public)/skills/page.tsx`, `languages/index.ts`, `database.ts`, `@vitejs/plugin-react`, `taxonomy.ts`, `zod`, `JsonLd`, `CaseStudy.tsx`, `[slug]/page.tsx`, `storage.ts`, `projects/server/queries.ts`, `certificates/server/queries.ts`, `skills/server/actions.ts`, `utils.ts`, `siteConfig.ts`, `experiences/server/queries.ts`, `withOfflineFallback`, `organizations/server/actions.ts`, `vitest.setup.ts`, `CaseCard.tsx`?**
-  _High betweenness centrality (0.085) - this node is a cross-community bridge._
 - **Should `Button` be split into smaller, more focused modules?**
-  _Cohesion score 0.06923181140766833 - nodes in this community are weakly interconnected._
-- **Why does `Button()` connect `Button` to `Project`, `cn`, `(public)/page.tsx`, `cn`, `ProjectForm.tsx`, `contact/index.ts`, `(public)/skills/page.tsx`, `CaseStudy.tsx`, `react`, `components/index.ts`, `vitest`, `withOfflineFallback`?**
-  _High betweenness centrality (0.051) - this node is a cross-community bridge._
-- **Should `(public)/page.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.13368983957219252 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07376311844077961 - nodes in this community are weakly interconnected._
+- **Why does `vitest` connect `vitest` to `ProfileForm.tsx`, `createPublicClient`, `profile/index.ts`, `Dev Dependencies Manifest`, `SkillForm.tsx`, `EducationForm.tsx`, `createPublicClient`, `contact/index.ts`, `(public)/skills/page.tsx`, `@vitejs/plugin-react`, `withOfflineFallback`, `taxonomy.ts`, `zod`, `JsonLd`, `Project`, `storage.ts`, `projects/server/queries.ts`, `certificates/server/queries.ts`, `skills/server/actions.ts`, `utils.ts`, `siteConfig.ts`, `experiences/server/queries.ts`, `withOfflineFallback`, `structured-data.ts`, `vitest.setup.ts`, `certificates/server/actions.ts`, `CaseToc.test.tsx`, `ErrorSummary.tsx`?**
+  _High betweenness centrality (0.076) - this node is a cross-community bridge._
+- **Should `cn` be split into smaller, more focused modules?**
+  _Cohesion score 0.09291521486643438 - nodes in this community are weakly interconnected._
+- **Why does `react` connect `react` to `ProfileForm.tsx`, `Button`, `(public)/page.tsx`, `cn`, `Dev Dependencies Manifest`, `SkillForm.tsx`, `EducationForm.tsx`, `Runtime Dependencies Manifest`, `contact/index.ts`, `taxonomy.ts`, `cn`, `ProjectForm.tsx`, `JsonLd`, `Project`, `react`, `components/index.ts`, `utils.ts`, `certificates/server/actions.ts`, `CaseCard.tsx`, `app/layout.tsx`, `CaseToc.test.tsx`, `ErrorSummary.tsx`?**
+  _High betweenness centrality (0.050) - this node is a cross-community bridge._
+- **Should `profile/index.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.11742424242424243 - nodes in this community are weakly interconnected._

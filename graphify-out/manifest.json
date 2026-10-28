@@ -36,10 +36,10 @@
     "semantic_hash": "36caaa9bd2d5d7927d5f79637bde6305"
   },
   "e2e/a11y.spec.ts": {
-    "mtime": 1792233022.163332,
-    "seen": 1793097844.579389,
-    "ast_hash": "321604cb422bc8788d019cb694c29f99",
-    "semantic_hash": "321604cb422bc8788d019cb694c29f99"
+    "mtime": 1793168092.8265524,
+    "seen": 1793169750.6164782,
+    "ast_hash": "19ce8edc32c3b1267c510349b2a8b109",
+    "semantic_hash": ""
   },
   "e2e/admin-flow.spec.ts": {
     "mtime": 1793160387.0200276,
@@ -1326,9 +1326,9 @@
     "semantic_hash": "8ac8f556ff72e091e623fb1d5dd4ed26"
   },
   "HANDOFF.md": {
-    "mtime": 1793165580.1212752,
-    "seen": 1793165895.5220513,
-    "ast_hash": "5cccca8941a0483eb6844f17adfd794c",
+    "mtime": 1793169723.873302,
+    "seen": 1793169750.7002234,
+    "ast_hash": "770d68b8c27530e41abaefd8883c34ce",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1440,9 +1440,9 @@
     "semantic_hash": ""
   },
   "src/shared/components/layout/MobileMenu.tsx": {
-    "mtime": 1793165526.1978035,
-    "seen": 1793165895.506363,
-    "ast_hash": "404924fb189465639cbb7ead6b7fd722",
+    "mtime": 1793169034.8760147,
+    "seen": 1793169750.6863978,
+    "ast_hash": "d5d2f9ecb5cf0bf6378eb05e11c01659",
     "semantic_hash": ""
   },
   "src/shared/components/layout/SiteFooter.tsx": {
@@ -1452,9 +1452,9 @@
     "semantic_hash": ""
   },
   "src/shared/components/layout/SiteHeader.tsx": {
-    "mtime": 1793122269.0470932,
-    "seen": 1793123219.697644,
-    "ast_hash": "15a6d9974600c37e80fa6b6d3a44913c",
+    "mtime": 1793169034.8760147,
+    "seen": 1793169750.6868908,
+    "ast_hash": "8ca6fc89e1b52719aa8d5af3fb735eb8",
     "semantic_hash": ""
   },
   "src/shared/components/layout/ThemeSwitch.tsx": {
@@ -1554,9 +1554,9 @@
     "semantic_hash": ""
   },
   "src/features/projects/components/public/SignalTicker.tsx": {
-    "mtime": 1793154447.7028747,
-    "seen": 1793159573.4408977,
-    "ast_hash": "6874e1cd05b72379b1b11be4bcbc26ac",
+    "mtime": 1793169724.5004344,
+    "seen": 1793169750.669959,
+    "ast_hash": "d33af9f6fc63f07d8125c03ee9602b98",
     "semantic_hash": ""
   },
   "src/features/projects/components/public/home.test.tsx": {
@@ -1851,6 +1851,330 @@
     "mtime": 1793161906.269636,
     "seen": 1793165489.1370473,
     "ast_hash": "768c34d220e876669fab7dad3b870fc8",
+    "semantic_hash": ""
+  },
+  "e2e/qa.spec.ts": {
+    "mtime": 1793168624.377602,
+    "seen": 1793169750.6169627,
+    "ast_hash": "f5d6a43047754a22d2790d3f0d10fbdc",
+    "semantic_hash": ""
+  },
+  "e2e/smoke.spec.ts": {
+    "mtime": 1793168120.7658823,
+    "seen": 1793169750.6169667,
+    "ast_hash": "8d0583f9828e2cfba71257fb1cd9f39e",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts": {
+    "mtime": 1793169724.2563567,
+    "seen": 1793169750.6169708,
+    "ast_hash": "f39f03c78849a0bc50da3118019c0759",
+    "semantic_hash": ""
+  },
+  "src/app/not-found.test.tsx": {
+    "mtime": 1793169724.304041,
+    "seen": 1793169750.6312735,
+    "ast_hash": "b0f2d81a6cacfc798e559e32b30b19de",
+    "semantic_hash": ""
+  },
+  "src/features/contact/components/public/ContactPanel.test.tsx": {
+    "mtime": 1793168071.8298907,
+    "seen": 1793169750.6383708,
+    "ast_hash": "7279319895641b35df241ebcdcc23718",
+    "semantic_hash": ""
+  },
+  "src/shared/constants/siteConfig.test.ts": {
+    "mtime": 1793168049.3451638,
+    "seen": 1793169750.6924367,
+    "ast_hash": "6d8573ebf76285bf19262fabc63a3740",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/beranda-1440-dark-chromium-win32.png": {
+    "mtime": 1793168279.7942572,
+    "seen": 1793169750.7006612,
+    "ast_hash": "d17ba8a5573137ff68a5b02a1cc6da45",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/beranda-1440-light-chromium-win32.png": {
+    "mtime": 1793168271.0466404,
+    "seen": 1793169750.7006652,
+    "ast_hash": "20978801ac0ff1219e4ee6aa352e9d0e",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/beranda-320-dark-chromium-win32.png": {
+    "mtime": 1793168281.627935,
+    "seen": 1793169750.7006683,
+    "ast_hash": "c4a5130eb1fc75f166d74ee74cd6ae58",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/beranda-320-light-chromium-win32.png": {
+    "mtime": 1793168272.9939735,
+    "seen": 1793169750.7006714,
+    "ast_hash": "f238e180c55c116f6efa8b422a718491",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/beranda-390-dark-chromium-win32.png": {
+    "mtime": 1793168281.1197753,
+    "seen": 1793169750.7006743,
+    "ast_hash": "18624538c5df12f350cffccbffb8ce30",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/beranda-390-light-chromium-win32.png": {
+    "mtime": 1793168272.5274916,
+    "seen": 1793169750.7006774,
+    "ast_hash": "0c5baf50b7a1785c10ae8f8e1d701d9e",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/beranda-768-dark-chromium-win32.png": {
+    "mtime": 1793168280.5867481,
+    "seen": 1793169750.7006807,
+    "ast_hash": "120704b8dc403e508bb53261ca236e1b",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/beranda-768-light-chromium-win32.png": {
+    "mtime": 1793168271.880736,
+    "seen": 1793169750.7006834,
+    "ast_hash": "c118bda1354a4b01db1db0883faf5bba",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/keahlian-1440-dark-chromium-win32.png": {
+    "mtime": 1793168287.860677,
+    "seen": 1793169750.7006867,
+    "ast_hash": "a1c2a155271573132be00624700889bf",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/keahlian-1440-light-chromium-win32.png": {
+    "mtime": 1793168279.803257,
+    "seen": 1793169750.7006893,
+    "ast_hash": "878b7b01ee9ca463043e200097884865",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/keahlian-320-dark-chromium-win32.png": {
+    "mtime": 1793168289.6324186,
+    "seen": 1793169750.700692,
+    "ast_hash": "49686a3a0aaa2b316773597cba847598",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/keahlian-320-light-chromium-win32.png": {
+    "mtime": 1793168281.6925004,
+    "seen": 1793169750.7006948,
+    "ast_hash": "a61a785c27b0e89dce13c1902554fc97",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/keahlian-390-dark-chromium-win32.png": {
+    "mtime": 1793168289.1937008,
+    "seen": 1793169750.7006974,
+    "ast_hash": "18f47f83a21f5919a98780f1d328ea11",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/keahlian-390-light-chromium-win32.png": {
+    "mtime": 1793168281.2286,
+    "seen": 1793169750.7007,
+    "ast_hash": "10b5fd725429e6c0b4902399537aae87",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/keahlian-768-dark-chromium-win32.png": {
+    "mtime": 1793168288.6278608,
+    "seen": 1793169750.7007027,
+    "ast_hash": "1ee89844fd509173089b6c42b2b89460",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/keahlian-768-light-chromium-win32.png": {
+    "mtime": 1793168280.7492807,
+    "seen": 1793169750.700705,
+    "ast_hash": "e38c8fd6917cb5f7d7781df234101452",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/kontak-1440-dark-chromium-win32.png": {
+    "mtime": 1793168287.8318038,
+    "seen": 1793169750.7007077,
+    "ast_hash": "fc13a280c9ff205e389885be957dbf56",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/kontak-1440-light-chromium-win32.png": {
+    "mtime": 1793168279.565018,
+    "seen": 1793169750.7007103,
+    "ast_hash": "328799a7b6ec4d37e681abe168631e52",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/kontak-320-dark-chromium-win32.png": {
+    "mtime": 1793168289.6269016,
+    "seen": 1793169750.700713,
+    "ast_hash": "60bb35380c60a432ed16fd1de15a9ddb",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/kontak-320-light-chromium-win32.png": {
+    "mtime": 1793168281.3703086,
+    "seen": 1793169750.7007167,
+    "ast_hash": "e6e6830a7f2bc8b7e21910eabd483fbe",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/kontak-390-dark-chromium-win32.png": {
+    "mtime": 1793168289.1583705,
+    "seen": 1793169750.7007194,
+    "ast_hash": "9be845b2d6e35df9b7767056f7c88ee3",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/kontak-390-light-chromium-win32.png": {
+    "mtime": 1793168280.9147737,
+    "seen": 1793169750.7007227,
+    "ast_hash": "e4d9546845d4cab9eb7c181cfbff1a8c",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/kontak-768-dark-chromium-win32.png": {
+    "mtime": 1793168288.6093123,
+    "seen": 1793169750.7007258,
+    "ast_hash": "c031b3ebd1ec09a493fac5291c2dab53",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/kontak-768-light-chromium-win32.png": {
+    "mtime": 1793168280.373531,
+    "seen": 1793169750.7007294,
+    "ast_hash": "5076266695c71d2911ae49b1021eb5fc",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/proyek-1440-dark-chromium-win32.png": {
+    "mtime": 1793168279.7982566,
+    "seen": 1793169750.7007325,
+    "ast_hash": "1207e3f398a502c05087967bc0a1ea97",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/proyek-1440-light-chromium-win32.png": {
+    "mtime": 1793168271.2013566,
+    "seen": 1793169750.7007356,
+    "ast_hash": "9771622e13a07e2c3a9dc95b59e81a55",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/proyek-320-dark-chromium-win32.png": {
+    "mtime": 1793168281.5226214,
+    "seen": 1793169750.7007391,
+    "ast_hash": "7dae5e4e197d3a9a2b3cbd0b81e45511",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/proyek-320-light-chromium-win32.png": {
+    "mtime": 1793168273.299177,
+    "seen": 1793169750.7007785,
+    "ast_hash": "1c8c1aa33aca36fbd4350dc60715a66f",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/proyek-390-dark-chromium-win32.png": {
+    "mtime": 1793168281.0608275,
+    "seen": 1793169750.700781,
+    "ast_hash": "3125703e889e170afa264efa1f6d9f4e",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/proyek-390-light-chromium-win32.png": {
+    "mtime": 1793168272.7592392,
+    "seen": 1793169750.7007837,
+    "ast_hash": "d12b94d6abb27250d8bbd421bf8c9e93",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/proyek-768-dark-chromium-win32.png": {
+    "mtime": 1793168280.5518818,
+    "seen": 1793169750.700786,
+    "ast_hash": "edc3a29aeebaa8f9495bbf452484858e",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/proyek-768-light-chromium-win32.png": {
+    "mtime": 1793168272.032466,
+    "seen": 1793169750.7007892,
+    "ast_hash": "b46bb2c3627ea59182f9d9ba7789dac9",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/studi-kasus-1440-dark-chromium-win32.png": {
+    "mtime": 1793168287.9132073,
+    "seen": 1793169750.7007916,
+    "ast_hash": "4457b84cc4870f5a766bb8c9d5ddc22b",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/studi-kasus-1440-light-chromium-win32.png": {
+    "mtime": 1793168273.4081917,
+    "seen": 1793169750.7007942,
+    "ast_hash": "742f160f3119e37132e5d92890b675a1",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/studi-kasus-320-dark-chromium-win32.png": {
+    "mtime": 1793168289.674783,
+    "seen": 1793169750.7007966,
+    "ast_hash": "c55c3b24686f15201d35cbd83c8ed209",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/studi-kasus-320-light-chromium-win32.png": {
+    "mtime": 1793168275.199745,
+    "seen": 1793169750.7007992,
+    "ast_hash": "f4625990428e06c36070be6018b4f3e8",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/studi-kasus-390-dark-chromium-win32.png": {
+    "mtime": 1793168289.185263,
+    "seen": 1793169750.7008018,
+    "ast_hash": "5c7ae3c8a4c8e2f9560ec7127e2096b0",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/studi-kasus-390-light-chromium-win32.png": {
+    "mtime": 1793168274.8046198,
+    "seen": 1793169750.7008042,
+    "ast_hash": "2dea9d6c37807d347413bb01754a84bb",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/studi-kasus-768-dark-chromium-win32.png": {
+    "mtime": 1793168288.6561627,
+    "seen": 1793169750.7008066,
+    "ast_hash": "53f66bd0fab665a8d2b02d3fed244c31",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/studi-kasus-768-light-chromium-win32.png": {
+    "mtime": 1793168274.240829,
+    "seen": 1793169750.7008092,
+    "ast_hash": "5ebc6854e468a4990a2222f6c135c69e",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/tentang-1440-dark-chromium-win32.png": {
+    "mtime": 1793168287.8198962,
+    "seen": 1793169750.7008119,
+    "ast_hash": "51e9a53db8e59932374ca74964f72967",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/tentang-1440-light-chromium-win32.png": {
+    "mtime": 1793168518.209149,
+    "seen": 1793169750.7008145,
+    "ast_hash": "3ed995ecd2b584b44eacfaed9fc84869",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/tentang-320-dark-chromium-win32.png": {
+    "mtime": 1793168289.474903,
+    "seen": 1793169750.7008169,
+    "ast_hash": "c874c2f80b7479a1e4e5821fe8a8893a",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/tentang-320-light-chromium-win32.png": {
+    "mtime": 1793168272.9053707,
+    "seen": 1793169750.7008193,
+    "ast_hash": "e39f3ffad96d949322c1a7d0139334f4",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/tentang-390-dark-chromium-win32.png": {
+    "mtime": 1793168289.0434659,
+    "seen": 1793169750.700822,
+    "ast_hash": "4b4290ff703658c5f5c90c32df8664cd",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/tentang-390-light-chromium-win32.png": {
+    "mtime": 1793168272.3956358,
+    "seen": 1793169750.7008245,
+    "ast_hash": "47b88f17bb229a4140ee8913af071e70",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/tentang-768-dark-chromium-win32.png": {
+    "mtime": 1793168288.554448,
+    "seen": 1793169750.7008274,
+    "ast_hash": "d6790bc1ff34337fafd8873ad8d7cc3f",
+    "semantic_hash": ""
+  },
+  "e2e/visual.spec.ts-snapshots/tentang-768-light-chromium-win32.png": {
+    "mtime": 1793168271.7435188,
+    "seen": 1793169750.70083,
+    "ast_hash": "898503fee12de9ca508913c23f69ba7f",
     "semantic_hash": ""
   },
   "pnpm-lock.yaml": {
