@@ -8,6 +8,7 @@ export {
 } from "./server/queries";
 export { updateProfile } from "./server/actions";
 export { Hero } from "./components/public/Hero";
+export { ProfilePortrait } from "./components/public/ProfilePortrait";
 export { MetricRail } from "./components/public/MetricRail";
 export { SignalPanel } from "./components/public/SignalPanel";
 export { AboutStrip } from "./components/public/AboutStrip";

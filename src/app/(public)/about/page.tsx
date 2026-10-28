@@ -11,6 +11,7 @@ import {
   CredentialRow,
   ExperienceTimeline,
   Principles,
+  ProfilePortrait,
   getCertificates,
   getEducation,
   getExperiences,
@@ -43,6 +44,8 @@ export default async function AboutPage() {
     ]);
 
   const resumeUrl = profile?.resumeUrl ?? "/resume.pdf";
+  const name = profile?.fullName ?? siteConfig.name;
+  const role = profile?.headline ?? siteConfig.role;
 
   // Angka dari data + metrik terkurasi; fakta nol tidak ditampilkan.
   const facts = [
@@ -63,15 +66,21 @@ export default async function AboutPage() {
         })}
       />
 
-      <header className="space-y-4">
-        <p className="text-muted-foreground font-mono text-[11px] tracking-[0.14em] uppercase">
-          {siteConfig.location} · {siteConfig.availability}
-        </p>
-        <SectionIntro
-          as="h1"
-          title="Tentang Rakha"
-          description="Backend & Data Engineer yang membangun sistem sampai dipakai."
-        />
+      <header className="grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-10">
+        <div className="space-y-4 lg:col-span-8">
+          <p className="text-muted-foreground font-mono text-[11px] tracking-[0.14em] uppercase">
+            {siteConfig.location} · {siteConfig.availability}
+          </p>
+          <SectionIntro
+            as="h1"
+            title="Tentang Rakha"
+            description="Backend & Data Engineer yang membangun sistem sampai dipakai."
+          />
+        </div>
+
+        <div className="lg:col-span-4">
+          <ProfilePortrait avatarUrl={profile?.avatarUrl ?? null} name={name} role={role} />
+        </div>
       </header>
 
       <AboutProof bio={profile?.bio ?? null} facts={facts} />

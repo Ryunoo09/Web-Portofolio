@@ -8,7 +8,7 @@ interface MediaFrameProps {
   aspect?: "16/9" | "16/10" | "4/3" | "1/1";
   priority?: boolean;
   sizes: string;
-  caption?: string;
+  caption?: React.ReactNode;
   fallback: React.ReactNode;
   /** `false` untuk kartu: gambar menempel tanpa border/radius tambahan. */
   framed?: boolean;

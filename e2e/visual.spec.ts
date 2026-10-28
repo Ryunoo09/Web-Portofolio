@@ -64,12 +64,17 @@ for (const theme of ["light", "dark"] as const) {
         );
       });
 
+      // Foto profil tidak ikut disimpan di baseline publik; layout tetap diuji.
+      const masks = route.name === "tentang" ? [page.locator("figure img")] : [];
+
       for (const viewport of viewports) {
         await page.setViewportSize({ width: viewport.width, height: viewport.height });
         await page.waitForTimeout(150);
         await expect(page).toHaveScreenshot(`${route.name}-${viewport.name}-${theme}.png`, {
           animations: "disabled",
           caret: "hide",
+          mask: masks,
+          maskColor: "#94a3b8",
           maxDiffPixelRatio: 0.005,
         });
       }
