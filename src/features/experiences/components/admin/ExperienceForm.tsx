@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { experienceFormSchema, type ExperienceFormValues } from "../../schemas";
 import { createExperience, updateExperience } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
-import { FormField } from "@/shared/components";
+import { FormField } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";

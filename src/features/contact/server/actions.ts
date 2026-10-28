@@ -5,7 +5,8 @@ import { createServerSupabase } from "@/shared/lib/supabase/server";
 import { revalidateMessages } from "@/shared/lib/revalidate";
 import { requireAdmin } from "@/features/auth";
 import type { ActionResult } from "@/shared/types/action-result";
-import { CONTACT_INTENT_LABELS, contactFormSchema, type ContactFormValues } from "../schemas";
+import { CONTACT_INTENT_LABELS } from "../intents";
+import { contactFormSchema, type ContactFormValues } from "../schemas";
 
 export async function submitContactMessage(input: ContactFormValues): Promise<ActionResult> {
   const parsed = contactFormSchema.safeParse(input);

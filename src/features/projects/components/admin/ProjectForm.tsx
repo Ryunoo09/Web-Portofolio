@@ -12,7 +12,7 @@ import { slugify } from "@/shared/lib/utils";
 import { PROJECT_DOMAIN_OPTIONS, type ProjectDomain } from "@/shared/lib/taxonomy";
 import { IMAGE_ACCEPT } from "@/shared/constants/media";
 import { ROUTES } from "@/shared/constants/routes";
-import { FormField, ImageUploadField } from "@/shared/components";
+import { FormField, ImageUploadField } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";

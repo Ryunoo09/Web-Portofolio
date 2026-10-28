@@ -22,7 +22,7 @@ export function Hero({ profile, latestProject }: HeroProps) {
   const location = profile?.location ?? siteConfig.location;
 
   return (
-    <section className="pt-12 pb-12 md:pt-16 md:pb-16" aria-labelledby="hero-title">
+    <section className="animate-rise pt-12 pb-12 md:pt-16 md:pb-16" aria-labelledby="hero-title">
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-7">
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] tracking-[0.14em] uppercase">

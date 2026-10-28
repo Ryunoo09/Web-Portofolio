@@ -118,3 +118,19 @@ test("form kontak: error summary muncul dan menerima fokus", async ({ page }) =>
   await expect(summary).toBeVisible();
   await expect(summary).toBeFocused();
 });
+
+test("menu mobile: Escape menutup dan fokus kembali ke tombol", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const trigger = page.getByRole("button", { name: "Buka menu navigasi" });
+  await trigger.click();
+
+  const dialog = page.getByRole("dialog", { name: "Menu" });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("link", { name: "Proyek" })).toBeVisible();
+
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
+});

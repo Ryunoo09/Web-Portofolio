@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorSummary, type ErrorSummaryEntry } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
@@ -11,61 +9,95 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import {
   CONTACT_INTENT_LABELS,
   CONTACT_INTENTS,
-  contactFormSchema,
-  type ContactFormValues,
-} from "../../schemas";
+  isContactIntent,
+  type ContactIntent,
+} from "../../intents";
+import type { ContactFormValues } from "../../schemas";
 import { submitContactMessage } from "../../server/actions";
 
-const FIELD_IDS = ["name", "email", "intent", "subject", "message"] as const;
+type FieldKey = "name" | "email" | "intent" | "subject" | "message";
+
+type FieldErrors = Partial<Record<FieldKey, string>>;
+
+const FIELD_IDS: readonly FieldKey[] = ["name", "email", "intent", "subject", "message"];
 
 const labelClass = "text-foreground text-sm font-medium";
 const errorClass = "text-destructive text-xs";
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Validasi klien ringkas; server tetap memvalidasi ulang dengan zod. */
+function validate(values: ContactFormValues): FieldErrors {
+  const errors: FieldErrors = {};
+
+  if (values.name.length < 2) errors.name = "Nama minimal 2 karakter.";
+  else if (values.name.length > 100) errors.name = "Nama maksimal 100 karakter.";
+
+  if (!EMAIL_PATTERN.test(values.email)) errors.email = "Email tidak valid.";
+  else if (values.email.length > 200) errors.email = "Email maksimal 200 karakter.";
+
+  if (values.subject.length < 3) errors.subject = "Topik minimal 3 karakter.";
+  else if (values.subject.length > 120) errors.subject = "Topik maksimal 120 karakter.";
+
+  if (values.message.length < 5) errors.message = "Pesan minimal 5 karakter.";
+  else if (values.message.length > 2000) errors.message = "Pesan maksimal 2.000 karakter.";
+
+  return errors;
+}
+
+function readForm(form: HTMLFormElement): ContactFormValues {
+  const data = new FormData(form);
+  const rawIntent = String(data.get("intent") ?? "recruiter");
+
+  return {
+    name: String(data.get("name") ?? "").trim(),
+    email: String(data.get("email") ?? "").trim(),
+    intent: isContactIntent(rawIntent) ? (rawIntent as ContactIntent) : "recruiter",
+    subject: String(data.get("subject") ?? "").trim(),
+    message: String(data.get("message") ?? "").trim(),
+    website: String(data.get("website") ?? ""),
+  };
+}
+
 /**
- * Form kontak: label terlihat, honeypot tersembunyi, ringkasan error yang
- * mengambil fokus, dan panel sukses `role="status"`. Intent disimpan sebagai
- * awalan subjek karena tabel `contact_messages` belum punya kolom intent.
+ * Form kontak tanpa pustaka form di klien: validasi lokal ringkas, ringkasan
+ * error yang mengambil fokus, dan panel sukses `role="status"`. Intent disimpan
+ * sebagai awalan subjek karena tabel `contact_messages` belum punya kolomnya.
  */
 export function ContactForm() {
-  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [errors, setErrors] = React.useState<FieldErrors>({});
   const [serverError, setServerError] = React.useState<string | null>(null);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<ContactFormValues>({
-    resolver: zodResolver(contactFormSchema),
-    // Fokus error dipegang `ErrorSummary` (di atas form), bukan field pertama.
-    shouldFocusError: false,
-    defaultValues: {
-      name: "",
-      email: "",
-      intent: "recruiter",
-      subject: "",
-      message: "",
-      website: "",
-    },
-  });
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
 
   const summaryErrors: ErrorSummaryEntry[] = FIELD_IDS.flatMap((field) => {
-    const message = errors[field]?.message;
-    return message ? [{ id: field, message: String(message) }] : [];
+    const message = errors[field];
+    return message ? [{ id: field, message }] : [];
   });
 
-  const onSubmit = async (values: ContactFormValues) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setServerError(null);
+
+    const form = event.currentTarget;
+    const values = readForm(form);
+    const fieldErrors = validate(values);
+    setErrors(fieldErrors);
+    if (Object.keys(fieldErrors).length > 0) return;
+
+    setIsSubmitting(true);
     try {
       const result = await submitContactMessage(values);
       if (result.ok) {
         setIsSuccess(true);
-        reset();
+        form.reset();
         return;
       }
       setServerError(result.error ?? "Pesan belum terkirim. Coba lagi atau email langsung.");
     } catch {
       setServerError("Pesan belum terkirim. Coba lagi atau email langsung.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -83,7 +115,13 @@ export function ContactForm() {
         <p className="text-muted-foreground max-w-[52ch] text-sm leading-relaxed">
           Saya akan membalas dalam 1×24 jam kerja.
         </p>
-        <Button variant="secondary" onClick={() => setIsSuccess(false)}>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setIsSuccess(false);
+            setErrors({});
+          }}
+        >
           Kirim pesan lain
         </Button>
       </section>
@@ -96,7 +134,7 @@ export function ContactForm() {
         Kirim pesan
       </h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} aria-busy={isSubmitting} className="space-y-5">
+      <form onSubmit={onSubmit} noValidate aria-busy={isSubmitting} className="space-y-5">
         <ErrorSummary errors={summaryErrors} />
 
         {serverError && (
@@ -108,13 +146,7 @@ export function ContactForm() {
         {/* Honeypot: tidak terlihat, tidak bisa di-tab. */}
         <div hidden aria-hidden="true">
           <label htmlFor="website">Website</label>
-          <input
-            id="website"
-            type="text"
-            tabIndex={-1}
-            autoComplete="off"
-            {...register("website")}
-          />
+          <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2">
@@ -124,15 +156,15 @@ export function ContactForm() {
             </Label>
             <Input
               id="name"
+              name="name"
               autoComplete="name"
               placeholder="Nama Anda"
               aria-invalid={Boolean(errors.name)}
               aria-describedby={errors.name ? "name-error" : undefined}
-              {...register("name")}
             />
             {errors.name && (
               <p id="name-error" className={errorClass}>
-                {errors.name.message}
+                {errors.name}
               </p>
             )}
           </div>
@@ -143,6 +175,7 @@ export function ContactForm() {
             </Label>
             <Input
               id="email"
+              name="email"
               type="email"
               inputMode="email"
               autoComplete="email"
@@ -150,11 +183,10 @@ export function ContactForm() {
               placeholder="nama@email.com"
               aria-invalid={Boolean(errors.email)}
               aria-describedby={errors.email ? "email-error" : undefined}
-              {...register("email")}
             />
             {errors.email && (
               <p id="email-error" className={errorClass}>
-                {errors.email.message}
+                {errors.email}
               </p>
             )}
           </div>
@@ -166,8 +198,9 @@ export function ContactForm() {
           </Label>
           <select
             id="intent"
+            name="intent"
+            defaultValue="recruiter"
             className="border-input bg-surface text-foreground focus-visible:ring-ring h-11 w-full rounded-md border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
-            {...register("intent")}
           >
             {CONTACT_INTENTS.map((intent) => (
               <option key={intent} value={intent}>
@@ -183,14 +216,14 @@ export function ContactForm() {
           </Label>
           <Input
             id="subject"
+            name="subject"
             placeholder="Peluang Backend / pertanyaan proyek"
             aria-invalid={Boolean(errors.subject)}
             aria-describedby={errors.subject ? "subject-error" : undefined}
-            {...register("subject")}
           />
           {errors.subject && (
             <p id="subject-error" className={errorClass}>
-              {errors.subject.message}
+              {errors.subject}
             </p>
           )}
         </div>
@@ -201,19 +234,19 @@ export function ContactForm() {
           </Label>
           <Textarea
             id="message"
+            name="message"
             rows={5}
             placeholder="Ceritakan peran, tim, atau masalah yang ingin diselesaikan."
             aria-invalid={Boolean(errors.message)}
             aria-describedby={errors.message ? "message-hint message-error" : "message-hint"}
             className="min-h-[132px] resize-y"
-            {...register("message")}
           />
           <p id="message-hint" className="text-muted-foreground text-xs">
             Minimal 5 karakter, maksimal 2.000 karakter.
           </p>
           {errors.message && (
             <p id="message-error" className={errorClass}>
-              {errors.message.message}
+              {errors.message}
             </p>
           )}
         </div>

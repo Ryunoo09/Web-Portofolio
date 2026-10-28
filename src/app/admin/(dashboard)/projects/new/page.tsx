@@ -1,4 +1,4 @@
-import { AdminPageHeader } from "@/shared/components";
+import { AdminPageHeader } from "@/shared/components/admin";
 import { ProjectForm } from "@/features/projects/components/admin/ProjectForm";
 import { getAllSkills } from "@/features/skills/server/queries";
 

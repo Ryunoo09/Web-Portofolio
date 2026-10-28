@@ -3,25 +3,26 @@ import type { ReactNode } from "react";
 import { Space_Grotesk, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { ThemeProvider } from "@/shared/components/common/ThemeProvider";
-import { Toaster } from "sonner";
 import "./globals.css";
 
+// `display: "optional"`: teks langsung tampil dengan fallback bila font belum siap,
+// sehingga LCP tidak mundur karena font swap di koneksi lambat.
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
-  display: "swap",
+  display: "optional",
 });
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-jakarta",
-  display: "swap",
+  display: "optional",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
-  display: "swap",
+  display: "optional",
 });
 
 export const metadata: Metadata = {
@@ -74,7 +75,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           disableTransitionOnChange
         >
           {children}
-          <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
     </html>

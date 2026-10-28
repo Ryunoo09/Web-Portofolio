@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Edit } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
-import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components";
+import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components/admin";
 import { deleteSkill, toggleSkillPublish } from "../../server/actions";
 import { getSkillLevelLabel } from "../../levels";
 import { ROUTES } from "@/shared/constants/routes";

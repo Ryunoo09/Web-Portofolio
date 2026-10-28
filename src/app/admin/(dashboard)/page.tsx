@@ -10,7 +10,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { ROUTES } from "@/shared/constants/routes";
-import { AdminPageHeader } from "@/shared/components";
+import { AdminPageHeader } from "@/shared/components/admin";
 import { Card } from "@/shared/components/ui/card";
 import { countProjects } from "@/features/projects";
 import { countSkills } from "@/features/skills";

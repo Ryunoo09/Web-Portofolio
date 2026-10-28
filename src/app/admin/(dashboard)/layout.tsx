@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { AdminSidebar, getCurrentAdmin } from "@/features/auth";
+import { AdminSidebar } from "@/features/auth/admin";
+import { getCurrentAdmin } from "@/features/auth";
 import { countUnreadMessages } from "@/features/contact";
 
 export default async function AdminDashboardLayout({ children }: { children: ReactNode }) {

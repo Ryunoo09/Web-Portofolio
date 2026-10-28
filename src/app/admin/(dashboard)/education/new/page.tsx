@@ -1,5 +1,5 @@
-import { AdminPageHeader } from "@/shared/components";
-import { EducationForm } from "@/features/education";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { EducationForm } from "@/features/education/admin";
 
 export default function AdminEducationNewPage() {
   return (

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Edit } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components";
+import { ConfirmDeleteDialog, StatusToggle } from "@/shared/components/admin";
 import { deleteLanguage, toggleLanguagePublish } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
 import {

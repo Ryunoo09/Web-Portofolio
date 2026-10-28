@@ -35,6 +35,7 @@ function makeProjectRef(slug: string, title: string, skillNames: string[]): Proj
     isFeatured: false,
     isPublished: true,
     createdAt: "2026-01-01",
+    updatedAt: "2026-01-01T00:00:00Z",
     sortOrder: 1,
     projectType: "Tugas Kuliah",
     role: null,

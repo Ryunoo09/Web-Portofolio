@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { AdminPageHeader } from "@/shared/components";
-import { CertificateForm, getAllCertificates } from "@/features/certificates";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { CertificateForm } from "@/features/certificates/admin";
+import { getAllCertificates } from "@/features/certificates";
 
 export default async function AdminCertificateEditPage({
   params,

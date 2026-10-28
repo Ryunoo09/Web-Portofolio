@@ -1,5 +1,5 @@
-import { AdminPageHeader } from "@/shared/components";
-import { CertificateForm } from "@/features/certificates";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { CertificateForm } from "@/features/certificates/admin";
 
 export default function AdminCertificateNewPage() {
   return (

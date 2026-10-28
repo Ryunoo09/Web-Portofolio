@@ -7,6 +7,4 @@ export {
   buildSkillProofIndex,
 } from "./components/public/CapabilityBoard";
 export type { SkillCategoryGroup } from "./components/public/CapabilityBoard";
-export { SkillTable } from "./components/admin/SkillTable";
-export { SkillForm } from "./components/admin/SkillForm";
 export type { Skill } from "./types";

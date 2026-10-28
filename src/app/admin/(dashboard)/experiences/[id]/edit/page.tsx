@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { AdminPageHeader } from "@/shared/components";
-import { ExperienceForm, getAllExperiences } from "@/features/experiences";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { ExperienceForm } from "@/features/experiences/admin";
+import { getAllExperiences } from "@/features/experiences";
 
 export default async function AdminExperienceEditPage({
   params,

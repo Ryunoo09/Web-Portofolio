@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { ROUTES } from "@/shared/constants/routes";
-import { AdminPageHeader } from "@/shared/components";
+import { AdminPageHeader } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
-import { LanguageTable, getAllLanguages } from "@/features/languages";
+import { LanguageTable } from "@/features/languages/admin";
+import { getAllLanguages } from "@/features/languages";
 
 export default async function AdminLanguagesPage() {
   const languages = await getAllLanguages();

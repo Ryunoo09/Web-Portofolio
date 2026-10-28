@@ -1,14 +1,5 @@
 import { z } from "zod";
-
-export const CONTACT_INTENTS = ["recruiter", "collaboration", "other"] as const;
-
-export type ContactIntent = (typeof CONTACT_INTENTS)[number];
-
-export const CONTACT_INTENT_LABELS: Record<ContactIntent, string> = {
-  recruiter: "Rekruter",
-  collaboration: "Kolaborasi",
-  other: "Lainnya",
-};
+import { CONTACT_INTENTS } from "./intents";
 
 export const contactFormSchema = z.object({
   name: z

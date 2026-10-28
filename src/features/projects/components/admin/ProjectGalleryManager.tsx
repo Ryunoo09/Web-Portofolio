@@ -13,7 +13,7 @@ import {
 } from "../../server/actions";
 import { IMAGE_ACCEPT, MAX_UPLOAD_BYTES } from "@/shared/constants/media";
 import { cn } from "@/shared/lib/utils";
-import { ConfirmDeleteDialog } from "@/shared/components";
+import { ConfirmDeleteDialog } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { AdminPageHeader } from "@/shared/components";
-import { EducationForm, getAllEducation } from "@/features/education";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { EducationForm } from "@/features/education/admin";
+import { getAllEducation } from "@/features/education";
 
 export default async function AdminEducationEditPage({
   params,

@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { profileFormSchema, type ProfileFormValues } from "../../schemas";
 import { updateProfile, uploadProfileImage, uploadProfileResume } from "../../server/actions";
 import { DOCUMENT_ACCEPT, IMAGE_ACCEPT } from "@/shared/constants/media";
-import { FormField, ImageUploadField } from "@/shared/components";
+import { FormField, ImageUploadField } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";

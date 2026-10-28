@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { certificateFormSchema, type CertificateFormValues } from "../../schemas";
 import { createCertificate, updateCertificate, uploadCertificateImage } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
-import { FormField, ImageUploadField } from "@/shared/components";
+import { FormField, ImageUploadField } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Checkbox } from "@/shared/components/ui/checkbox";

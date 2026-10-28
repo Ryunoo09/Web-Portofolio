@@ -63,6 +63,18 @@
   }
 }
 
+/* Entrance hanya untuk hero/section pertama: opacity + translateY, 200ms. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .dark {
   color-scheme: dark;
 
@@ -148,12 +160,20 @@
   --radius-lg: var(--radius-panel);
   --radius-xl: 10px;
 
-  --animate-ticker: ticker 48s linear infinite;
+  --animate-ticker: ticker 28s linear infinite;
+  --animate-rise: rise 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @layer base {
   html {
     scroll-padding-top: 88px;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
@@ -213,4 +233,13 @@
   -webkit-mask-image: linear-gradient(to bottom, black, transparent 78%);
   mask-image: linear-gradient(to bottom, black, transparent 78%);
   contain: paint;
+}
+
+/* Dekorasi latar dimatikan di mobile: area besar dengan mask/gradient membuat
+   style & layout mahal, sementara nilainya dekoratif. */
+@media (max-width: 767px) {
+  .site-aura,
+  .site-grid {
+    display: none;
+  }
 }

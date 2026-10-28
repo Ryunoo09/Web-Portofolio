@@ -16,6 +16,5 @@ export { AboutProof } from "./components/public/AboutProof";
 export { Principles } from "./components/public/Principles";
 export { ExperienceTimeline } from "./components/public/ExperienceTimeline";
 export { CredentialRow } from "./components/public/CredentialRow";
-export { ProfileForm } from "./components/admin/ProfileForm";
 export type { AboutFact } from "./components/public/AboutProof";
 export type { Profile, Experience, Education, Certificate } from "./types";
