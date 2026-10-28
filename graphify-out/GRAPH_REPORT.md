@@ -1,23 +1,23 @@
 # Graph Report - portfolio  (2026-10-28)
 
 ## Corpus Check
-- 315 files · ~71,232 words
+- 315 files · ~71,334 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 33 file(s) not represented in the graph (top: (none) 29, .example 1, .ico 1)
 
 ## Summary
-- 1293 nodes · 4083 edges · 68 communities (56 shown, 12 thin omitted)
+- 1293 nodes · 4082 edges · 67 communities (55 shown, 12 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 41 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5b583b69`
+- Built from commit: `7f2698b5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- profile/server/actions.ts
-- LoginForm.tsx
+- createServerSupabase
+- auth/index.ts
 - Button
 - projects/index.ts
 - AdminSidebar.tsx
@@ -26,7 +26,7 @@
 - GitHub Deploy Workflow
 - Dev Dependencies Manifest
 - ProjectForm.tsx
-- EducationForm.tsx
+- requireAdmin
 - CaseToc.tsx
 - createPublicClient
 - Runtime Dependencies Manifest
@@ -55,7 +55,7 @@
 - Commitlint Configuration
 - PostCSS Configuration
 - experiences/server/actions.ts
-- createServerSupabase
+- projects/server/actions.ts
 - JsonLd
 - CaseStudy.tsx
 - [slug]/opengraph-image.tsx
@@ -75,7 +75,6 @@
 - Project
 - app/layout.tsx
 - database.ts
-- server.ts
 - next.config.ts
 - languages/server/actions.ts
 
@@ -111,19 +110,19 @@
 - **Visual Identity System (palette, type, spacing, anti-patterns)** — design_system_portfolio_master_color_palette, design_system_portfolio_master_typography, design_system_portfolio_master_spacing, design_system_portfolio_master_anti_patterns, handoff_design_typography [EXTRACTED 1.00]
 - **Layered Architecture and Server Action Convention** — handoff_architecture_rules, handoff_server_action_pattern, readme_architecture_rules, readme_server_action_pattern, readme_admin_defense_layers [INFERRED 0.85]
 
-## Communities (68 total, 12 thin omitted)
+## Communities (67 total, 12 thin omitted)
 
-### Community 0 - "profile/server/actions.ts"
-Cohesion: 0.39
-Nodes (6): ProfileFormValues, invalidInput(), ParsedProfile, updateProfile(), revalidateProfile(), emptyToNull()
+### Community 0 - "createServerSupabase"
+Cohesion: 0.19
+Nodes (19): CertificateFormValues, createCertificate(), deleteCertificate(), invalidInput(), ParsedCertificate, toColumns(), toggleCertificatePublish(), updateCertificate() (+11 more)
 
-### Community 1 - "LoginForm.tsx"
-Cohesion: 0.21
-Nodes (10): AdminLoginPage(), metadata, initialState, LoginForm(), LoginInput, loginSchema, login(), LoginState (+2 more)
+### Community 1 - "auth/index.ts"
+Cohesion: 0.31
+Nodes (6): LoginInput, loginSchema, LoginState, logout(), getCurrentAdmin(), AdminUser
 
 ### Community 2 - "Button"
 Cohesion: 0.08
-Nodes (70): lucide-react, next, AdminCertificatesPage(), AdminEducationEditPage(), AdminEducationNewPage(), AdminEducationPage(), AdminExperienceEditPage(), AdminExperienceNewPage() (+62 more)
+Nodes (69): lucide-react, next, AdminCertificatesPage(), AdminEducationEditPage(), AdminEducationNewPage(), AdminEducationPage(), AdminExperienceEditPage(), AdminExperienceNewPage() (+61 more)
 
 ### Community 3 - "projects/index.ts"
 Cohesion: 0.47
@@ -150,28 +149,28 @@ Cohesion: 0.07
 Nodes (38): devDependencies, @commitlint/cli@^21.2.3, @commitlint/config-conventional@^21.2.3, husky@^9.1.7, jsdom@^30.1.2, lint-staged@^17.6.0, prettier@^3.9.9, prettier-plugin-tailwindcss@^0.8.1 (+30 more)
 
 ### Community 9 - "ProjectForm.tsx"
-Cohesion: 0.12
-Nodes (35): @hookform/resolvers, react-hook-form, sonner, AdminCertificateNewPage(), AdminProjectEditPage(), metadata, CertificateForm(), EducationForm() (+27 more)
+Cohesion: 0.09
+Nodes (47): @hookform/resolvers, react-hook-form, sonner, AdminCertificateNewPage(), AdminProjectEditPage(), metadata, AdminLoginPage(), metadata (+39 more)
 
-### Community 10 - "EducationForm.tsx"
-Cohesion: 0.24
-Nodes (11): EducationFormValues, createEducation(), deleteEducation(), invalidInput(), ParsedEducation, toColumns(), toggleEducationPublish(), updateEducation() (+3 more)
+### Community 10 - "requireAdmin"
+Cohesion: 0.40
+Nodes (9): requireAdmin(), ExperienceFormValues, createExperience(), deleteExperience(), invalidInput(), ParsedExperience, toColumns(), toggleExperiencePublish() (+1 more)
 
 ### Community 11 - "CaseToc.tsx"
 Cohesion: 0.25
 Nodes (5): CaseTocProps, CaseTocSection, MockIntersectionObserver, ObserverCallback, sections
 
 ### Community 12 - "createPublicClient"
-Cohesion: 0.27
+Cohesion: 0.26
 Nodes (8): OrganizationFormProps, OrganizationTableProps, OrganizationRow, OrganizationRow, row, toOrganization(), getPublishedOrganizations(), Organization
 
 ### Community 13 - "Runtime Dependencies Manifest"
-Cohesion: 0.07
-Nodes (30): dependencies, class-variance-authority@^0.7.1, clsx@^2.1.1, cn@^0.4.0, @hookform/resolvers@^5.9.1, lucide-react@^1.52.0, next@16.3.8, next-themes@^0.4.6 (+22 more)
+Cohesion: 0.06
+Nodes (32): dependencies, class-variance-authority@^0.7.1, clsx@^2.1.1, cn@^0.4.0, @hookform/resolvers@^5.9.1, lucide-react@^1.52.0, next@16.3.8, next-themes@^0.4.6 (+24 more)
 
 ### Community 14 - "contact/index.ts"
-Cohesion: 0.11
-Nodes (28): AdminMessagesPage(), formatDateTime(), MessageInbox(), MessageInboxProps, ContactForm(), FIELD_IDS, FieldErrors, FieldKey (+20 more)
+Cohesion: 0.10
+Nodes (30): AdminDashboardLayout(), AdminMessagesPage(), formatDateTime(), MessageInbox(), MessageInboxProps, ContactForm(), FIELD_IDS, FieldErrors (+22 more)
 
 ### Community 15 - "(public)/skills/page.tsx"
 Cohesion: 0.11
@@ -194,8 +193,8 @@ Cohesion: 0.10
 Nodes (19): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+11 more)
 
 ### Community 20 - "createServerSupabase"
-Cohesion: 0.16
-Nodes (19): ExperienceFormValues, createExperience(), deleteExperience(), invalidInput(), ParsedExperience, toColumns(), toggleExperiencePublish(), updateExperience() (+11 more)
+Cohesion: 0.28
+Nodes (11): organizationFormSchema, OrganizationFormValues, valid, createOrganization(), deleteOrganization(), invalidInput(), ParsedOrganization, toColumns() (+3 more)
 
 ### Community 21 - "shadcn Component Registry Config"
 Cohesion: 0.11
@@ -218,8 +217,8 @@ Cohesion: 0.11
 Nodes (25): alt, contentType, OpengraphImage(), size, alt, contentType, OpengraphImage(), size (+17 more)
 
 ### Community 27 - "withOfflineFallback"
-Cohesion: 0.21
-Nodes (10): LanguageFormProps, LanguageTableProps, LanguageListProps, LanguageRow, LanguageRow, row, toLanguage(), getPublishedLanguages() (+2 more)
+Cohesion: 0.23
+Nodes (10): LanguageFormProps, LanguageTableProps, LanguageList(), LanguageListProps, LanguageRow, LanguageRow, row, toLanguage() (+2 more)
 
 ### Community 28 - "ESLint Configuration"
 Cohesion: 0.25
@@ -238,8 +237,8 @@ Cohesion: 0.40
 Nodes (5): File / Document Icon (16px monochrome UI glyph), Globe / World Icon (16px monochrome UI glyph), Next.js Wordmark Logo (black horizontal logotype, 394x80), Vercel Triangle Mark (white on transparent, 1155x1000), Browser Window Icon (16px monochrome UI glyph with three dots)
 
 ### Community 33 - "cn"
-Cohesion: 0.14
-Nodes (16): CardAction(), CardContent(), CardDescription(), CardFooter(), CardHeader(), CardTitle(), DropdownMenuCheckboxItem(), DropdownMenuContent() (+8 more)
+Cohesion: 0.12
+Nodes (18): EmptyState(), EmptyStateProps, CardAction(), CardContent(), CardDescription(), CardFooter(), CardHeader(), CardTitle() (+10 more)
 
 ### Community 34 - "pnpm Workspace Build Approvals"
 Cohesion: 0.50
@@ -247,11 +246,11 @@ Nodes (3): allowBuilds, sharp, unrs-resolver
 
 ### Community 41 - "experiences/server/actions.ts"
 Cohesion: 0.12
-Nodes (15): zod, certificateFormSchema, valid, educationFormSchema, valid, experienceFormSchema, valid, profileFormSchema (+7 more)
+Nodes (21): zod, certificateFormSchema, valid, educationFormSchema, EducationFormValues, valid, createEducation(), deleteEducation() (+13 more)
 
-### Community 45 - "createServerSupabase"
+### Community 45 - "projects/server/actions.ts"
 Cohesion: 0.17
-Nodes (31): requireAdmin(), CertificateFormValues, createCertificate(), deleteCertificate(), invalidInput(), ParsedCertificate, toColumns(), toggleCertificatePublish() (+23 more)
+Nodes (17): projectFormSchema, ProjectFormValues, valid, cleanList(), createProject(), deleteProject(), deleteProjectImage(), imageInputSchema (+9 more)
 
 ### Community 46 - "JsonLd"
 Cohesion: 0.12
@@ -278,11 +277,11 @@ Cohesion: 0.15
 Nodes (16): server-only@^0.0.1, server-only, DOCUMENT_ACCEPT, DOCUMENT_MIME_TO_EXTENSION, IMAGE_MIME_TO_EXTENSION, MAX_UPLOAD_BYTES, MEDIA_BUCKET, assertAllowedFile() (+8 more)
 
 ### Community 52 - "projects/server/queries.ts"
-Cohesion: 0.19
-Nodes (14): ProjectImageFields, ProjectImageRow, ProjectRow, ProjectSkill, ProjectWithRelations, ProjectImageRow, ProjectRow, toProject() (+6 more)
+Cohesion: 0.18
+Nodes (15): ProjectImageFields, ProjectImageRow, ProjectRow, ProjectSkill, ProjectWithRelations, ProjectImageRow, ProjectRow, toProject() (+7 more)
 
 ### Community 54 - "skills/server/actions.ts"
-Cohesion: 0.29
+Cohesion: 0.27
 Nodes (11): skillFormSchema, SkillFormValues, valid, createSkill(), deleteSkill(), invalidInput(), toColumns(), toErrorMessage() (+3 more)
 
 ### Community 55 - "vitest"
@@ -290,15 +289,15 @@ Cohesion: 0.19
 Nodes (8): @testing-library/react, @testing-library/user-event, vitest, NotFound(), projects, replace, { refreshMock }, { refreshMock }
 
 ### Community 56 - "react"
-Cohesion: 0.16
-Nodes (11): radix-ui, react, BulletPoints(), BulletPointsProps, EmptyState(), EmptyStateProps, SectionIntroProps, badgeVariants (+3 more)
+Cohesion: 0.17
+Nodes (11): radix-ui, react, BulletPoints(), BulletPointsProps, ImageUploadFieldProps, SectionIntroProps, StatusToggleProps, badgeVariants (+3 more)
 
 ### Community 57 - "siteConfig.ts"
 Cohesion: 0.15
 Nodes (14): generateMetadata(), generateStaticParams(), ProjectDetailPage(), ProjectDetailPageProps, revalidate, sitemap(), ProjectJsonLd, projectMetadata() (+6 more)
 
 ### Community 58 - "experiences/server/queries.ts"
-Cohesion: 0.27
+Cohesion: 0.26
 Nodes (8): ExperienceFormProps, ExperienceTableProps, ExperienceRow, ExperienceRow, row, toExperience(), getPublishedExperiences(), Experience
 
 ### Community 59 - "withOfflineFallback"
@@ -322,20 +321,16 @@ Cohesion: 0.28
 Nodes (6): jakarta, jetbrainsMono, metadata, RootLayout(), spaceGrotesk, ThemeProvider()
 
 ### Community 65 - "database.ts"
-Cohesion: 0.12
-Nodes (14): @supabase/ssr@^0.12.7, @supabase/supabase-js@^2.117.2, @supabase/ssr, @supabase/supabase-js, CompositeTypes, Constants, Database, DatabaseWithoutInternals (+6 more)
-
-### Community 66 - "server.ts"
-Cohesion: 0.50
-Nodes (4): AdminDashboardLayout(), getCurrentAdmin(), AdminUser, countUnreadMessages()
+Cohesion: 0.14
+Nodes (12): @supabase/supabase-js@^2.117.2, @supabase/supabase-js, CompositeTypes, Constants, Database, DatabaseWithoutInternals, DefaultSchema, Enums (+4 more)
 
 ### Community 67 - "next.config.ts"
 Cohesion: 0.50
 Nodes (3): contentSecurityPolicy, nextConfig, securityHeaders
 
 ### Community 69 - "languages/server/actions.ts"
-Cohesion: 0.24
-Nodes (11): LANGUAGE_LEVELS, languageFormSchema, LanguageFormValues, valid, createLanguage(), deleteLanguage(), invalidInput(), ParsedLanguage (+3 more)
+Cohesion: 0.31
+Nodes (8): createLanguage(), deleteLanguage(), invalidInput(), ParsedLanguage, toColumns(), toggleLanguagePublish(), updateLanguage(), ActionResult
 
 ## Knowledge Gaps
 - **12 isolated node(s):** `File / Document Icon (16px monochrome UI glyph)`, `Globe / World Icon (16px monochrome UI glyph)`, `Vercel Triangle Mark (white on transparent, 1155x1000)`, `Cloudflare Proxied DNS with Full (strict) TLS`, `IMAGE_TAG Rollback by Commit SHA` (+7 more)
@@ -345,17 +340,17 @@ Nodes (11): LANGUAGE_LEVELS, languageFormSchema, LanguageFormValues, valid, crea
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `next` connect `Button` to `profile/server/actions.ts`, `LoginForm.tsx`, `AdminSidebar.tsx`, `profile/index.ts`, `Dev Dependencies Manifest`, `ProjectForm.tsx`, `EducationForm.tsx`, `Runtime Dependencies Manifest`, `contact/index.ts`, `(public)/skills/page.tsx`, `(dashboard)/page.tsx`, `withOfflineFallback`, `og-image.tsx`, `taxonomy.ts`, `JsonLd`, `CaseStudy.tsx`, `[slug]/opengraph-image.tsx`, `react`, `react`, `vitest`, `react`, `siteConfig.ts`, `(public)/page.tsx`, `Project`, `app/layout.tsx`, `database.ts`, `server.ts`, `next.config.ts`?**
+- **Why does `next` connect `Button` to `createServerSupabase`, `auth/index.ts`, `AdminSidebar.tsx`, `profile/index.ts`, `Dev Dependencies Manifest`, `ProjectForm.tsx`, `Runtime Dependencies Manifest`, `contact/index.ts`, `(public)/skills/page.tsx`, `(dashboard)/page.tsx`, `withOfflineFallback`, `og-image.tsx`, `taxonomy.ts`, `JsonLd`, `CaseStudy.tsx`, `[slug]/opengraph-image.tsx`, `react`, `react`, `skills/server/actions.ts`, `vitest`, `react`, `siteConfig.ts`, `(public)/page.tsx`, `Project`, `app/layout.tsx`, `next.config.ts`?**
   _High betweenness centrality (0.134) - this node is a cross-community bridge._
 - **What connects `File / Document Icon (16px monochrome UI glyph)`, `Globe / World Icon (16px monochrome UI glyph)`, `Vercel Triangle Mark (white on transparent, 1155x1000)` to the rest of the system?**
   _12 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Button` be split into smaller, more focused modules?**
-  _Cohesion score 0.07895167895167896 - nodes in this community are weakly interconnected._
-- **Why does `vitest` connect `vitest` to `profile/index.ts`, `Dev Dependencies Manifest`, `ProjectForm.tsx`, `CaseToc.tsx`, `createPublicClient`, `contact/index.ts`, `(public)/skills/page.tsx`, `createServerSupabase`, `withOfflineFallback`, `@vitejs/plugin-react`, `withOfflineFallback`, `taxonomy.ts`, `experiences/server/actions.ts`, `JsonLd`, `CaseStudy.tsx`, `react`, `storage.ts`, `projects/server/queries.ts`, `skills/server/actions.ts`, `react`, `siteConfig.ts`, `experiences/server/queries.ts`, `withOfflineFallback`, `vitest.setup.ts`, `(public)/page.tsx`, `Project`, `languages/server/actions.ts`?**
+  _Cohesion score 0.08137954468229698 - nodes in this community are weakly interconnected._
+- **Why does `vitest` connect `vitest` to `profile/index.ts`, `Dev Dependencies Manifest`, `ProjectForm.tsx`, `CaseToc.tsx`, `createPublicClient`, `contact/index.ts`, `(public)/skills/page.tsx`, `createServerSupabase`, `withOfflineFallback`, `@vitejs/plugin-react`, `withOfflineFallback`, `taxonomy.ts`, `experiences/server/actions.ts`, `projects/server/actions.ts`, `JsonLd`, `CaseStudy.tsx`, `react`, `storage.ts`, `projects/server/queries.ts`, `skills/server/actions.ts`, `react`, `siteConfig.ts`, `experiences/server/queries.ts`, `withOfflineFallback`, `vitest.setup.ts`, `(public)/page.tsx`, `Project`?**
   _High betweenness centrality (0.068) - this node is a cross-community bridge._
 - **Should `profile/index.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07390873015873016 - nodes in this community are weakly interconnected._
-- **Why does `react` connect `react` to `app/layout.tsx`, `LoginForm.tsx`, `server.ts`, `Button`, `AdminSidebar.tsx`, `cn`, `Dev Dependencies Manifest`, `ProjectForm.tsx`, `EducationForm.tsx`, `CaseToc.tsx`, `Runtime Dependencies Manifest`, `contact/index.ts`, `CaseStudy.tsx`, `JsonLd`, `react`, `react`, `taxonomy.ts`, `Project`?**
+  _Cohesion score 0.07163461538461538 - nodes in this community are weakly interconnected._
+- **Why does `react` connect `react` to `app/layout.tsx`, `cn`, `Button`, `AdminSidebar.tsx`, `Dev Dependencies Manifest`, `ProjectForm.tsx`, `CaseToc.tsx`, `Runtime Dependencies Manifest`, `contact/index.ts`, `CaseStudy.tsx`, `JsonLd`, `react`, `react`, `taxonomy.ts`, `Project`?**
   _High betweenness centrality (0.061) - this node is a cross-community bridge._
 - **Should `Project Docs & Architecture Rules` be split into smaller, more focused modules?**
   _Cohesion score 0.0463768115942029 - nodes in this community are weakly interconnected._

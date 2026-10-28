@@ -102,9 +102,9 @@
     "semantic_hash": "2703798791fd9e4a3c5e6db291eec730"
   },
   "src/app/(public)/about/page.tsx": {
-    "mtime": 1793182118.8240285,
-    "seen": 1793182993.7133658,
-    "ast_hash": "030ccf875d596cfe00eb0570522de17a",
+    "mtime": 1793184715.75777,
+    "seen": 1793185199.3210394,
+    "ast_hash": "af788e7531dcd563f030beb7d3d2a3b0",
     "semantic_hash": ""
   },
   "src/app/(public)/contact/page.tsx": {
@@ -774,9 +774,9 @@
     "semantic_hash": ""
   },
   "src/features/profile/index.ts": {
-    "mtime": 1793182107.954047,
-    "seen": 1793182993.7492108,
-    "ast_hash": "d29c3051cc17d9e17132dd087a273024",
+    "mtime": 1793184759.0435681,
+    "seen": 1793185199.368889,
+    "ast_hash": "4e31af707e7acfa9e5029a0d8a4dc789",
     "semantic_hash": ""
   },
   "src/features/profile/schemas.test.ts": {
@@ -1326,9 +1326,9 @@
     "semantic_hash": "8ac8f556ff72e091e623fb1d5dd4ed26"
   },
   "HANDOFF.md": {
-    "mtime": 1793183083.9481554,
-    "seen": 1793183294.8541265,
-    "ast_hash": "dc3f63f6d00a839721ac6f5384facfa4",
+    "mtime": 1793184951.3790884,
+    "seen": 1793185199.407962,
+    "ast_hash": "9ee9b89995d7af5a2369c5913b9b8bea",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1668,9 +1668,9 @@
     "semantic_hash": ""
   },
   "src/features/profile/components/public/AboutProof.tsx": {
-    "mtime": 1793160944.5034866,
-    "seen": 1793161317.4913259,
-    "ast_hash": "ac9007db9da62d13ea87c133260d592e",
+    "mtime": 1793184729.6995487,
+    "seen": 1793185199.3652933,
+    "ast_hash": "34822ad4ff0b9f45109cada021917c0d",
     "semantic_hash": ""
   },
   "src/features/profile/components/public/CredentialRow.tsx": {
@@ -1686,9 +1686,9 @@
     "semantic_hash": ""
   },
   "src/features/profile/components/public/about.test.tsx": {
-    "mtime": 1793161340.2207935,
-    "seen": 1793165489.1072452,
-    "ast_hash": "6558dfc61fef90aa013fe35d2e268e08",
+    "mtime": 1793184741.3041348,
+    "seen": 1793185199.3688836,
+    "ast_hash": "e5206756e8d55f070d904402d6ceb689",
     "semantic_hash": ""
   },
   "src/features/projects/short-labels.ts": {
@@ -2130,51 +2130,51 @@
     "semantic_hash": ""
   },
   "e2e/visual.spec.ts-snapshots/tentang-1440-dark-chromium-win32.png": {
-    "mtime": 1793183063.9762015,
-    "seen": 1793183294.863349,
-    "ast_hash": "e8c18a54e93e56ed74fded02de43e7ca",
+    "mtime": 1793184893.3588295,
+    "seen": 1793185199.4185092,
+    "ast_hash": "cc29d8a4ead935740c39fdbcd5e08293",
     "semantic_hash": ""
   },
   "e2e/visual.spec.ts-snapshots/tentang-1440-light-chromium-win32.png": {
-    "mtime": 1793183046.686029,
-    "seen": 1793183294.863353,
-    "ast_hash": "021748579fae86eea7b4a13c570b0750",
+    "mtime": 1793184879.360463,
+    "seen": 1793185199.4185152,
+    "ast_hash": "9d27d3704324fcc5ff39bc68f5ebeff5",
     "semantic_hash": ""
   },
   "e2e/visual.spec.ts-snapshots/tentang-320-dark-chromium-win32.png": {
-    "mtime": 1793183066.1354375,
-    "seen": 1793183294.8633564,
-    "ast_hash": "4730df6b476ad2e513694df201eb12f3",
+    "mtime": 1793184895.833835,
+    "seen": 1793185199.418519,
+    "ast_hash": "c874c2f80b7479a1e4e5821fe8a8893a",
     "semantic_hash": ""
   },
   "e2e/visual.spec.ts-snapshots/tentang-320-light-chromium-win32.png": {
-    "mtime": 1793183049.5397346,
-    "seen": 1793183294.8633595,
-    "ast_hash": "408df4adb6f8c2fb5d477e030de43f53",
+    "mtime": 1793184882.0695438,
+    "seen": 1793185199.418523,
+    "ast_hash": "e39f3ffad96d949322c1a7d0139334f4",
     "semantic_hash": ""
   },
   "e2e/visual.spec.ts-snapshots/tentang-390-dark-chromium-win32.png": {
-    "mtime": 1793183065.585948,
-    "seen": 1793183294.8633628,
-    "ast_hash": "cf53a01bfea7450575e7b047717efa56",
+    "mtime": 1793184895.320253,
+    "seen": 1793185199.418527,
+    "ast_hash": "ff7ccac222cb30aa95a4d56e39422084",
     "semantic_hash": ""
   },
   "e2e/visual.spec.ts-snapshots/tentang-390-light-chromium-win32.png": {
-    "mtime": 1793183048.803336,
-    "seen": 1793183294.8633661,
-    "ast_hash": "c119a8c4497fafb131b8247fc43ef5cb",
+    "mtime": 1793184881.511531,
+    "seen": 1793185199.4185307,
+    "ast_hash": "cba637945a724b9897b30b6ed41a39cc",
     "semantic_hash": ""
   },
   "e2e/visual.spec.ts-snapshots/tentang-768-dark-chromium-win32.png": {
-    "mtime": 1793183064.9326653,
-    "seen": 1793183294.8633692,
-    "ast_hash": "b1c27fc09b4b33c9e6b026e20c425b6c",
+    "mtime": 1793184894.5431,
+    "seen": 1793185199.4185345,
+    "ast_hash": "996839e08d6208957080fe953e466573",
     "semantic_hash": ""
   },
   "e2e/visual.spec.ts-snapshots/tentang-768-light-chromium-win32.png": {
-    "mtime": 1793183047.7753224,
-    "seen": 1793183294.863372,
-    "ast_hash": "1cf221394d7fde6f1700a8019bb99203",
+    "mtime": 1793184880.7850468,
+    "seen": 1793185199.418538,
+    "ast_hash": "c811a79d7b7652670adfbd4df4a836af",
     "semantic_hash": ""
   },
   "src/app/resume.pdf/route.test.ts": {
