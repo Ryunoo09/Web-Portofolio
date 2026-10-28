@@ -24,7 +24,7 @@ test("beranda memakai metrik jujur dan tanpa angka 500+", async ({ page }) => {
 test("daftar proyek membuka detail proyek", async ({ page }) => {
   await page.goto("/projects");
 
-  const detailLink = page.getByRole("link", { name: "Detail Proyek" }).first();
+  const detailLink = page.locator('[data-slot="case-card"] a').first();
   await expect(detailLink).toBeVisible();
   await detailLink.click();
 
@@ -38,10 +38,40 @@ test("daftar proyek membuka detail proyek", async ({ page }) => {
   expect(jsonLd).toContain("CreativeWork");
 });
 
+test("filter proyek menyinkronkan URL dan jumlah hasil", async ({ page }) => {
+  await page.goto("/projects");
+
+  await page.getByRole("button", { name: "Backend & API" }).click();
+
+  await expect(page).toHaveURL(/domain=backend-system/);
+  await expect(page.getByText("4 proyek")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Backend & API" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+
+  await page.getByRole("button", { name: "Reset filter" }).click();
+  await expect(page).toHaveURL(/\/projects$/);
+  await expect(page.getByText("9 proyek")).toBeVisible();
+});
+
+test("URL filter tidak diindeks mesin pencari", async ({ page }) => {
+  await page.goto("/projects?domain=backend-system");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+
+  // Tanpa filter Next tidak selalu memancarkan meta robots; bila tidak ada,
+  // default mesin pencari tetap index.
+  await page.goto("/projects");
+  const content = await page.evaluate(
+    () => document.querySelector('meta[name="robots"]')?.getAttribute("content") ?? null,
+  );
+  expect(content ?? "index,follow").not.toMatch(/noindex/);
+});
+
 test("setiap gambar proyek punya teks alternatif", async ({ page }) => {
   await page.goto("/projects");
 
-  const images = page.locator('[data-slot="card"] img');
+  const images = page.locator('[data-slot="case-card"] img');
   const count = await images.count();
 
   for (let index = 0; index < count; index += 1) {
@@ -52,10 +82,10 @@ test("setiap gambar proyek punya teks alternatif", async ({ page }) => {
 test("halaman proyek menampilkan galeri bila gambarnya ada", async ({ page }) => {
   await page.goto("/projects");
 
-  const detailLink = page.getByRole("link", { name: "Detail Proyek" }).first();
+  const detailLink = page.locator('[data-slot="case-card"] a').first();
   await detailLink.click();
 
-  const gallery = page.getByRole("heading", { name: "Galeri Proyek" });
+  const gallery = page.getByRole("heading", { name: "Galeri" });
   if (await gallery.isVisible()) {
     const galleryImages = page.locator("figure img");
     expect(await galleryImages.count()).toBeGreaterThan(0);

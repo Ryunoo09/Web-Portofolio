@@ -58,6 +58,7 @@ export function CaseCard({
 
   return (
     <article
+      data-slot="case-card"
       className={cn(
         "group border-border bg-card focus-within:border-gold/60 hover:border-gold/60 relative flex flex-col overflow-hidden rounded-lg border transition-colors",
         className,
@@ -91,7 +92,7 @@ export function CaseCard({
         <Heading
           className={cn(
             "font-heading mt-2 font-semibold tracking-tight",
-            isFeature ? "text-xl sm:text-2xl" : "text-lg",
+            isFeature ? "text-xl sm:text-2xl" : "line-clamp-2 text-lg",
           )}
         >
           <Link

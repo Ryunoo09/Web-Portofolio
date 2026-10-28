@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs, PageContainer } from "@/shared/components";
 import {
+  CaseStudy,
   getProjectBySlug,
   getPublishedProjects,
-  ProjectDetail,
+  pickNextProject,
   projectMetadata,
   ProjectJsonLd,
 } from "@/features/projects";
@@ -36,8 +37,11 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
     notFound();
   }
 
+  const projects = await getPublishedProjects();
+  const nextProject = pickNextProject(projects, project);
+
   return (
-    <PageContainer size="narrow" className="space-y-6 py-8 md:py-12">
+    <PageContainer className="space-y-6 py-8 md:py-12">
       <Breadcrumbs
         items={[
           { label: "Beranda", href: "/" },
@@ -45,7 +49,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           { label: project.title },
         ]}
       />
-      <ProjectDetail project={project} />
+      <CaseStudy project={project} nextProject={nextProject} />
       <ProjectJsonLd project={project} />
     </PageContainer>
   );

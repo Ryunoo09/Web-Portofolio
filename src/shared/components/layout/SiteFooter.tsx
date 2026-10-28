@@ -34,7 +34,7 @@ export function SiteFooter() {
           </div>
 
           <nav aria-label="Navigasi footer" className="space-y-3 md:col-span-3">
-            <h3 className="text-foreground font-heading text-sm font-semibold">Navigasi</h3>
+            <h2 className="text-foreground font-heading text-sm font-semibold">Navigasi</h2>
             <ul className="text-muted-foreground space-y-2 text-sm">
               {siteConfig.navLinks.map((item) => (
                 <li key={item.href}>
@@ -50,7 +50,7 @@ export function SiteFooter() {
           </nav>
 
           <div className="space-y-3 md:col-span-4">
-            <h3 className="text-foreground font-heading text-sm font-semibold">Kontak</h3>
+            <h2 className="text-foreground font-heading text-sm font-semibold">Kontak</h2>
             <ul className="space-y-2.5 text-sm">
               <li>
                 <a

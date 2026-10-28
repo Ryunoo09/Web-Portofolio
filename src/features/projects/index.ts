@@ -7,12 +7,13 @@ export {
   pickProjectsBySlug,
   getProjectShortLabel,
 } from "./home";
-export { ProjectGrid } from "./components/public/ProjectGrid";
-export { ProjectCard } from "./components/public/ProjectCard";
-export { ProjectDetail } from "./components/public/ProjectDetail";
-export { ProjectGallery } from "./components/public/ProjectGallery";
-export { TechStackList } from "./components/public/TechStackList";
+export { pickNextProject, resolveProjectStatus } from "./case";
 export { CaseCard } from "./components/public/CaseCard";
+export { CaseGrid } from "./components/public/CaseGrid";
+export { CaseStudy } from "./components/public/CaseStudy";
+export { CaseNext } from "./components/public/CaseNext";
+export { CaseToc } from "./components/public/CaseToc";
+export { ProjectExplorer } from "./components/public/ProjectExplorer";
 export { FeaturedWork } from "./components/public/FeaturedWork";
 export { ProofStrip } from "./components/public/ProofStrip";
 export { Capabilities } from "./components/public/Capabilities";

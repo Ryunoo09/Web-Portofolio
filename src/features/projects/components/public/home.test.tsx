@@ -1,52 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { Project } from "../../types";
+import { makeProject } from "../../fixtures/project";
 import { CaseCard } from "./CaseCard";
 import { FeaturedWork } from "./FeaturedWork";
 import { ProofStrip } from "./ProofStrip";
 import { SignalTicker } from "./SignalTicker";
-
-function makeProject(overrides: Partial<Project> = {}): Project {
-  return {
-    id: "p1",
-    slug: "contoh-proyek",
-    title: "Contoh Proyek",
-    summary: "Ringkasan proyek untuk pengujian.",
-    descriptionHtml: null,
-    repoUrl: null,
-    demoUrl: null,
-    coverImageUrl: null,
-    coverImageAlt: null,
-    startedAt: "2026-03-01",
-    endedAt: "2026-08-31",
-    isFeatured: true,
-    isPublished: true,
-    createdAt: "2026-01-01",
-    sortOrder: 1,
-    projectType: "Skripsi",
-    role: "Full Stack",
-    teamSize: 1,
-    problem: null,
-    solution: null,
-    features: [],
-    outcomes: [],
-    challenges: null,
-    isDeployed: false,
-    domain: "computer-vision",
-    seoTitle: null,
-    seoDescription: null,
-    skills: [
-      { id: "s1", name: "Python" },
-      { id: "s2", name: "FastAPI" },
-      { id: "s3", name: "PostgreSQL" },
-      { id: "s4", name: "YOLO" },
-      { id: "s5", name: "PaddleOCR" },
-    ],
-    images: [],
-    ...overrides,
-  };
-}
 
 describe("CaseCard", () => {
   it("menampilkan domain, tipe, tahun, dan satu tautan utama ke studi kasus", () => {
