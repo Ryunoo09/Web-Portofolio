@@ -76,7 +76,7 @@ export function CaseToc({ sections }: CaseTocProps) {
         <div className="px-3 pb-3">{links}</div>
       </details>
 
-      <nav aria-label="Daftar isi studi kasus" className="hidden lg:sticky lg:top-[88px] lg:block">
+      <nav aria-label="Daftar isi studi kasus" className="hidden lg:block">
         <p className="text-muted-foreground mb-2 font-mono text-[11px] tracking-[0.14em] uppercase">
           Daftar isi
         </p>

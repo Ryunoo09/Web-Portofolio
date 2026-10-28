@@ -78,6 +78,45 @@ test("form kontak: error summary menerima fokus dan tautannya membawa ke field",
   await expect(page.getByLabel("Nama")).toBeFocused();
 });
 
+test("daftar isi tidak menutupi fakta saat halaman digulir", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/projects/analisis-prediktif-kualitas-air");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+  const readLayout = () =>
+    page.evaluate(() => {
+      const toc = document.querySelector('nav[aria-label="Daftar isi studi kasus"]');
+      const facts = document.querySelector("#case-facts-title")?.closest("section");
+      if (!toc || !facts) return null;
+
+      const tocRect = toc.getBoundingClientRect();
+      const factsRect = facts.getBoundingClientRect();
+
+      return {
+        tocTop: Math.round(tocRect.top),
+        tocBottom: Math.round(tocRect.bottom),
+        factsTop: Math.round(factsRect.top),
+      };
+    });
+
+  await page.evaluate(() => window.scrollTo(0, 1100));
+  await page.waitForTimeout(200);
+  const sticky = await readLayout();
+
+  expect(sticky).not.toBeNull();
+  expect(sticky?.tocTop).toBeGreaterThanOrEqual(80);
+  expect(sticky?.tocTop).toBeLessThanOrEqual(100);
+  expect(sticky?.tocBottom).toBeLessThanOrEqual(sticky?.factsTop ?? 0);
+
+  await page.evaluate(() => window.scrollTo(0, 1500));
+  await page.waitForTimeout(200);
+  const scrolled = await readLayout();
+
+  // Saat rail mulai keluar layar, TOC bergerak bersama fakta — tidak menimpanya.
+  expect(scrolled?.tocBottom).toBeLessThanOrEqual(scrolled?.factsTop ?? 0);
+  expect(scrolled?.tocBottom).toBeGreaterThan(0);
+});
+
 test("halaman 404 tetap punya skip link, H1, dan CTA yang bisa dijangkau", async ({ page }) => {
   const response = await page.goto("/halaman-tidak-ada");
   expect(response?.status()).toBe(404);

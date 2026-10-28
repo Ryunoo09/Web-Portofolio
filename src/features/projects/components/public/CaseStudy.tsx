@@ -230,7 +230,7 @@ export function CaseStudy({ project, nextProject }: CaseStudyProps) {
       />
 
       <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
-        <aside className="space-y-8 lg:order-2 lg:col-span-4 lg:self-start">
+        <aside className="space-y-8 lg:sticky lg:top-[88px] lg:order-2 lg:col-span-4 lg:max-h-[calc(100dvh-6rem)] lg:self-start lg:overflow-y-auto">
           <CaseToc sections={tocSections} />
           <CaseFacts project={project} />
         </aside>
