@@ -815,14 +815,14 @@ visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
 
 **M8:** `docs/redesign/baseline/M8-REPORT.md` (lokal). QA lengkap + preview produksi lokal; **belum merge ke `main`**.
 
-| Perubahan      | Isi                                                                                                                                                                                                                                                                                    |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Unit/component | +4 tes: `ContactPanel` (salin email + `aria-live`, tautan), `app/not-found` (H1, 2 CTA, `<main>`), `siteConfig` (3 metrik, tanpa `500+`). Total **43 file / 190 tes**.                                                                                                                 |
-| E2E            | `a11y.spec.ts` 5 rute × light/dark + detail × light/dark + 404 × light/dark (14 axe, 0 violation); `qa.spec.ts` skip link, filter keyboard, TOC desktop/mobile, error summary kontak, 404, reduced motion; `smoke.spec.ts` 6 rute + health + 404. Total **59 e2e lulus** (admin ikut). |
-| Visual         | `e2e/visual.spec.ts`: 6 rute × 4 viewport × 2 tema = 48 snapshot viewport; stabil 2 run. Baseline win32, indikator dev/scrollbar disembunyikan, font dimuat lalu reload.                                                                                                               |
-| Lighthouse     | 320/390/768/1440 + `/projects`: perf **92–100**, a11y/BP/SEO **100**, CLS 0; LCP mobile 2,5–3,1 s (host berbeban 46 Chrome). Bukan host idle.                                                                                                                                          |
-| Perbaikan      | `resume.pdf` tidak lagi di-prefetch RSC (`Link` → `<a>`); ticker `min-h-6` + tombol jeda `z-10` (target-size 768); tombol jeda disembunyikan saat reduced motion.                                                                                                                      |
-| Preview        | `next start -p 3001`: 6 rute 200 + satu H1, health 200, 404, sitemap, robots, admin login, 6 header keamanan. Rollback readiness: tag GHCR lama tersedia; eksekusi VPS tidak dilakukan.                                                                                                |
+| Perubahan      | Isi                                                                                                                                                                                                                                                                                                             |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unit/component | +4 tes: `ContactPanel` (salin email + `aria-live`, tautan), `app/not-found` (H1, 2 CTA, `<main>`), `siteConfig` (3 metrik, tanpa `500+`). Total **43 file / 190 tes**.                                                                                                                                          |
+| E2E            | `a11y.spec.ts` 5 rute × light/dark + detail × light/dark + 404 × light/dark (14 axe, 0 violation); `qa.spec.ts` skip link, filter keyboard, TOC desktop/mobile, error summary kontak, 404, reduced motion, TOC tidak menimpa fakta; `smoke.spec.ts` 6 rute + health + 404. Total **60 e2e lulus** (admin ikut). |
+| Visual         | `e2e/visual.spec.ts`: 6 rute × 4 viewport × 2 tema = 48 snapshot viewport; stabil 2 run. Baseline win32, indikator dev/scrollbar disembunyikan, font dimuat lalu reload.                                                                                                                                        |
+| Lighthouse     | 320/390/768/1440 + `/projects`: perf **92–100**, a11y/BP/SEO **100**, CLS 0; LCP mobile 2,5–3,1 s (host berbeban 46 Chrome). Bukan host idle.                                                                                                                                                                   |
+| Perbaikan      | `resume.pdf` tidak lagi di-prefetch RSC (`Link` → `<a>`); ticker `min-h-6` + tombol jeda `z-10` (target-size 768); tombol jeda disembunyikan saat reduced motion.                                                                                                                                               |
+| Preview        | `next start -p 3001`: 6 rute 200 + satu H1, health 200, 404, sitemap, robots, admin login, 6 header keamanan. Rollback readiness: tag GHCR lama tersedia; eksekusi VPS tidak dilakukan.                                                                                                                         |
 
 **Keputusan/penyimpangan:** snapshot visual viewport-only (bukan full page) agar repo tidak bengkak; baseline hanya win32; tidak ada dependency baru; rilis produksi tidak dijalankan karena instruksi sesi hanya push branch.
 
@@ -830,9 +830,21 @@ visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
 
 **⚠️ Blocker rilis:** `/resume.pdf` belum ada (404) → tombol CV belum berfungsi; LCP mobile belum konsisten <2,5 s di host berbeban (ukur di CI/idle).
 
-**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus · `pnpm test` **190** · `pnpm build` sukses (42 halaman) · `pnpm test:e2e` **59 lulus**.
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus · `pnpm test` **190** · `pnpm build` sukses (42 halaman) · `pnpm test:e2e` **60 lulus**.
 
 **Titik mulai berikutnya:** unggah `/resume.pdf`, ukur Lighthouse di CI/host idle, lalu merge `redesign/signal-room` → `main` setelah persetujuan (deploy.yml otomatis).
+
+---
+
+### Sesi 2026-10-28 (lanjutan) — TOC studi kasus menimpa fakta
+
+**Masalah:** TOC sticky di dalam rail bersama `CaseFacts` membuat TOC tertinggal/tertarik ke atas saat rail habis, lalu menutupi teks fakta di bawahnya.
+
+**Perbaikan:** sticky dipindah dari `<nav>` TOC ke seluruh `<aside>` (TOC + fakta bergerak sebagai satu blok), `CaseToc` hanya `lg:block`; rail diberi `lg:max-h-[calc(100dvh-6rem)]` + `lg:overflow-y-auto` untuk viewport pendek. Tidak ada perubahan konten.
+
+**Tes regresi:** `e2e/qa.spec.ts` — scroll 1100 (TOC sticky di 88px) dan 1500 (TOC tidak menimpa fakta).
+
+**Verifikasi:** `pnpm lint` 0 error · `pnpm typecheck` lulus · `pnpm test` **190** · `pnpm build` sukses · `pnpm test:e2e` **60 lulus** · visual 12 tes lulus.
 
 ---
 
