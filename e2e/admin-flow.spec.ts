@@ -143,12 +143,12 @@ test.describe("alur admin", () => {
     const subject = `E2E Pesan ${Date.now()}`;
 
     await page.goto("/contact");
-    await page.getByLabel("Nama Lengkap").fill("E2E Pengirim");
-    await page.getByRole("textbox", { name: /alamat email/i }).fill("e2e@example.com");
-    await page.getByLabel("Subjek / Topik Diskusi").fill(subject);
-    await page.getByLabel("Pesan Anda").fill("Pesan uji otomatis dari Playwright.");
-    await page.getByRole("button", { name: "Kirim Pesan Sekarang" }).click();
-    await expect(page.getByText("Pesan Berhasil Terkirim")).toBeVisible();
+    await page.getByLabel("Nama", { exact: true }).fill("E2E Pengirim");
+    await page.getByLabel("Email", { exact: true }).fill("e2e@example.com");
+    await page.getByLabel("Topik").fill(subject);
+    await page.getByLabel("Pesan", { exact: true }).fill("Pesan uji otomatis dari Playwright.");
+    await page.getByRole("button", { name: "Kirim pesan" }).click();
+    await expect(page.getByText("Pesan terkirim.")).toBeVisible();
 
     await login(page);
     await page.goto("/admin/messages");

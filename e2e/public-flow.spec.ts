@@ -92,12 +92,29 @@ test("halaman proyek menampilkan galeri bila gambarnya ada", async ({ page }) =>
   }
 });
 
-test("halaman keahlian dikelompokkan per kategori", async ({ page }) => {
+test("halaman keahlian memakai capability group, bukti, dan tanpa progress bar", async ({
+  page,
+}) => {
   await page.goto("/skills");
 
+  await expect(page.getByRole("heading", { level: 1, name: "Keahlian" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Backend & API" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Bahasa Pemrograman" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Data & ML" })).toBeVisible();
-  // Sejak dikelompokkan, nama skill bukan lagi heading (dulu satu kartu per skill).
-  await expect(page.getByRole("heading", { name: "Python" })).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Sedang Dipelajari" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sedang dipelajari" })).toBeVisible();
+
+  // Level hanya teks; tidak ada progress bar skala 1–5.
+  await expect(page.locator('[role="progressbar"]')).toHaveCount(0);
+  // Skill tanpa proyek ditulis jujur, bukan tautan palsu.
+  await expect(page.getByText("Belum ada studi kasus").first()).toBeVisible();
+});
+
+test("form kontak: error summary muncul dan menerima fokus", async ({ page }) => {
+  await page.goto("/contact");
+
+  await page.getByRole("button", { name: "Kirim pesan" }).click();
+
+  const summary = page.getByRole("alert").filter({ hasText: "Ada isian yang perlu diperbaiki." });
+  await expect(summary).toBeVisible();
+  await expect(summary).toBeFocused();
 });

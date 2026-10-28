@@ -3,18 +3,32 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { Send, Loader2, CheckCircle2 } from "lucide-react";
-import { contactFormSchema, type ContactFormValues } from "../../schemas";
-import { submitContactMessage } from "../../server/actions";
+import { ErrorSummary, type ErrorSummaryEntry } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
-import { Textarea } from "@/shared/components/ui/textarea";
 import { Label } from "@/shared/components/ui/label";
-import { Card } from "@/shared/components/ui/card";
+import { Textarea } from "@/shared/components/ui/textarea";
+import {
+  CONTACT_INTENT_LABELS,
+  CONTACT_INTENTS,
+  contactFormSchema,
+  type ContactFormValues,
+} from "../../schemas";
+import { submitContactMessage } from "../../server/actions";
 
+const FIELD_IDS = ["name", "email", "intent", "subject", "message"] as const;
+
+const labelClass = "text-foreground text-sm font-medium";
+const errorClass = "text-destructive text-xs";
+
+/**
+ * Form kontak: label terlihat, honeypot tersembunyi, ringkasan error yang
+ * mengambil fokus, dan panel sukses `role="status"`. Intent disimpan sebagai
+ * awalan subjek karena tabel `contact_messages` belum punya kolom intent.
+ */
 export function ContactForm() {
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const [serverError, setServerError] = React.useState<string | null>(null);
 
   const {
     register,
@@ -23,164 +37,196 @@ export function ContactForm() {
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
+    // Fokus error dipegang `ErrorSummary` (di atas form), bukan field pertama.
+    shouldFocusError: false,
     defaultValues: {
       name: "",
       email: "",
+      intent: "recruiter",
       subject: "",
       message: "",
       website: "",
     },
   });
 
+  const summaryErrors: ErrorSummaryEntry[] = FIELD_IDS.flatMap((field) => {
+    const message = errors[field]?.message;
+    return message ? [{ id: field, message: String(message) }] : [];
+  });
+
   const onSubmit = async (values: ContactFormValues) => {
+    setServerError(null);
     try {
       const result = await submitContactMessage(values);
       if (result.ok) {
         setIsSuccess(true);
-        toast.success("Pesan terkirim!", {
-          description: "Terima kasih telah menghubungi saya. Saya akan membalas segera.",
-        });
         reset();
-      } else {
-        toast.error("Gagal mengirim pesan", {
-          description: result.error ?? "Silakan periksa kembali isian formulir.",
-        });
+        return;
       }
+      setServerError(result.error ?? "Pesan belum terkirim. Coba lagi atau email langsung.");
     } catch {
-      toast.error("Terjadi kesalahan jaringan", {
-        description: "Silakan coba beberapa saat lagi.",
-      });
+      setServerError("Pesan belum terkirim. Coba lagi atau email langsung.");
     }
   };
 
   if (isSuccess) {
     return (
-      <Card className="border-gold/30 bg-card space-y-5 p-8 text-center sm:p-10">
-        <div className="border-gold/40 bg-gold/10 text-gold mx-auto flex size-14 items-center justify-center rounded-2xl border shadow-md">
-          <CheckCircle2 className="size-8" />
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-foreground font-heading text-2xl font-bold">
-            Pesan Berhasil Terkirim
-          </h2>
-          <p className="text-muted-foreground mx-auto max-w-md text-sm leading-relaxed">
-            Terima kasih telah menghubungi. Saya telah menerima pesan Anda dan akan merespons dalam
-            waktu 1x24 jam kerja.
-          </p>
-        </div>
-        <Button
-          onClick={() => setIsSuccess(false)}
-          variant="outline"
-          className="border-border/80 hover:border-gold/40 rounded-full"
-        >
-          Kirim Pesan Lainnya
+      <section
+        id="kirim-pesan"
+        aria-labelledby="form-kontak-title"
+        role="status"
+        className="border-border space-y-3 border-y py-8"
+      >
+        <h2 id="form-kontak-title" className="text-foreground font-heading text-xl font-semibold">
+          Pesan terkirim.
+        </h2>
+        <p className="text-muted-foreground max-w-[52ch] text-sm leading-relaxed">
+          Saya akan membalas dalam 1×24 jam kerja.
+        </p>
+        <Button variant="secondary" onClick={() => setIsSuccess(false)}>
+          Kirim pesan lain
         </Button>
-      </Card>
+      </section>
     );
   }
 
   return (
-    <Card className="border-border/80 bg-card p-6 sm:p-8">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        {/* Honeypot field (hidden from real users, traps bots) */}
-        <input
-          type="text"
-          className="hidden"
-          tabIndex={-1}
-          autoComplete="off"
-          {...register("website")}
-        />
+    <section id="kirim-pesan" aria-labelledby="form-kontak-title" className="space-y-5">
+      <h2 id="form-kontak-title" className="text-foreground font-heading text-xl font-semibold">
+        Kirim pesan
+      </h2>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div className="space-y-2">
-            <Label
-              htmlFor="name"
-              className="text-foreground/80 text-xs font-semibold tracking-wider uppercase"
-            >
-              Nama Lengkap <span className="text-red-500">*</span>
+      <form onSubmit={handleSubmit(onSubmit)} aria-busy={isSubmitting} className="space-y-5">
+        <ErrorSummary errors={summaryErrors} />
+
+        {serverError && (
+          <p role="alert" className="text-destructive text-sm">
+            {serverError}
+          </p>
+        )}
+
+        {/* Honeypot: tidak terlihat, tidak bisa di-tab. */}
+        <div hidden aria-hidden="true">
+          <label htmlFor="website">Website</label>
+          <input
+            id="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            {...register("website")}
+          />
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div className="space-y-1.5">
+            <Label htmlFor="name" className={labelClass}>
+              Nama
             </Label>
             <Input
               id="name"
-              placeholder="Contoh: Budi Santoso"
-              aria-invalid={!!errors.name}
-              className="bg-background/50 border-border/80 focus-visible:border-gold/60"
+              autoComplete="name"
+              placeholder="Nama Anda"
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={errors.name ? "name-error" : undefined}
               {...register("name")}
             />
-            {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
+            {errors.name && (
+              <p id="name-error" className={errorClass}>
+                {errors.name.message}
+              </p>
+            )}
           </div>
 
-          <div className="space-y-2">
-            <Label
-              htmlFor="email"
-              className="text-foreground/80 text-xs font-semibold tracking-wider uppercase"
-            >
-              Alamat Email <span className="text-red-500">*</span>
+          <div className="space-y-1.5">
+            <Label htmlFor="email" className={labelClass}>
+              Email
             </Label>
             <Input
               id="email"
               type="email"
-              placeholder="budi@example.com"
-              aria-invalid={!!errors.email}
-              className="bg-background/50 border-border/80 focus-visible:border-gold/60"
+              inputMode="email"
+              autoComplete="email"
+              spellCheck={false}
+              placeholder="nama@email.com"
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? "email-error" : undefined}
               {...register("email")}
             />
-            {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
+            {errors.email && (
+              <p id="email-error" className={errorClass}>
+                {errors.email.message}
+              </p>
+            )}
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label
-            htmlFor="subject"
-            className="text-foreground/80 text-xs font-semibold tracking-wider uppercase"
+        <div className="space-y-1.5">
+          <Label htmlFor="intent" className={labelClass}>
+            Saya menghubungi untuk
+          </Label>
+          <select
+            id="intent"
+            className="border-input bg-surface text-foreground focus-visible:ring-ring h-11 w-full rounded-md border px-3 text-sm focus-visible:ring-2 focus-visible:outline-none"
+            {...register("intent")}
           >
-            Subjek / Topik Diskusi
+            {CONTACT_INTENTS.map((intent) => (
+              <option key={intent} value={intent}>
+                {CONTACT_INTENT_LABELS[intent]}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-1.5">
+          <Label htmlFor="subject" className={labelClass}>
+            Topik
           </Label>
           <Input
             id="subject"
-            placeholder="Diskusi Proyek Web / Peluang Kolaborasi"
-            aria-invalid={!!errors.subject}
-            className="bg-background/50 border-border/80 focus-visible:border-gold/60"
+            placeholder="Peluang Backend / pertanyaan proyek"
+            aria-invalid={Boolean(errors.subject)}
+            aria-describedby={errors.subject ? "subject-error" : undefined}
             {...register("subject")}
           />
-          {errors.subject && <p className="text-xs text-red-500">{errors.subject.message}</p>}
+          {errors.subject && (
+            <p id="subject-error" className={errorClass}>
+              {errors.subject.message}
+            </p>
+          )}
         </div>
 
-        <div className="space-y-2">
-          <Label
-            htmlFor="message"
-            className="text-foreground/80 text-xs font-semibold tracking-wider uppercase"
-          >
-            Pesan Anda <span className="text-red-500">*</span>
+        <div className="space-y-1.5">
+          <Label htmlFor="message" className={labelClass}>
+            Pesan
           </Label>
           <Textarea
             id="message"
             rows={5}
-            placeholder="Ceritakan gambaran proyek, target waktu, atau hal yang ingin Anda konsultasikan..."
-            aria-invalid={!!errors.message}
-            className="bg-background/50 border-border/80 focus-visible:border-gold/60 resize-y"
+            placeholder="Ceritakan peran, tim, atau masalah yang ingin diselesaikan."
+            aria-invalid={Boolean(errors.message)}
+            aria-describedby={errors.message ? "message-hint message-error" : "message-hint"}
+            className="min-h-[132px] resize-y"
             {...register("message")}
           />
-          {errors.message && <p className="text-xs text-red-500">{errors.message.message}</p>}
+          <p id="message-hint" className="text-muted-foreground text-xs">
+            Minimal 5 karakter, maksimal 2.000 karakter.
+          </p>
+          {errors.message && (
+            <p id="message-error" className={errorClass}>
+              {errors.message.message}
+            </p>
+          )}
         </div>
 
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="bg-gold text-primary-foreground shadow-gold/15 hover:bg-gold/90 w-full cursor-pointer rounded-full px-8 py-2.5 font-semibold shadow-lg transition-all sm:w-auto"
-        >
-          {isSubmitting ? (
-            <span className="flex items-center gap-2">
-              <Loader2 className="size-4 animate-spin" />
-              <span>Mengirimkan Pesan...</span>
-            </span>
-          ) : (
-            <span className="flex items-center gap-2">
-              <Send className="size-4" />
-              <span>Kirim Pesan Sekarang</span>
-            </span>
-          )}
-        </Button>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-muted-foreground text-xs">
+            Data yang Anda kirim hanya digunakan untuk membalas pesan ini.
+          </p>
+          <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+            {isSubmitting ? "Mengirim…" : "Kirim pesan"}
+          </Button>
+        </div>
       </form>
-    </Card>
+    </section>
   );
 }

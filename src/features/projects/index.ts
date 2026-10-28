@@ -1,12 +1,7 @@
 // API publik fitur "projects". Kode di luar fitur hanya boleh mengimpor dari sini.
 export { getPublishedProjects, getProjectBySlug, countProjects } from "./server/queries";
-export {
-  HOME_CASE_SLUGS,
-  HOME_TICKER_ITEMS,
-  PROOF_PROJECT_SLUG,
-  pickProjectsBySlug,
-  getProjectShortLabel,
-} from "./home";
+export { HOME_CASE_SLUGS, HOME_TICKER_ITEMS, PROOF_PROJECT_SLUG, pickProjectsBySlug } from "./home";
+export { PROJECT_SHORT_LABELS, getProjectShortLabel } from "./short-labels";
 export { pickNextProject, resolveProjectStatus } from "./case";
 export { CaseCard } from "./components/public/CaseCard";
 export { CaseGrid } from "./components/public/CaseGrid";

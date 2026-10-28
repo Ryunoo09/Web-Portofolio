@@ -1,4 +1,5 @@
 import type { Project } from "./types";
+import { getProjectShortLabel } from "./short-labels";
 
 /** Urutan kartu studi kasus di beranda: kartu pertama menjadi `feature`. */
 export const HOME_CASE_SLUGS = ["validasi-ftth-yolo26-paddleocr", "dse-ai", "sirata"] as const;
@@ -7,19 +8,15 @@ export const HOME_CASE_SLUGS = ["validasi-ftth-yolo26-paddleocr", "dse-ai", "sir
 export const PROOF_PROJECT_SLUG = "analisis-prediktif-kualitas-air";
 
 /**
- * Label pendek untuk ticker. Judul asli proyek terlalu panjang untuk satu baris,
- * sedangkan label ini hanya nama tampilan — bukan perubahan data.
+ * Item ticker beranda. Label pendek berasal dari `short-labels.ts` agar sama
+ * dengan bukti skill di /skills.
  */
 export const HOME_TICKER_ITEMS = [
-  {
-    slug: "validasi-ftth-yolo26-paddleocr",
-    label: "Validasi FTTH",
-    detail: "deteksi kunjungan + OCR",
-  },
-  { slug: "dse-ai", label: "DSE AI", detail: "verifikasi kunjungan sales" },
-  { slug: "sirata", label: "SIRATA", detail: "surat 10 → 2 menit" },
-  { slug: PROOF_PROJECT_SLUG, label: "Big Data Kualitas Air", detail: "88,62% akurasi" },
-] as const;
+  { slug: "validasi-ftth-yolo26-paddleocr", detail: "deteksi kunjungan + OCR" },
+  { slug: "dse-ai", detail: "verifikasi kunjungan sales" },
+  { slug: "sirata", detail: "surat 10 → 2 menit" },
+  { slug: PROOF_PROJECT_SLUG, detail: "88,62% akurasi" },
+].map((item) => ({ ...item, label: getProjectShortLabel(item.slug, item.slug) }));
 
 /** Ambil proyek sesuai urutan slug; slug yang tidak ada dilewati. */
 export function pickProjectsBySlug(
@@ -31,13 +28,4 @@ export function pickProjectsBySlug(
     const project = bySlug.get(slug);
     return project ? [project] : [];
   });
-}
-
-const SHORT_LABELS = new Map<string, string>(
-  HOME_TICKER_ITEMS.map((item) => [item.slug, item.label] as const),
-);
-
-/** Nama pendek untuk tempat sempit (ticker, panel status); fallback ke judul asli. */
-export function getProjectShortLabel(slug: string, fallback: string): string {
-  return SHORT_LABELS.get(slug) ?? fallback;
 }
