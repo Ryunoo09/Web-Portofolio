@@ -82,15 +82,15 @@
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                                                                          |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                                                  |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                                            |
-| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                                          |
-| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                                               |
-| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                                                    |
-| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                                                   |
-| 7. Redesign 2026      | 🟡 **M0–M5 selesai** — token, primitive, layout, shared pattern, data/SEO/domain, beranda, proyek index & detail; M6 berikutnya |
+| Fase                  | Status                                                                                                                                 |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                                                         |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                                                   |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                                                 |
+| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                                                      |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                                                           |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                                                          |
+| 7. Redesign 2026      | 🟡 **M0–M6 selesai** — token, primitive, layout, shared pattern, data/SEO/domain, beranda, proyek, about/skills/contact; M7 berikutnya |
 
 ### Detail Fase 3
 
@@ -734,12 +734,43 @@ axe (WCAG + best-practice) 12 pemeriksaan 0 violation · screenshot `docs/redesi
 
 ---
 
+### Sesi 2026-10-28 — M6 about, skills, contact
+
+**M6:** `docs/redesign/baseline/M6-REPORT.md` (lokal). Tiga halaman publik terakhir dirapikan; 404
+memakai kerangka publik yang sama.
+
+| Perubahan  | Isi                                                                                                                                                                                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/about`   | `AboutProof` (bio paragraf 68ch + fakta `9 studi kasus · 3 sistem operasional · 88,62% akurasi model`), `Principles` 3 baris, `ExperienceTimeline` `<ol>`, `CredentialRow` untuk pendidikan/sertifikasi/organisasi, `LanguageList` chip teks, CTA Hubungi/Unduh CV |
+| `/skills`  | `CapabilityBoard`: statistik 46/8/3 dari data, 4 capability group + bukti proyek, 8 kategori teknis sebagai rows (level teks, bukti maks 2 + `+n`), “Belum ada studi kasus” jujur, tanpa progress bar, “Sedang dipelajari”                                         |
+| `/contact` | `ContactForm` (intent select, Topik, pesan + hint, honeypot, `ErrorSummary` fokus + anchor, sukses `role="status"`, privacy line), `ContactPanel` (salin email `aria-live`, lokasi, respons, jejaring, CV), `ContactPaths`                                         |
+| 404        | `not-found.tsx` baru + `PublicShell` diekstrak dari layout `(public)` → header/footer + `<main>` (memperbaiki axe `landmark-one-main`/`region`)                                                                                                                    |
+| Shared     | `ErrorSummary`, `PublicShell`; `PROJECT_SHORT_LABELS` 9 proyek dipakai ticker + bukti skill                                                                                                                                                                        |
+| Dihapus    | `AboutContent`, `EducationCard`, `CertificateCard`, `OrganizationCard`, `SkillCard` (+test), `SkillsByCategory` (+test), `ContactInfoCard`                                                                                                                         |
+
+**Keputusan/penyimpangan:** (1) H1 `/skills` = “Keahlian” (`04 §12.2`), kategori teknis `h3` di bawah
+`h2 “Kategori teknis”`; (2) intent disimpan sebagai awalan subjek (`Rekruter: …`) karena `contact_messages`
+belum punya kolom intent dan `04 §9.2` tidak mengusulkannya — tanpa migrasi; (3) bio kosong menampilkan
+“Bio belum diisi.” (tidak menduplikasi copy di kode); (4) FAQ rekruter dilewati karena draft masih `TODO`;
+(5) `shouldFocusError: false` agar fokus dipegang `ErrorSummary`.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **39 file / 181 test** · `pnpm build` sukses · `pnpm test:e2e` **22 lulus** ·
+gate `docs/redesign/tools/m6-gate.mjs`: 4 halaman × 4 viewport × light/dark `overflow=0`/`h1=1`/tanpa
+progress bar, axe 16 pemeriksaan 0 violation, keyboard form + error summary fokus + salin email ·
+screenshot `docs/redesign/screenshots/m6/` (lokal).
+
+**Titik mulai berikutnya:** M7 — Motion, SEO, performa, header (motion 3 lapis + reduced motion,
+metadata semua rute/OG/sitemap/canonical/JSON-LD/robots, image sizes + JS budget, security headers +
+health + CSP report-only), lalu Lighthouse mobile ≥90.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan redesain Signal Room **M6 (About, skills, contact)**: `AboutProof` + `Principles` +
-> `ExperienceTimeline`/`CredentialRow`, `CapabilityBoard` (46/8/3, tanpa progress bar, bukti jujur),
-> `ContactForm` intent + `ErrorSummary` + `ContactPaths`/`ContactPanel`, wiring `/about`, `/skills`,
-> `/contact`, 404.
+> "Lanjutkan redesain Signal Room **M7 (Motion, SEO, performa, header)**: motion 3 lapis + reduced
+> motion, metadata semua rute + OG + sitemap/canonical/JSON-LD/robots, image sizes/priority/font
+> subset/JS budget, security headers + `/api/health` + CSP report-only. Target Lighthouse mobile ≥90.
 > Terapkan `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`.
 > Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
 > `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push ke `redesign/signal-room`."
