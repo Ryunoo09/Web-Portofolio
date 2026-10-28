@@ -844,7 +844,19 @@ visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
 
 **Tes regresi:** `e2e/qa.spec.ts` — scroll 1100 (TOC sticky di 88px) dan 1500 (TOC tidak menimpa fakta).
 
-**Verifikasi:** `pnpm lint` 0 error · `pnpm typecheck` lulus · `pnpm test` **190** · `pnpm build` sukses · `pnpm test:e2e` **60 lulus** · visual 12 tes lulus.
+**Verifikasi:** `pnpm lint` 0 error · `pnpm typecheck` lulus · `pnpm test` **193** · `pnpm build` sukses · `pnpm test:e2e` **60 lulus** · visual 12 tes lulus.
+
+---
+
+### Sesi 2026-10-28 (lanjutan) — CV bisa diganti dari admin
+
+**Masalah:** header/footer/menu mobile memakai `/resume.pdf`, sehingga upload CV lewat admin belum memperbaiki tautan tersebut; menaruh PDF di `public/` berarti masuk repo publik.
+
+**Perbaikan:** route dinamis `src/app/resume.pdf/route.ts` membaca `profile.resume_url`, mengambil PDF dari Supabase Storage, lalu mengirimnya sebagai lampiran (`Content-Disposition: attachment`). Tidak ada PDF di repo; admin cukup upload/ganti di `/admin/profile` → Berkas CV.
+
+**Perilaku:** 404 bila CV belum diunggah; 502 bila sumber bukan PDF; `no-store` agar perubahan langsung terlihat. Tidak perlu deploy ulang saat ganti CV.
+
+**Verifikasi:** 3 tes route · `pnpm test` **193** · `pnpm build` mendaftarkan `ƒ /resume.pdf` · route lokal mengembalikan 404 sebelum upload (sesuai harapan).
 
 ---
 
