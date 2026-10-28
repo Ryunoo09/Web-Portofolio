@@ -1,10 +1,4 @@
-export {
-  getSkills,
-  getTopSkills,
-  getLearningSkills,
-  countSkills,
-  getAllSkills,
-} from "./server/queries";
+export { getSkills, getLearningSkills, countSkills, getAllSkills } from "./server/queries";
 export { SkillCard } from "./components/public/SkillCard";
 export { SkillsByCategory } from "./components/public/SkillsByCategory";
 export { SkillTable } from "./components/admin/SkillTable";

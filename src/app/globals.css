@@ -57,6 +57,12 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .dark {
   color-scheme: dark;
 
@@ -141,6 +147,8 @@
   --radius-md: var(--radius-control);
   --radius-lg: var(--radius-panel);
   --radius-xl: 10px;
+
+  --animate-ticker: ticker 48s linear infinite;
 }
 
 @layer base {

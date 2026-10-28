@@ -7,13 +7,15 @@ import { toProject, toProjectImage, type ProjectWithRelations } from "./mappers"
 const PROJECT_SELECT =
   "id, slug, title, summary, description_html, repo_url, demo_url, cover_image_url, cover_image_alt, started_at, ended_at, is_featured, is_published, created_at, sort_order, project_type, role, team_size, problem, solution, features, outcomes, challenges, is_deployed, domain, seo_title, seo_description, project_skills(skills(id, name)), project_images(id, url, alt, sort_order)";
 
-function findProjects(featuredOnly: boolean): Promise<Project[]> {
+function findProjects(): Promise<Project[]> {
   return withOfflineFallback(async () => {
     const supabase = createPublicClient();
-    let query = supabase.from("projects").select(PROJECT_SELECT).eq("is_published", true);
-    if (featuredOnly) query = query.eq("is_featured", true);
+    const { data, error } = await supabase
+      .from("projects")
+      .select(PROJECT_SELECT)
+      .eq("is_published", true)
+      .order("sort_order");
 
-    const { data, error } = await query.order("sort_order");
     if (error) throw new Error(`Gagal memuat proyek: ${error.message}`);
 
     return (data as unknown as ProjectWithRelations[]).map(toProject);
@@ -21,11 +23,7 @@ function findProjects(featuredOnly: boolean): Promise<Project[]> {
 }
 
 export function getPublishedProjects(): Promise<Project[]> {
-  return findProjects(false);
-}
-
-export function getFeaturedProjects(): Promise<Project[]> {
-  return findProjects(true);
+  return findProjects();
 }
 
 export function getProjectBySlug(slug: string): Promise<Project | null> {

@@ -10,6 +10,8 @@ interface MediaFrameProps {
   sizes: string;
   caption?: string;
   fallback: React.ReactNode;
+  /** `false` untuk kartu: gambar menempel tanpa border/radius tambahan. */
+  framed?: boolean;
   className?: string;
 }
 
@@ -32,13 +34,15 @@ export function MediaFrame({
   sizes,
   caption,
   fallback,
+  framed = true,
   className,
 }: MediaFrameProps) {
   return (
     <figure className={cn("space-y-2", className)}>
       <div
         className={cn(
-          "bg-surface-2 border-border relative w-full overflow-hidden rounded-lg border",
+          "bg-surface-2 relative w-full overflow-hidden",
+          framed && "border-border rounded-lg border",
           aspectClasses[aspect],
         )}
       >

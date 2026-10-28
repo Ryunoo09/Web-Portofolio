@@ -5,6 +5,22 @@ test("beranda dapat dibuka", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });
 
+test("beranda memakai metrik jujur dan tanpa angka 500+", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.getByText("sistem operasional")).toBeVisible();
+  await expect(page.getByText("88,62%").first()).toBeVisible();
+  await expect(page.getByText("500+")).toHaveCount(0);
+
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Bukti, bukan daftar teknologi." }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Lihat semua proyek" })).toHaveAttribute(
+    "href",
+    "/projects",
+  );
+});
+
 test("daftar proyek membuka detail proyek", async ({ page }) => {
   await page.goto("/projects");
 
