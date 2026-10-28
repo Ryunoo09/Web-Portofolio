@@ -840,7 +840,7 @@ visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
 
 **Masalah:** TOC sticky di dalam rail bersama `CaseFacts` membuat TOC tertinggal/tertarik ke atas saat rail habis, lalu menutupi teks fakta di bawahnya.
 
-**Perbaikan:** sticky dipindah dari `<nav>` TOC ke seluruh `<aside>` (TOC + fakta bergerak sebagai satu blok), `CaseToc` hanya `lg:block`; rail diberi `lg:max-h-[calc(100dvh-6rem)]` + `lg:overflow-y-auto` untuk viewport pendek. Tidak ada perubahan konten.
+**Perbaikan:** sticky dipindah dari `<nav>` TOC ke seluruh `<aside>` lewat class `.case-rail` (aktif hanya ≥1024px dan tinggi viewport ≥760px), tanpa `overflow` internal sehingga tidak ada scrollbar di rail. `CaseToc` hanya `lg:block`. Tidak ada perubahan konten.
 
 **Tes regresi:** `e2e/qa.spec.ts` — scroll 1100 (TOC sticky di 88px) dan 1500 (TOC tidak menimpa fakta).
 
