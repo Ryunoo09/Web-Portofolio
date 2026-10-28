@@ -82,15 +82,15 @@
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                                                                                             |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                                                                     |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                                                               |
-| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                                                             |
-| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                                                                  |
-| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                                                                       |
-| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                                                                      |
-| 7. Redesign 2026      | 🟡 **M0–M7 selesai** — token, primitive, layout, data/SEO/domain, beranda, proyek, about/skills/contact, motion/SEO/performa/header; M8 berikutnya |
+| Fase                  | Status                                                                                                                                                                                                    |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                                                                                                                            |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                                                                                                                      |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                                                                                                                    |
+| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                                                                                                                         |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                                                                                                                              |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                                                                                                                             |
+| 7. Redesign 2026      | 🟡 **M0–M8 selesai** — token, primitive, layout, data/SEO/domain, beranda, proyek, about/skills/contact, motion/SEO/performa/header, QA & rilis (preview lokal); merge produksi menunggu CV + persetujuan |
 
 ### Detail Fase 3
 
@@ -169,6 +169,13 @@ ditunda ke Fase 2; Tiptap (A-10) dilewati, deskripsi proyek tetap `<Textarea>` H
     `feat(admin): CRUD ...` **ditolak** → pakai `feat(admin): tambah CRUD ...`.
 11. **`next/image` + `unoptimized`** dipakai untuk pratinjau di `ImageUploadField`, jadi host
     gambar non-Supabase tetap aman di form admin.
+12. **Visual regression** memakai snapshot viewport Windows di
+    `e2e/visual.spec.ts-snapshots/`. Font `display: "optional"` tidak deterministik → tes memuat
+    font lalu reload. Jangan menambah `--update-snapshots` ke CI Linux tanpa baseline Linux.
+13. **Lighthouse** di host pengembangan ini berbeban (±46 Chrome milik pengguna). Skor M8
+    92–100, tetapi LCP mobile 2,5–3,1 s; ukur ulang di CI/idle sebelum menganggap gate LCP tutup.
+14. **`/resume.pdf` belum ada.** Tautan unduh CV sengaja memakai `<a download>`, bukan `next/link`,
+    agar tidak ada prefetch RSC 404 yang menurunkan Best-practices.
 
 ---
 
@@ -245,6 +252,11 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
   `features/{experiences,education,certificates}` (CRUD admin) untuk tabel yang sama.
   Menyatukan ownership domain perlu refactor terpisah.
 - **Test mappers** memakai fixture manual; belum ada tes integrasi ke Supabase.
+- **`/resume.pdf` belum diunggah** → tombol Unduh CV masih 404 (blocker rilis M8).
+- **Lighthouse LCP mobile** 2,5–3,1 s di host berbeban; perlu pengukuran CI/idle.
+- **Visual baseline** hanya Windows; CI Linux butuh baseline terpisah.
+- **Kunci `service_role` Supabase lama** sudah terekspos lewat repo variable publik (sudah diganti
+  ke `anon`); rotasi kunci harus dilakukan di dashboard Supabase.
 
 ---
 
@@ -799,14 +811,44 @@ visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
 
 ---
 
+### Sesi 2026-10-28 — M8 QA & rilis
+
+**M8:** `docs/redesign/baseline/M8-REPORT.md` (lokal). QA lengkap + preview produksi lokal; **belum merge ke `main`**.
+
+| Perubahan      | Isi                                                                                                                                                                                                                                                                                    |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unit/component | +4 tes: `ContactPanel` (salin email + `aria-live`, tautan), `app/not-found` (H1, 2 CTA, `<main>`), `siteConfig` (3 metrik, tanpa `500+`). Total **43 file / 190 tes**.                                                                                                                 |
+| E2E            | `a11y.spec.ts` 5 rute × light/dark + detail × light/dark + 404 × light/dark (14 axe, 0 violation); `qa.spec.ts` skip link, filter keyboard, TOC desktop/mobile, error summary kontak, 404, reduced motion; `smoke.spec.ts` 6 rute + health + 404. Total **59 e2e lulus** (admin ikut). |
+| Visual         | `e2e/visual.spec.ts`: 6 rute × 4 viewport × 2 tema = 48 snapshot viewport; stabil 2 run. Baseline win32, indikator dev/scrollbar disembunyikan, font dimuat lalu reload.                                                                                                               |
+| Lighthouse     | 320/390/768/1440 + `/projects`: perf **92–100**, a11y/BP/SEO **100**, CLS 0; LCP mobile 2,5–3,1 s (host berbeban 46 Chrome). Bukan host idle.                                                                                                                                          |
+| Perbaikan      | `resume.pdf` tidak lagi di-prefetch RSC (`Link` → `<a>`); ticker `min-h-6` + tombol jeda `z-10` (target-size 768); tombol jeda disembunyikan saat reduced motion.                                                                                                                      |
+| Preview        | `next start -p 3001`: 6 rute 200 + satu H1, health 200, 404, sitemap, robots, admin login, 6 header keamanan. Rollback readiness: tag GHCR lama tersedia; eksekusi VPS tidak dilakukan.                                                                                                |
+
+**Keputusan/penyimpangan:** snapshot visual viewport-only (bukan full page) agar repo tidak bengkak; baseline hanya win32; tidak ada dependency baru; rilis produksi tidak dijalankan karena instruksi sesi hanya push branch.
+
+**⚠️ Keamanan:** repo variable `NEXT_PUBLIC_SUPABASE_ANON_KEY` berisi JWT **service_role** dan repo publik. Sudah diganti dengan kunci `anon` yang benar. **Rotasi kunci `service_role` lama di Supabase** karena sudah terekspos.
+
+**⚠️ Blocker rilis:** `/resume.pdf` belum ada (404) → tombol CV belum berfungsi; LCP mobile belum konsisten <2,5 s di host berbeban (ukur di CI/idle).
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus · `pnpm test` **190** · `pnpm build` sukses (42 halaman) · `pnpm test:e2e` **59 lulus**.
+
+**Titik mulai berikutnya:** unggah `/resume.pdf`, ukur Lighthouse di CI/host idle, lalu merge `redesign/signal-room` → `main` setelah persetujuan (deploy.yml otomatis).
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan redesain Signal Room **M8 (QA & rilis)**: lengkapi unit/component test, e2e + axe +
-> keyboard + reduced motion untuk 6 rute (filter, TOC, kontak, 404), visual regression + Lighthouse
-> 4 viewport, lalu preview/rilis/smoke/rollback. Ukur Lighthouse di host idle/CI.
-> Terapkan `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`.
-> Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
-> `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push ke `redesign/signal-room`."
+> "Lanjutkan **rilis Signal Room** setelah M8: (1) pastikan `/resume.pdf` sudah diunggah ke
+> `public/` atau `profile.resume_url`; (2) ukur Lighthouse mobile di CI/host idle sampai LCP <2,5 s
+> (laporan M8 ada di `docs/redesign/baseline/M8-REPORT.md`); (3) merge `redesign/signal-room` → `main`
+> setelah persetujuan, pantau `deploy.yml`, lalu smoke 6 rute + `/api/health` + admin login;
+> (4) siapkan rollback `IMAGE_TAG=<sha7-sebelumnya>` (<10 menit). Terapkan `ponytail`, `clean-code`,
+> `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`. Jangan ubah konten/klaim. Verifikasi `pnpm lint`,
+> `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:e2e` (PowerShell tidak mendukung `&&`),
+> lalu commit + push."
+>
+> Visual regression: `pnpm test:e2e` memakai baseline Windows di
+> `e2e/visual.spec.ts-snapshots/`; regenerasi dengan `--update-snapshots` bila UI memang berubah.
 >
 > Saat akun uji sudah siap: isi `E2E_ADMIN_EMAIL` & `E2E_ADMIN_PASSWORD` di `.env.local`,
 > jalankan `pnpm test:e2e`, dan pastikan blok admin di `e2e/admin-flow.spec.ts` hijau.
