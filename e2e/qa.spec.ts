@@ -108,6 +108,20 @@ test("daftar isi tidak menutupi fakta saat halaman digulir", async ({ page }) =>
   expect(sticky?.tocTop).toBeLessThanOrEqual(100);
   expect(sticky?.tocBottom).toBeLessThanOrEqual(sticky?.factsTop ?? 0);
 
+  const rail = await page.evaluate(() => {
+    const aside = document.querySelector("aside");
+    if (!aside) return null;
+    const style = getComputedStyle(aside);
+    return {
+      overflowY: style.overflowY,
+      scrollHeight: aside.scrollHeight,
+      clientHeight: aside.clientHeight,
+    };
+  });
+
+  expect(rail?.overflowY).toBe("visible");
+  expect(rail?.scrollHeight).toBeLessThanOrEqual((rail?.clientHeight ?? 0) + 1);
+
   await page.evaluate(() => window.scrollTo(0, 1500));
   await page.waitForTimeout(200);
   const scrolled = await readLayout();

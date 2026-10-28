@@ -235,6 +235,16 @@
   contain: paint;
 }
 
+/* Rail studi kasus: sticky hanya bila viewport cukup tinggi agar fakta tidak
+   terpotong. Tanpa overflow internal supaya tidak ada scrollbar di rail. */
+@media (min-width: 1024px) and (min-height: 760px) {
+  .case-rail {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+  }
+}
+
 /* Dekorasi latar dimatikan di mobile: area besar dengan mask/gradient membuat
    style & layout mahal, sementara nilainya dekoratif. */
 @media (max-width: 767px) {
