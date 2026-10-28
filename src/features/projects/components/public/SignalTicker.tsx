@@ -21,7 +21,7 @@ function TickerLink({ item, duplicate = false }: { item: TickerItem; duplicate?:
       <Link
         href={item.href}
         tabIndex={duplicate ? -1 : undefined}
-        className="text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex items-baseline gap-2 rounded-sm text-sm whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:outline-none"
+        className="text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex min-h-6 items-baseline gap-2 rounded-sm py-0.5 text-sm whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:outline-none"
       >
         <span className="text-foreground">{item.label}</span>
         {item.detail && <span className="text-muted-foreground text-xs">— {item.detail}</span>}
@@ -88,7 +88,7 @@ export function SignalTicker({ items }: SignalTickerProps) {
           onClick={() => setPaused((value) => !value)}
           aria-pressed={paused}
           aria-label={paused ? "Lanjutkan ticker" : "Jeda ticker"}
-          className="text-muted-foreground hover:text-foreground focus-visible:ring-ring hidden size-8 shrink-0 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none motion-reduce:hidden md:inline-flex"
+          className="text-muted-foreground hover:text-foreground focus-visible:ring-ring relative z-10 hidden size-8 shrink-0 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none motion-reduce:hidden! md:inline-flex"
         >
           {paused ? (
             <Play className="size-4" aria-hidden="true" />

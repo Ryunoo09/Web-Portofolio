@@ -103,11 +103,11 @@ export function MobileMenu({ open, onOpenChange }: MobileMenuProps) {
 
         <div className="border-border border-t p-4">
           <Button asChild variant="secondary" className="w-full justify-center">
-            <Link href="/resume.pdf" download className="flex items-center gap-2">
+            <a href="/resume.pdf" download className="flex items-center gap-2">
               <Download className="size-4" aria-hidden="true" />
               <span>Unduh CV</span>
               <ArrowUpRight className="size-3.5" aria-hidden="true" />
-            </Link>
+            </a>
           </Button>
         </div>
       </div>

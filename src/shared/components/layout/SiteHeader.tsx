@@ -68,10 +68,10 @@ export function SiteHeader() {
         <div className="hidden items-center gap-3 md:flex">
           <ThemeSwitch />
           <Button asChild variant="secondary" size="sm">
-            <Link href="/resume.pdf" download className="flex items-center gap-2">
+            <a href="/resume.pdf" download className="flex items-center gap-2">
               <Download className="size-4" aria-hidden="true" />
               <span>Unduh CV</span>
-            </Link>
+            </a>
           </Button>
         </div>
 
