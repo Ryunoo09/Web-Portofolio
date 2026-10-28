@@ -82,15 +82,15 @@
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                                          |
-| --------------------- | ----------------------------------------------------------------------------------------------- |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                  |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                            |
-| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                          |
-| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)               |
-| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                    |
-| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                   |
-| 7. Redesign 2026      | 🟡 **M0–M3 selesai** — token, primitive, layout, shared pattern, data/SEO/domain; M4 berikutnya |
+| Fase                  | Status                                                                                                   |
+| --------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                           |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                     |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                   |
+| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                        |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                             |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                            |
+| 7. Redesign 2026      | 🟡 **M0–M4 selesai** — token, primitive, layout, shared pattern, data/SEO/domain, beranda; M5 berikutnya |
 
 ### Detail Fase 3
 
@@ -671,14 +671,44 @@ ticker, featured work, capabilities), lanjut sampai M8 baru merge ke `main`.
 
 ---
 
+### Sesi 2026-10-28 — M4 beranda Signal Room
+
+**M4:** `docs/redesign/baseline/M4-REPORT.md` (lokal). Beranda lama (hero 3 CTA, kartu proyek seragam,
+kartu skill) diganti tujuh section: **hero → ticker → featured work → proof strip → capabilities →
+about strip → contact CTA**.
+
+| Perubahan                             | Isi                                                                                                                                                |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Hero` + `MetricRail` + `SignalPanel` | H1 value prop; nama/peran mono; 2 CTA; metrik `3 sistem operasional`, `88,62%`, `10 → 2` dari `siteConfig.metrics`; panel 4 baris + “Hubungi saya” |
+| `SignalTicker`                        | Client; 4 studi kasus + outcome singkat; jeda (`aria-pressed`), hover/focus pause, `prefers-reduced-motion` mati; mobile 2×2 statis                |
+| `FeaturedWork` + `CaseCard`           | FTTH (feature) + DSE AI + SIRATA; domain · tipe · tahun; outcome hanya bila ada (FTTH disembunyikan); `StackList`; satu tautan utama               |
+| `ProofStrip`                          | 1,2 juta+ baris, 88,62%, AUC 0,86 — hanya dirender bila proyek Water ada                                                                           |
+| `Capabilities`                        | 3 baris (Backend & API, Data & Automation, Applied AI & CV) + `ProofLink` nyata                                                                    |
+| `AboutStrip` + `ContactCta`           | Indosat/Polines/Brebes; CTA tanpa kata “Konsultasi”                                                                                                |
+
+**Keputusan/penyimpangan:** (1) H1 = value prop (mengikuti `04 §12.2`; “H1 nama” di `06` tidak dipakai);
+(2) urutan 3 kartu ditentukan kode di `features/projects/home.ts`, bukan `is_featured` DB; (3) kartu standard tanpa cover
+tidak merender blok media agar tidak mengulang judul/stack — media muncul otomatis setelah cover diunggah;
+(4) `getFeaturedProjects` & `getTopSkills` dihapus (kode mati); (5) JSON-LD beranda tetap di M7.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **33 file / 148 test** · `pnpm build` 37 halaman statis · `pnpm test:e2e` **19 lulus** ·
+gate `docs/redesign/tools/m4-gate.mjs`: 1440/768/390/320 light+dark `overflow=0`, `h1=1`,
+`500+` tidak tampil, ticker pause & reduced motion bekerja, axe light/dark 0 violation ·
+screenshot `docs/redesign/screenshots/m4/` (lokal) · tinggi beranda 4011 → 3508 px.
+
+**Titik mulai berikutnya:** M5 — Proyek index & detail.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan redesain Signal Room **M4 (Beranda)**: hero, `MetricRail`, `SignalPanel`,
-> `SignalTicker`, `ProofStrip`, `FeaturedWork`/`CaseCard`, `Capabilities`/`AboutStrip`/`ContactCta`;
-> hero memakai `3 sistem operasional` dari `siteConfig` dan `500+` tidak boleh tampil. Terapkan
-> `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`. Jangan ubah
-> konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:e2e`
-> (PowerShell tidak mendukung `&&`), lalu commit + push ke `redesign/signal-room`."
+> "Lanjutkan redesain Signal Room **M5 (Proyek index & detail)**: `CaseGrid` + varian kartu,
+> `ProjectExplorer`/`CaseFilters` (URL `?domain=&type=`), canonical/noindex saat filter aktif,
+> `CaseStudy` 7 section, `CaseFacts`, `CaseToc`, `CaseNext`, breadcrumb + JSON-LD + OG detail.
+> Terapkan `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`.
+> Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
+> `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push ke `redesign/signal-room`."
 >
 > Saat akun uji sudah siap: isi `E2E_ADMIN_EMAIL` & `E2E_ADMIN_PASSWORD` di `.env.local`,
 > jalankan `pnpm test:e2e`, dan pastikan blok admin di `e2e/admin-flow.spec.ts` hijau.
