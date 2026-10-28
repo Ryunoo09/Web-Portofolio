@@ -864,7 +864,7 @@ visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
 
 **Permintaan:** tampilkan foto avatar yang diunggah dari admin di `/about`; tata letak diserahkan ke agent.
 
-**Implementasi:** `ProfilePortrait` (1:1) di header `/about` — potret di kolom kanan 8/4, caption nama + headline, fallback monogram RYW + “Foto menyusul” bila belum ada foto. `MediaFrame.caption` kini menerima `ReactNode`; gambar potret `priority` + `sizes` 320/280. Hero tetap tipografis agar arah Signal Room tidak berubah.
+**Implementasi:** `ProfilePortrait` (1:1) di blok `AboutProof` — bio di kolom kiri 8/4 dan potret di kanan, caption nama + headline, fallback monogram RYW + “Foto menyusul” bila belum ada foto. Header halaman tetap full width di atas. `MediaFrame.caption` kini menerima `ReactNode`; gambar potret `priority` + `sizes` 320/280. Hero tetap tipografis agar arah Signal Room tidak berubah.
 
 **Catatan:** baseline visual `tentang-*` (8 snapshot) diperbarui dengan foto **dimask**, jadi gambar avatar tidak ikut tersimpan di repo publik dan mengganti avatar tidak mengubah baseline. Layout/caption tetap diuji.
 
