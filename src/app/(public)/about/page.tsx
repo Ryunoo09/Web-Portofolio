@@ -11,7 +11,6 @@ import {
   CredentialRow,
   ExperienceTimeline,
   Principles,
-  ProfilePortrait,
   getCertificates,
   getEducation,
   getExperiences,
@@ -66,24 +65,24 @@ export default async function AboutPage() {
         })}
       />
 
-      <header className="grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-10">
-        <div className="space-y-4 lg:col-span-8">
-          <p className="text-muted-foreground font-mono text-[11px] tracking-[0.14em] uppercase">
-            {siteConfig.location} · {siteConfig.availability}
-          </p>
-          <SectionIntro
-            as="h1"
-            title="Tentang Rakha"
-            description="Backend & Data Engineer yang membangun sistem sampai dipakai."
-          />
-        </div>
-
-        <div className="lg:col-span-4">
-          <ProfilePortrait avatarUrl={profile?.avatarUrl ?? null} name={name} role={role} />
-        </div>
+      <header className="space-y-4">
+        <p className="text-muted-foreground font-mono text-[11px] tracking-[0.14em] uppercase">
+          {siteConfig.location} · {siteConfig.availability}
+        </p>
+        <SectionIntro
+          as="h1"
+          title="Tentang Rakha"
+          description="Backend & Data Engineer yang membangun sistem sampai dipakai."
+        />
       </header>
 
-      <AboutProof bio={profile?.bio ?? null} facts={facts} />
+      <AboutProof
+        bio={profile?.bio ?? null}
+        facts={facts}
+        avatarUrl={profile?.avatarUrl ?? null}
+        name={name}
+        role={role}
+      />
 
       {experiences.length > 0 && (
         <section className="space-y-4" aria-labelledby="pengalaman-title">

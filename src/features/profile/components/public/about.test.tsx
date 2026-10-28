@@ -21,6 +21,9 @@ describe("AboutProof", () => {
       <AboutProof
         bio={"Paragraf satu.\n\nParagraf dua."}
         facts={[{ value: "9", label: "studi kasus" }]}
+        avatarUrl={null}
+        name="Rakha Yuda Wicaksono"
+        role="Backend & Data Engineer"
       />,
     );
 
@@ -28,17 +31,34 @@ describe("AboutProof", () => {
     expect(screen.getByText("Paragraf dua.")).toBeInTheDocument();
     expect(screen.getByText("studi kasus")).toBeInTheDocument();
     expect(screen.getByText("9")).toBeInTheDocument();
+    expect(screen.getByText("RYW")).toBeInTheDocument();
   });
 
   it("memisahkan paragraf CRLF dari database", () => {
-    render(<AboutProof bio={"Paragraf satu.\r\n\r\nParagraf dua."} facts={[]} />);
+    render(
+      <AboutProof
+        bio={"Paragraf satu.\r\n\r\nParagraf dua."}
+        facts={[]}
+        avatarUrl={null}
+        name="Rakha Yuda Wicaksono"
+        role="Backend & Data Engineer"
+      />,
+    );
 
     expect(screen.getByText("Paragraf satu.")).toBeInTheDocument();
     expect(screen.getByText("Paragraf dua.")).toBeInTheDocument();
   });
 
   it("tidak mengarang bio saat kosong", () => {
-    render(<AboutProof bio={null} facts={[]} />);
+    render(
+      <AboutProof
+        bio={null}
+        facts={[]}
+        avatarUrl={null}
+        name="Rakha Yuda Wicaksono"
+        role="Backend & Data Engineer"
+      />,
+    );
     expect(screen.getByText("Bio belum diisi.")).toBeInTheDocument();
   });
 });
