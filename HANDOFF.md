@@ -82,15 +82,15 @@
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                                                   |
-| --------------------- | -------------------------------------------------------------------------------------------------------- |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                           |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                     |
-| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                   |
-| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                        |
-| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                             |
-| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                            |
-| 7. Redesign 2026      | 🟡 **M0–M4 selesai** — token, primitive, layout, shared pattern, data/SEO/domain, beranda; M5 berikutnya |
+| Fase                  | Status                                                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                                                  |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                                            |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                                          |
+| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                                               |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                                                    |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                                                   |
+| 7. Redesign 2026      | 🟡 **M0–M5 selesai** — token, primitive, layout, shared pattern, data/SEO/domain, beranda, proyek index & detail; M6 berikutnya |
 
 ### Detail Fase 3
 
@@ -701,11 +701,45 @@ screenshot `docs/redesign/screenshots/m4/` (lokal) · tinggi beranda 4011 → 35
 
 ---
 
+### Sesi 2026-10-28 — M5 proyek index & detail
+
+**M5:** `docs/redesign/baseline/M5-REPORT.md` (lokal). `/projects` kini `ProjectExplorer` (filter) +
+`CaseGrid`; halaman detail kini `CaseStudy` 7 section + `CaseToc`/`CaseFacts`/`CaseNext`. Komponen lama
+dihapus: `ProjectCard`, `ProjectGrid`, `ProjectDetail`, `ProjectGallery`, `TechStackList`.
+
+| Perubahan                             | Isi                                                                                                                                                                                                                                                                                                |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ProjectExplorer` (client)            | Chip domain `aria-pressed` 44px + `<select>` tipe berlabel; filter in-memory; URL `?domain=&type=` via `router.replace(..., { scroll: false })`; state diturunkan dari `useSearchParams` (back/forward aman); hitung hasil `aria-live="polite"`; `EmptyState` + "Reset filter"; tanpa filter skill |
+| SEO filter                            | `generateMetadata` `/projects` baca `searchParams` → `robots: noindex, follow` saat filter valid, canonical selalu `/projects`; halaman index jadi dynamic (revalidate 3600 dihapus); detail tetap ISR 1 jam                                                                                       |
+| `CaseStudy`                           | Header (meta mono · `StatusBadge` · H1 judul · summary · CTA) → media 16:9 → section Masalah/Peran & batasan/Solusi/Deskripsi & arsitektur/Hasil/Tantangan & pelajaran/Galeri; **Hasil disembunyikan bila `outcomes` kosong**; galeri hanya bila ada gambar                                        |
+| `CaseToc`                             | `IntersectionObserver` `-96px 0px -60% 0px`; sticky `top:88px` ≥1024; `<details>` mobile menutup setelah klik; `aria-current="location"`; <3 section → tidak dirender; tanpa smooth scroll                                                                                                         |
+| `CaseFacts` / `CaseNext` / `CaseGrid` | `<dl>` fakta + `StackList`; kartu "Proyek berikutnya" (berputar); grid standar `h2` gap 16/24                                                                                                                                                                                                      |
+| Baru di shared                        | `EmptyState`; `buildMetadata` menerima `robots` opsional; `PROJECT_TYPES` + `projectTypeToParam`/`resolveProjectType` di `taxonomy.ts`; `features/projects/case.ts` (`pickNextProject`, `resolveProjectStatus`)                                                                                    |
+| Perbaikan a11y                        | `SiteFooter` heading `h3` → `h2` (axe `heading-order` gagal di halaman tanpa H2, mis. `/projects` saat filter kosong); `CaseGrid` kartu `h2`                                                                                                                                                       |
+
+**Keputusan/penyimpangan:** (1) section spec "Arsitektur & keputusan" dirender sebagai "Deskripsi &
+arsitektur" dari `descriptionHtml` (konten tidak boleh diubah); (2) `?type=` memakai slug (`tugas-kuliah`);
+(3) TOC di rail kanan atas `CaseFacts`; (4) status: tanpa `endedAt` → Sedang dikerjakan, deployed → Live,
+tanpa repo → Kode privat, selainnya Arsip; (5) e2e selector pindah ke `[data-slot="case-card"]` dan tes
+robots menolerir meta default yang tidak dipancarkan Next.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **37 file / 172 test** · `pnpm build` sukses (`/projects` dynamic, 9 proyek SSG) ·
+`pnpm test:e2e` **21 lulus** · gate `docs/redesign/tools/m5-gate.mjs`: 4 viewport × light/dark
+`overflow=0`/`h1=1`/`cards=9`, filter 9→4→2→9 + empty state + noindex + back/forward, TOC sticky/anchor,
+axe (WCAG + best-practice) 12 pemeriksaan 0 violation · screenshot `docs/redesign/screenshots/m5/` (lokal).
+
+**Titik mulai berikutnya:** M6 — About, skills, contact (`AboutProof`, `Principles`,
+`ExperienceTimeline`, `CapabilityBoard`, `ContactForm` + wiring halaman & 404).
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan redesain Signal Room **M5 (Proyek index & detail)**: `CaseGrid` + varian kartu,
-> `ProjectExplorer`/`CaseFilters` (URL `?domain=&type=`), canonical/noindex saat filter aktif,
-> `CaseStudy` 7 section, `CaseFacts`, `CaseToc`, `CaseNext`, breadcrumb + JSON-LD + OG detail.
+> "Lanjutkan redesain Signal Room **M6 (About, skills, contact)**: `AboutProof` + `Principles` +
+> `ExperienceTimeline`/`CredentialRow`, `CapabilityBoard` (46/8/3, tanpa progress bar, bukti jujur),
+> `ContactForm` intent + `ErrorSummary` + `ContactPaths`/`ContactPanel`, wiring `/about`, `/skills`,
+> `/contact`, 404.
 > Terapkan `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`.
 > Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
 > `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push ke `redesign/signal-room`."
