@@ -82,15 +82,15 @@
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                                                                                 |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                                                         |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                                                   |
-| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                                                 |
-| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                                                      |
-| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                                                           |
-| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                                                          |
-| 7. Redesign 2026      | 🟡 **M0–M6 selesai** — token, primitive, layout, shared pattern, data/SEO/domain, beranda, proyek, about/skills/contact; M7 berikutnya |
+| Fase                  | Status                                                                                                                                             |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                                                                     |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                                                               |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                                                             |
+| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                                                                  |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                                                                       |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                                                                      |
+| 7. Redesign 2026      | 🟡 **M0–M7 selesai** — token, primitive, layout, data/SEO/domain, beranda, proyek, about/skills/contact, motion/SEO/performa/header; M8 berikutnya |
 
 ### Detail Fase 3
 
@@ -766,11 +766,44 @@ health + CSP report-only), lalu Lighthouse mobile ≥90.
 
 ---
 
+### Sesi 2026-10-28 — M7 motion, SEO, performa, header
+
+**M7:** `docs/redesign/baseline/M7-REPORT.md` (lokal).
+
+| Perubahan | Isi                                                                                                                                                                                                                                                                                                                                                           |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Motion    | ticker 28s + pause `aria-pressed`; reduced motion `0.01ms` + `scroll-behavior: auto`; smooth scroll + `scroll-padding-top: 88px`; entrance hero 200ms; sheet admin ≤200ms                                                                                                                                                                                     |
+| SEO       | metadata per rute `04 §12.1` (absolute title, canonical, deskripsi); OG 1200×630 per rute (beranda/about/projects/skills/contact) + OG proyek; JSON-LD `WebSite/Person/ProfilePage`, `CollectionPage/ItemList`, `AboutPage/Person`, `ContactPage`, `CreativeWork/BreadcrumbList`; sitemap `updated_at`; robots disallow `/admin`+`/api`; 404 noindex otomatis |
+| Performa  | JS publik **330 → 176 KB** (contact 182 KB): barrel admin dipisah (`features/<x>/admin.ts`, `shared/components/admin.ts`), Toaster pindah ke layout admin, form kontak tanpa RHF/zod di klien, menu mobile `<dialog>` native (bukan Radix Sheet); font `display:"optional"`; dekorasi aura/grid dimatikan <768px; prioritas gambar ≤2                         |
+| Header    | HSTS, nosniff, XFO DENY, Referrer-Policy, Permissions-Policy, CSP Report-Only; `/api/health` 200                                                                                                                                                                                                                                                              |
+
+**Keputusan/penyimpangan:** (1) menu publik `dialog` native (sheet tetap untuk sidebar admin);
+(2) form kontak `noValidate` + validasi lokal, zod tetap di server; (3) `/resume.pdf` tidak masuk sitemap
+(berkas belum ada); (4) judul 404 default (status 404 + noindex dari Next); (5) intent kontak tetap
+awalan subjek.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **40 file / 186 test** · `pnpm build` sukses · `pnpm test:e2e` **23 lulus** ·
+gate `docs/redesign/tools/m7-gate.mjs`: 6 header + health, 6 OG unik, metadata/JSON-LD lengkap tanpa
+`missing`, JS 176/182 KB, LCP 1,6–2,6 s (CDP 4× CPU + Slow 4G), CLS 0, axe 24 pemeriksaan 0 violation,
+reduced motion & pause ticker, menu dialog (fokus/Escape/kembali), filter noindex.
+
+**⚠️ Lighthouse mobile:** gate **≥90 belum tercapai di host ini** — 3 run `/`: perf 67–69, LCP 3,4–3,6 s
+(simulated), TBT 1.030–1.200 ms, CLS 0; `/projects` 72. Host menjalankan ±50 proses Chrome pengguna
+(CPU 18–51%) dan TBT antar-sesi 230–1.390 ms. Dengan `--throttling-method=devtools` LCP 2,3 s.
+Best-practices/SEO/a11y = 100. Sisa beban: framework React/Next ~115 KB + hidrasi. Rekomendasi: ukur
+ulang di CI/host idle sebelum rilis (M8-T3).
+
+**Titik mulai berikutnya:** M8 — QA & rilis (test tambahan, e2e+axe+keyboard+reduced motion,
+visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan redesain Signal Room **M7 (Motion, SEO, performa, header)**: motion 3 lapis + reduced
-> motion, metadata semua rute + OG + sitemap/canonical/JSON-LD/robots, image sizes/priority/font
-> subset/JS budget, security headers + `/api/health` + CSP report-only. Target Lighthouse mobile ≥90.
+> "Lanjutkan redesain Signal Room **M8 (QA & rilis)**: lengkapi unit/component test, e2e + axe +
+> keyboard + reduced motion untuk 6 rute (filter, TOC, kontak, 404), visual regression + Lighthouse
+> 4 viewport, lalu preview/rilis/smoke/rollback. Ukur Lighthouse di host idle/CI.
 > Terapkan `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`.
 > Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
 > `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push ke `redesign/signal-room`."
