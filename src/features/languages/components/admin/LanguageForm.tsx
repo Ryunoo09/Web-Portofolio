@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { languageFormSchema, LANGUAGE_LEVELS, type LanguageFormValues } from "../../schemas";
 import { createLanguage, updateLanguage } from "../../server/actions";
 import { ROUTES } from "@/shared/constants/routes";
-import { FormField } from "@/shared/components";
+import { FormField } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Checkbox } from "@/shared/components/ui/checkbox";

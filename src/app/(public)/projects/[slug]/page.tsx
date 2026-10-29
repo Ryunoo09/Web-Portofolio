@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PageContainer } from "@/shared/components";
-import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
-import { getProjectBySlug, getPublishedProjects, ProjectDetail } from "@/features/projects";
+import { Breadcrumbs, PageContainer } from "@/shared/components";
+import {
+  CaseStudy,
+  getProjectBySlug,
+  getPublishedProjects,
+  pickNextProject,
+  projectMetadata,
+  ProjectJsonLd,
+} from "@/features/projects";
 
 export const revalidate = 3600;
 
@@ -20,11 +26,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
   const project = await getProjectBySlug(slug);
   if (!project) return { title: "Proyek Tidak Ditemukan" };
 
-  return buildMetadata({
-    title: project.title,
-    description: project.summary,
-    path: `/projects/${project.slug}`,
-  });
+  return projectMetadata(project);
 }
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
@@ -35,9 +37,20 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
     notFound();
   }
 
+  const projects = await getPublishedProjects();
+  const nextProject = pickNextProject(projects, project);
+
   return (
-    <PageContainer size="narrow" className="py-8 md:py-12">
-      <ProjectDetail project={project} />
+    <PageContainer className="space-y-6 py-8 md:py-12">
+      <Breadcrumbs
+        items={[
+          { label: "Beranda", href: "/" },
+          { label: "Proyek", href: "/projects" },
+          { label: project.title },
+        ]}
+      />
+      <CaseStudy project={project} nextProject={nextProject} />
+      <ProjectJsonLd project={project} />
     </PageContainer>
   );
 }

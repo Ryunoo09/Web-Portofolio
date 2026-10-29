@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { ROUTES } from "@/shared/constants/routes";
-import { AdminPageHeader } from "@/shared/components";
+import { AdminPageHeader } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
-import { ExperienceTable, getAllExperiences } from "@/features/experiences";
+import { ExperienceTable } from "@/features/experiences/admin";
+import { getAllExperiences } from "@/features/experiences";
 
 export default async function AdminExperiencesPage() {
   const experiences = await getAllExperiences();

@@ -1,5 +1,5 @@
-import { AdminPageHeader } from "@/shared/components";
-import { ExperienceForm } from "@/features/experiences";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { ExperienceForm } from "@/features/experiences/admin";
 
 export default function AdminExperienceNewPage() {
   return (

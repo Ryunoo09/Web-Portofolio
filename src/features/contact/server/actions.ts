@@ -5,6 +5,7 @@ import { createServerSupabase } from "@/shared/lib/supabase/server";
 import { revalidateMessages } from "@/shared/lib/revalidate";
 import { requireAdmin } from "@/features/auth";
 import type { ActionResult } from "@/shared/types/action-result";
+import { CONTACT_INTENT_LABELS } from "../intents";
 import { contactFormSchema, type ContactFormValues } from "../schemas";
 
 export async function submitContactMessage(input: ContactFormValues): Promise<ActionResult> {
@@ -27,7 +28,8 @@ export async function submitContactMessage(input: ContactFormValues): Promise<Ac
   const { error } = await supabase.from("contact_messages").insert({
     name: parsed.data.name,
     email: parsed.data.email,
-    subject: parsed.data.subject || null,
+    // Tabel belum punya kolom intent; simpan sebagai awalan subjek yang terbaca admin.
+    subject: `${CONTACT_INTENT_LABELS[parsed.data.intent]}: ${parsed.data.subject}`,
     message: parsed.data.message,
   });
 

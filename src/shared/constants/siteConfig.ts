@@ -1,3 +1,10 @@
+/** Satu metrik hero. Nilai harus terverifikasi dan bisa dilacak ke satu proyek. */
+export type SiteMetric = {
+  value: string;
+  label: string;
+  detail?: string;
+};
+
 export const siteConfig = {
   name: "Rakha Yuda Wicaksono",
   shortName: "Rakha",
@@ -6,11 +13,23 @@ export const siteConfig = {
     "Portofolio Rakha Yuda Wicaksono — Backend & Data Engineer. Python, FastAPI, Laravel, PostgreSQL, serta otomasi dan AI untuk menyelesaikan masalah nyata.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   locale: "id_ID",
-  role: "Backend Developer & Data Engineer",
-  tagline:
-    "Saya mengubah proses manual menjadi sistem dan otomasi yang rapi — dari backend dan pengolahan data hingga computer vision.",
+  role: "Backend & Data Engineer",
+  valueProp:
+    "Saya mengubah proses manual menjadi backend, pipeline data, dan sistem computer vision yang bisa diukur. Fresh graduate Teknologi Rekayasa Komputer, Politeknik Negeri Semarang.",
   location: "Brebes, Jawa Tengah, Indonesia",
-  availability: "Terbuka untuk posisi Junior Software, Backend & Data",
+  timezone: "WIB",
+  availability: "Terbuka untuk Backend & Data Engineer",
+  /** Tiga teknologi yang ditonjolkan di panel status hero. */
+  focus: ["Python", "FastAPI", "PostgreSQL"],
+  /**
+   * Metrik hero. `500+` sengaja tidak dipakai: definisi pengguna unik/akumulatif
+   * belum terverifikasi (keputusan 27 Okt 2026). Ganti nilainya di sini lalu deploy.
+   */
+  metrics: [
+    { value: "3", label: "sistem operasional", detail: "FTTH · DSE AI · SIRATA" },
+    { value: "88,62%", label: "akurasi model", detail: "Big Data Kualitas Air" },
+    { value: "10 → 2", label: "menit pembuatan surat", detail: "SIRATA" },
+  ],
   socials: {
     github: "https://github.com/Ryunoo09",
     linkedin: "https://www.linkedin.com/in/rakha-yd",

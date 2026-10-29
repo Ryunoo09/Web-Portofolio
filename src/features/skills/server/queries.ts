@@ -4,18 +4,16 @@ import { withOfflineFallback } from "@/shared/lib/query";
 import type { Skill } from "../types";
 import { toSkill } from "./mappers";
 
-function findSkills(limit?: number): Promise<Skill[]> {
+function findSkills(): Promise<Skill[]> {
   return withOfflineFallback(async () => {
     const supabase = createPublicClient();
-    let query = supabase
+    const { data, error } = await supabase
       .from("skills")
       .select("*")
       .eq("is_published", true)
       .eq("is_learning", false)
       .order("sort_order");
-    if (limit) query = query.limit(limit);
 
-    const { data, error } = await query;
     if (error) throw new Error(`Gagal memuat keahlian: ${error.message}`);
     return data.map(toSkill);
   }, []);
@@ -23,11 +21,6 @@ function findSkills(limit?: number): Promise<Skill[]> {
 
 export function getSkills(): Promise<Skill[]> {
   return findSkills();
-}
-
-/** Keahlian yang tampil ringkas di beranda. */
-export function getTopSkills(limit = 4): Promise<Skill[]> {
-  return findSkills(limit);
 }
 
 /** Keahlian yang sedang dipelajari — ditampilkan terpisah di /skills. */

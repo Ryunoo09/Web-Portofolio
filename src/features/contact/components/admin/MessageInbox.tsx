@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Mail, MailOpen, Reply } from "lucide-react";
 import { toast } from "sonner";
 import { deleteMessage, markMessageRead } from "../../server/actions";
-import { ConfirmDeleteDialog } from "@/shared/components";
+import { ConfirmDeleteDialog } from "@/shared/components/admin";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LoginForm } from "@/features/auth";
+import { LoginForm } from "@/features/auth/admin";
 
 export const metadata: Metadata = {
   title: "Masuk Admin",

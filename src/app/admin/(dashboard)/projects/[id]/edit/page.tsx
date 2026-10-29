@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { AdminPageHeader } from "@/shared/components";
+import { AdminPageHeader } from "@/shared/components/admin";
 import { getProjectById } from "@/features/projects/server/queries";
 import { ProjectForm } from "@/features/projects/components/admin/ProjectForm";
 import { ProjectGalleryManager } from "@/features/projects/components/admin/ProjectGalleryManager";

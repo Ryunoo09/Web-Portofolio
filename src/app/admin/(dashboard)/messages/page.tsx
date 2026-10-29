@@ -1,5 +1,6 @@
-import { AdminPageHeader } from "@/shared/components";
-import { MessageInbox, getContactMessages } from "@/features/contact";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { MessageInbox } from "@/features/contact/admin";
+import { getContactMessages } from "@/features/contact";
 
 export default async function AdminMessagesPage() {
   const messages = await getContactMessages();

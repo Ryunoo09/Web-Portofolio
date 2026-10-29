@@ -1,5 +1,5 @@
-import { AdminPageHeader } from "@/shared/components";
-import { LanguageForm } from "@/features/languages";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { LanguageForm } from "@/features/languages/admin";
 
 export default function AdminLanguagesNewPage() {
   return (

@@ -84,4 +84,13 @@ describe("projectFormSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("menerima domain yang dikenal dan null", () => {
+    expect(projectFormSchema.safeParse({ ...valid, domain: "applied-ai" }).success).toBe(true);
+    expect(projectFormSchema.safeParse({ ...valid, domain: null }).success).toBe(true);
+  });
+
+  it("menolak domain di luar taksonomi", () => {
+    expect(projectFormSchema.safeParse({ ...valid, domain: "mobile" }).success).toBe(false);
+  });
 });

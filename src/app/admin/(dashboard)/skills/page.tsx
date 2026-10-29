@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { ROUTES } from "@/shared/constants/routes";
-import { AdminPageHeader } from "@/shared/components";
+import { AdminPageHeader } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
 import { SkillTable } from "@/features/skills/components/admin/SkillTable";
 import { getAllSkills } from "@/features/skills/server/queries";

@@ -1,5 +1,6 @@
-import { AdminPageHeader } from "@/shared/components";
-import { ProfileForm, getProfileForAdmin } from "@/features/profile";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { ProfileForm } from "@/features/profile/admin";
+import { getProfileForAdmin } from "@/features/profile";
 
 export default async function AdminProfilePage() {
   const profile = await getProfileForAdmin();

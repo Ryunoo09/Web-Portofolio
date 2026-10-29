@@ -1,111 +1,72 @@
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { PageContainer, SectionHeading } from "@/shared/components";
-import { Button } from "@/shared/components/ui/button";
-import { HeroSection, getProfile } from "@/features/profile";
-import { getFeaturedProjects, ProjectCard } from "@/features/projects";
-import { getTopSkills, SkillCard } from "@/features/skills";
+import type { Metadata } from "next";
+import { JsonLd, PageContainer } from "@/shared/components";
+import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
+import {
+  jsonLdGraph,
+  personNode,
+  profilePageNode,
+  webSiteNode,
+} from "@/shared/lib/seo/structured-data";
+import { AboutStrip, ContactCta, Hero, getProfile } from "@/features/profile";
+import {
+  Capabilities,
+  FeaturedWork,
+  HOME_CASE_SLUGS,
+  HOME_TICKER_ITEMS,
+  PROOF_PROJECT_SLUG,
+  ProofStrip,
+  SignalTicker,
+  getProjectShortLabel,
+  getPublishedProjects,
+  pickProjectsBySlug,
+} from "@/features/projects";
 
 export const revalidate = 3600;
 
+export const metadata: Metadata = buildMetadata({
+  title: "Rakha Yuda Wicaksono — Backend & Data Engineer",
+  description:
+    "Portofolio Rakha Yuda Wicaksono, Backend & Data Engineer di Brebes. Python, FastAPI, PostgreSQL, pipeline data, dan computer vision untuk proses yang lebih cepat.",
+  path: "/",
+});
+
 export default async function HomePage() {
-  const [profile, featuredProjects, topSkills] = await Promise.all([
-    getProfile(),
-    getFeaturedProjects(),
-    getTopSkills(4),
-  ]);
+  const [profile, projects] = await Promise.all([getProfile(), getPublishedProjects()]);
+
+  const caseProjects = pickProjectsBySlug(projects, HOME_CASE_SLUGS);
+  const proofProject = pickProjectsBySlug(projects, [PROOF_PROJECT_SLUG])[0] ?? null;
+  const latestProject = caseProjects[0] ?? projects[0] ?? null;
+  const latestSignalProject = latestProject
+    ? {
+        slug: latestProject.slug,
+        title: getProjectShortLabel(latestProject.slug, latestProject.title),
+      }
+    : null;
+  const resumeUrl = profile?.resumeUrl ?? "/resume.pdf";
+
+  const publishedSlugs = new Set(projects.map((project) => project.slug));
+  const tickerItems = HOME_TICKER_ITEMS.flatMap(({ slug, label, detail }) =>
+    publishedSlugs.has(slug) ? [{ href: `/projects/${slug}`, label, detail }] : [],
+  );
 
   return (
-    <PageContainer className="space-y-14 py-8 md:space-y-20 md:py-12">
-      {/* 1. Hero Section */}
-      <HeroSection profile={profile} />
+    <PageContainer className="pb-16 md:pb-24">
+      <JsonLd
+        id="home-jsonld"
+        data={jsonLdGraph([webSiteNode(), personNode(), profilePageNode()])}
+      />
 
-      {/* 2. Featured Projects */}
-      <section>
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <SectionHeading
-            badge="Portofolio Karya"
-            title="Proyek"
-            highlight="Unggulan"
-            description="Koleksi sistem dan aplikasi pilihan — dari computer vision dan analitik data hingga backend yang dipakai di lapangan."
-            className="mb-0"
-          />
-          <Button
-            asChild
-            variant="outline"
-            className="border-border/80 hover:border-gold/50 shrink-0 rounded-full"
-          >
-            <Link href="/projects" className="flex items-center gap-1.5">
-              <span>Semua Proyek</span>
-              <ArrowUpRight className="size-3.5" />
-            </Link>
-          </Button>
-        </div>
+      <Hero profile={profile} latestProject={latestSignalProject} />
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {featuredProjects.map((p) => (
-            <ProjectCard key={p.id} project={p} />
-          ))}
-        </div>
-      </section>
+      <SignalTicker items={tickerItems} />
 
-      {/* 3. Core Tech Stack Skills */}
-      <section>
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <SectionHeading
-            badge="Keahlian Utama"
-            title="Spesialisasi"
-            highlight="Teknologi"
-            description="Teknologi inti yang saya pakai untuk membangun backend, mengolah data, dan mengotomasi proses."
-            className="mb-0"
-          />
-          <Button
-            asChild
-            variant="outline"
-            className="border-border/80 hover:border-gold/50 shrink-0 rounded-full"
-          >
-            <Link href="/skills" className="flex items-center gap-1.5">
-              <span>Semua Keahlian</span>
-              <ArrowUpRight className="size-3.5" />
-            </Link>
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {topSkills.map((s) => (
-            <SkillCard key={s.id} skill={s} />
-          ))}
-        </div>
-      </section>
-
-      {/* 4. Contact Climax CTA */}
-      <section className="border-gold/30 from-card via-card to-gold/5 relative space-y-6 overflow-hidden rounded-3xl border bg-gradient-to-br p-8 text-center shadow-xl sm:p-12 md:p-16">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#e5c158_1px,transparent_1px)] [background-size:20px_20px] opacity-10" />
-        <div className="relative z-10 mx-auto max-w-2xl space-y-4">
-          <span className="border-gold/40 bg-gold/10 text-gold inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold">
-            Terbuka untuk Peluang
-          </span>
-          <h2 className="text-foreground font-heading text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Tertarik Bekerja Sama?
-          </h2>
-          <p className="text-muted-foreground text-sm leading-relaxed sm:text-base">
-            Saya terbuka untuk peluang magang, kontrak, maupun posisi penuh waktu di bidang backend,
-            data, dan otomasi. Mari berdiskusi.
-          </p>
-          <div className="pt-2">
-            <Button
-              asChild
-              size="lg"
-              className="bg-gold text-primary-foreground shadow-gold/20 hover:bg-gold/90 rounded-full px-8 font-semibold shadow-lg"
-            >
-              <Link href="/contact" className="flex items-center gap-2">
-                <span>Hubungi Saya</span>
-                <ArrowUpRight className="size-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <div className="mt-12 space-y-14 md:mt-16 md:space-y-20">
+        <FeaturedWork projects={caseProjects} />
+        <ProofStrip project={proofProject} />
+        <Capabilities projects={projects} />
+        <AboutStrip />
+        <ContactCta resumeUrl={resumeUrl} />
+      </div>
     </PageContainer>
   );
 }

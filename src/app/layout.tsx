@@ -3,25 +3,26 @@ import type { ReactNode } from "react";
 import { Space_Grotesk, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { ThemeProvider } from "@/shared/components/common/ThemeProvider";
-import { Toaster } from "sonner";
 import "./globals.css";
 
+// `display: "optional"`: teks langsung tampil dengan fallback bila font belum siap,
+// sehingga LCP tidak mundur karena font swap di koneksi lambat.
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
-  display: "swap",
+  display: "optional",
 });
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-jakarta",
-  display: "swap",
+  display: "optional",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
+  variable: "--font-jetbrains",
+  display: "optional",
 });
 
 export const metadata: Metadata = {
@@ -32,14 +33,14 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "Full-Stack Developer",
-    "Next.js",
-    "React",
-    "TypeScript",
+    "Backend & Data Engineer",
+    "Backend Engineer",
+    "Data Engineer",
+    "Python",
+    "FastAPI",
+    "Laravel",
     "PostgreSQL",
-    "Tailwind CSS",
     "Portofolio Developer Indonesia",
-    "Software Engineer",
   ],
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
@@ -66,10 +67,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${spaceGrotesk.variable} ${jakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="bg-background text-foreground selection:bg-gold/30 selection:text-gold flex min-h-full flex-col font-sans">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+      <body className="bg-background text-foreground selection:bg-gold/30 selection:text-foreground flex min-h-full flex-col font-sans">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
           {children}
-          <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
     </html>

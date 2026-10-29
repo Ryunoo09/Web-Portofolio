@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { optionalDateInput, urlOrEmpty } from "@/shared/lib/validation";
+import { PROJECT_DOMAINS } from "@/shared/lib/taxonomy";
 
 export const projectFormSchema = z
   .object({
@@ -27,6 +28,7 @@ export const projectFormSchema = z
     features: z.array(z.string().max(200)).default([]),
     outcomes: z.array(z.string().max(200)).default([]),
     isDeployed: z.boolean(),
+    domain: z.enum(PROJECT_DOMAINS).nullish(),
     seoTitle: z.string().max(70).optional(),
     seoDescription: z.string().max(160).optional(),
   })

@@ -1,5 +1,5 @@
-import { AdminPageHeader } from "@/shared/components";
-import { OrganizationForm } from "@/features/organizations";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { OrganizationForm } from "@/features/organizations/admin";
 
 export default function AdminOrganizationsNewPage() {
   return (

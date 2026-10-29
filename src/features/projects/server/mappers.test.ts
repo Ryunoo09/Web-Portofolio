@@ -30,8 +30,9 @@ const projectRow: ProjectRow = {
   outcomes: ["Hemat 8 menit per surat"],
   challenges: "Data vendor tidak konsisten.",
   is_deployed: true,
-  seo_title: null,
-  seo_description: null,
+  domain: "backend-system",
+  seo_title: "Nexus Commerce — Studi Kasus",
+  seo_description: "Platform e-commerce headless untuk penjualan.",
   created_at: "2024-01-01T00:00:00Z",
   updated_at: "2024-01-01T00:00:00Z",
 };
@@ -77,7 +78,22 @@ describe("toProject", () => {
     expect(project.outcomes).toEqual(["Hemat 8 menit per surat"]);
     expect(project.challenges).toBe("Data vendor tidak konsisten.");
     expect(project.isDeployed).toBe(true);
+    expect(project.domain).toBe("backend-system");
+    expect(project.seoTitle).toBe("Nexus Commerce — Studi Kasus");
+    expect(project.seoDescription).toBe("Platform e-commerce headless untuk penjualan.");
     expect(project.skills).toEqual([{ id: "s1", name: "Laravel" }]);
     expect(project.images.map((image) => image.id)).toEqual(["i1", "i2"]);
+  });
+
+  it("memakai fallback taxonomy saat kolom domain masih null", () => {
+    const project = toProject({
+      ...projectRow,
+      slug: "sirata",
+      domain: null,
+      project_skills: null,
+      project_images: null,
+    });
+
+    expect(project.domain).toBe("backend-system");
   });
 });

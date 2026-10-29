@@ -74,21 +74,23 @@
 ## 🎨 DESAIN
 
 - **Font heading:** ~~Playfair Display~~ → **Space Grotesk** (CSS var `--font-heading`, class `font-heading`)
-- Body: **Plus Jakarta Sans** · Mono: **JetBrains Mono**
+- Body: **Plus Jakarta Sans** · Mono: **JetBrains Mono** (`--font-jetbrains` → `--font-mono`)
 - Design system: `design-system/portfolio/MASTER.md`
+- Redesign 2026: arah **Signal Room** (dark-first) + light **Daylight Ledger**; rencana di `docs/redesign/` (lokal). M1 memasang token baru di `src/app/globals.css`.
 
 ---
 
 ## ✅ STATUS PER FASE
 
-| Fase                  | Status                                                                   |
-| --------------------- | ------------------------------------------------------------------------ |
-| 1. Fondasi + Supabase | ✅ **SELESAI**                                                           |
-| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**     |
-| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan   |
-| 4. SEO & performa     | 🟡 Sebagian (metadata, sitemap dinamis); JSON-LD & OG image masih stub   |
-| 5. Testing            | 🟢 Unit + komponen + E2E publik & axe jalan; E2E admin menunggu akun uji |
-| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets            |
+| Fase                  | Status                                                                                                                                                                                                    |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1. Fondasi + Supabase | ✅ **SELESAI**                                                                                                                                                                                            |
+| 2. Halaman publik     | ✅ **SELESAI** — data asli dari Supabase, `dummyData.ts` **dihapus**                                                                                                                                      |
+| 3. Dashboard admin    | ✅ **SELESAI** — auth, 5 CRUD, upload gambar, edit profil, inbox pesan                                                                                                                                    |
+| 4. SEO & performa     | 🟡 Sebagian — detail proyek sudah JSON-LD/OG; schema & OG rute lain menyusul (M7)                                                                                                                         |
+| 5. Testing            | 🟢 Unit + komponen + E2E publik, admin, & axe jalan (18 tes)                                                                                                                                              |
+| 6. Deployment         | 🟡 Siap (NPM + CI/CD tertulis) — menunggu setup VPS & secrets                                                                                                                                             |
+| 7. Redesign 2026      | 🟡 **M0–M8 selesai** — token, primitive, layout, data/SEO/domain, beranda, proyek, about/skills/contact, motion/SEO/performa/header, QA & rilis (preview lokal); merge produksi menunggu CV + persetujuan |
 
 ### Detail Fase 3
 
@@ -143,6 +145,8 @@ ditunda ke Fase 2; Tiptap (A-10) dilewati, deskripsi proyek tetap `<Textarea>` H
 2. **Setelah memindah/menghapus file route, hapus `.next`:**
    `Remove-Item -Recurse -Force .next` → jika tidak, `typecheck` error
    "Cannot find module .next/types/validator".
+   `pnpm typecheck` sekarang menjalankan `next typegen` lebih dulu; jika
+   `.next/dev/types/validator.ts` korup, hapus `.next` lalu ulangi `pnpm typecheck`.
 3. **`supabase link`** hanya butuh **20 huruf ref** (tanpa URL, tanpa `<>`).
    Untuk `supabase gen types` di Windows pakai `cmd /c "... > file"` agar encoding tidak rusak.
 4. **Di-ignore git:** `.env.local`, `.opencode/`, `.agents/`, `docs/`, `node_modules/`,
@@ -165,6 +169,13 @@ ditunda ke Fase 2; Tiptap (A-10) dilewati, deskripsi proyek tetap `<Textarea>` H
     `feat(admin): CRUD ...` **ditolak** → pakai `feat(admin): tambah CRUD ...`.
 11. **`next/image` + `unoptimized`** dipakai untuk pratinjau di `ImageUploadField`, jadi host
     gambar non-Supabase tetap aman di form admin.
+12. **Visual regression** memakai snapshot viewport Windows di
+    `e2e/visual.spec.ts-snapshots/`. Font `display: "optional"` tidak deterministik → tes memuat
+    font lalu reload. Jangan menambah `--update-snapshots` ke CI Linux tanpa baseline Linux.
+13. **Lighthouse** di host pengembangan ini berbeban (±46 Chrome milik pengguna). Skor M8
+    92–100, tetapi LCP mobile 2,5–3,1 s; ukur ulang di CI/idle sebelum menganggap gate LCP tutup.
+14. **`/resume.pdf` belum ada.** Tautan unduh CV sengaja memakai `<a download>`, bukan `next/link`,
+    agar tidak ada prefetch RSC 404 yang menurunkan Best-practices.
 
 ---
 
@@ -184,8 +195,8 @@ ditunda ke Fase 2; Tiptap (A-10) dilewati, deskripsi proyek tetap `<Textarea>` H
 
 ### Tahap 4 — SEO & Kualitas (lanjutkan di sini)
 
-JSON-LD (Person, WebSite, Project) · `generateMetadata` semua halaman · `opengraph-image`
-nyata memakai cover proyek · header keamanan + CSP · rate-limit login ·
+JSON-LD `Person`/`WebSite`/schema halaman lain · `generateMetadata` semua halaman · OG semua rute
+(detail proyek sudah dinamis di M3) · header keamanan + CSP · rate-limit login ·
 drag & drop urutan (A-12) · CRUD Blog (A-13)
 
 ### Tahap 5 — Deployment 🟡 (tertulis, menunggu dijalankan)
@@ -228,19 +239,24 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
 - **Kolom `icon` keahlian** belum dirender di UI mana pun, jadi belum diekspos di form
   admin (update tidak menyentuh kolom itu, nilai lama tetap utuh). Lihat
   `features/skills/server/actions.ts`.
-- **`opengraph-image.tsx`** masih teks statis "Portofolio"; cover proyek belum dipakai
-  sebagai OG image.
+- **OG image** baru ada untuk detail proyek (`opengraph-image.tsx` dinamis, judul + domain +
+  outcome). Beranda/about/skills/contact belum punya OG; cover proyek belum dipakai sebagai
+  gambar OG. Alt OG masih statis. Dikerjakan di M7.
 - **Login belum ada rate-limit kustom.**
 - **Proxy tidak me-redirect admin yang sudah login** dari `/admin/login` (sengaja, hindari loop).
 - **AboutContent** — grid "Prinsip & Filosofi" masih hardcoded (DB tak punya kolomnya).
-- **`features/projects/seo.ts`** & **`shared/lib/seo/jsonLd.ts`** masih stub.
+- **JSON-LD baru di detail proyek** (`CreativeWork` + `BreadcrumbList`). `Person`/`WebSite` di
+  beranda dan schema halaman lain belum dipasang (M7).
 - **`getTopSkills(4)`** = 4 skill pertama by `sort_order` (skema skill tak punya `featured`).
-- **E2E alur admin di-skip** sampai ada akun uji: isi `E2E_ADMIN_EMAIL` &
-  `E2E_ADMIN_PASSWORD` di `.env.local`, lalu `e2e/admin-flow.spec.ts` ikut berjalan.
 - **Duplikasi tipe/mapper** antara `features/profile` (konsumsi halaman publik) dan
   `features/{experiences,education,certificates}` (CRUD admin) untuk tabel yang sama.
   Menyatukan ownership domain perlu refactor terpisah.
 - **Test mappers** memakai fixture manual; belum ada tes integrasi ke Supabase.
+- **`/resume.pdf` belum diunggah** → tombol Unduh CV masih 404 (blocker rilis M8).
+- **Lighthouse LCP mobile** 2,5–3,1 s di host berbeban; perlu pengukuran CI/idle.
+- **Visual baseline** hanya Windows; CI Linux butuh baseline terpisah.
+- **Kunci `service_role` Supabase lama** sudah terekspos lewat repo variable publik (sudah diganti
+  ke `anon`); rotasi kunci harus dilakukan di dashboard Supabase.
 
 ---
 
@@ -587,13 +603,288 @@ desktop/mobile, hero detail, input tanggal admin, tabel keahlian admin.
 
 ---
 
+### Sesi 2026-10-27/28 — Redesign M0 baseline + M1 token & primitive
+
+**Permintaan:** mulai implementasi redesain Signal Room; M0 hanya baseline, M1 perubahan kode pertama;
+setiap PR memakai `clean-code`, `code-reviewer`, `ponytail`; verifikasi 5 perintah lalu commit + push.
+
+**Branch:** `redesign/signal-room` (dari `main` `41d9902`). Tag baseline: `pre-redesign-2026-10`.
+
+**M0:** `baseline/M0-BASELINE.md`. Baseline 5 perintah lulus (lint 0 error/1 warning, test 101,
+build 37 halaman, e2e 18). Tidak ada source code diubah.
+
+**M1:** `baseline/M1-REPORT.md`. Token Signal Room/Daylight Ledger di `globals.css`; `@theme inline`;
+radius 4/6; focus ring; reduced-motion; `.site-aura`/`.site-grid`; utility lama
+(`gold-gradient-text`, `card-luxury`, `luxury-glow-top`) dihapus dari publik + admin; mono menjadi
+`--font-jetbrains`; metadata “Backend & Data Engineer”; `enableSystem={false}`; delapan primitive
+direstyle; test primitive baru.
+
+**Verifikasi M1:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **27 file / 111 test** · `pnpm build` 37 static page · `pnpm test:e2e` **18 lulus** ·
+axe light 7/7 path OK · kontras token terukur · screenshot di
+`docs/redesign/screenshots/m1/` (lokal).
+
+**Tidak diubah:** database/migrasi, foto/cover, `/resume.pdf`, halaman publik M4–M7. Inline
+gradient/shadow dekoratif halaman lama sengaja menunggu M4/M5.
+
+**Titik mulai berikutnya (M1):** M2 — `SectionIntro`, Navbar/Footer/skip link, StatusBadge, StackList,
+EmptyState.
+
+---
+
+### Sesi 2026-10-28 — M2 layout & shared pattern
+
+**M2:** `baseline/M2-REPORT.md`. `PageContainer` max 1200/gutter 24–48; `SectionIntro` tanpa
+badge/gradient; `StatusBadge`; `StackList`; `MediaFrame` + `ProjectCoverFallback`; `Breadcrumbs` +
+`JsonLd`; `SiteHeader`/`MobileMenu`/`ThemeSwitch`/`SkipLink`; `SiteFooter` 3 kolom. `SectionHeading`,
+`Navbar`, `Footer`, `ThemeToggle` dihapus.
+
+**Gate M2:** header 64px konten + border, 0 overflow di 1440/390 light/dark; skip link → `main`;
+Sheet mobile buka/Escape/fokus kembali; axe light 7/7 path OK; axe dark E2E 18 lulus.
+
+**Verifikasi M2:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **28 file / 119 test** · `pnpm build` 37 static page · `pnpm test:e2e` **18 lulus** ·
+screenshot `docs/redesign/screenshots/m2/` (lokal).
+
+**Known temporary:** `SectionIntro` masih menerima `as="h1"` untuk header halaman; spec final
+H2/H3 dan penggantian halaman dilakukan di M6.
+
+**Titik mulai berikutnya:** M3 — `Project.domain` nullable + admin select + `taxonomy.ts` fallback;
+map `seo_title`/`seo_description`; `projectMetadata` + `ProjectJsonLd`; breadcrumb proyek. Lanjut
+sampai M8, baru merge `redesign/signal-room` ke `main`.
+
+---
+
+### Sesi 2026-10-28 — M3 data, SEO, dan domain
+
+**M3:** `docs/redesign/baseline/M3-REPORT.md` (lokal). Migrasi `0006_project_domain.sql` **diterapkan**
+ke Supabase linked setelah backup `docs/redesign/backup/2026-10-28-pre-m3.json`; 9 proyek terisi
+domain. Riwayat migrasi remote diperbaiki (`0004`/`0005` ditandai applied karena sebelumnya dijalankan
+manual) agar `db push` tidak mengulang migrasi lama.
+
+| Perubahan                    | Isi                                                                                                                                            |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/shared/lib/taxonomy.ts` | `PROJECT_DOMAINS` (6), label, `resolveProjectDomain(slug, stored)` fallback 9 slug, `getProjectDomainLabel`                                    |
+| Data proyek                  | `Project.domain`, `seoTitle`, `seoDescription`; query select kolomnya; mapper menyelesaikan fallback; Zod enum/null                            |
+| Admin                        | `ProjectForm` dapat memilih **Domain** + mengisi **Judul/Deskripsi SEO** (sebelumnya edit menimpa kolom SEO jadi null)                         |
+| SEO                          | `projectMetadata`, `projectJsonLd`, `ProjectJsonLd` (`CreativeWork`), `Breadcrumbs` di detail, OG dinamis 1200×630 berisi judul/domain/outcome |
+| Perbaikan                    | `buildMetadata` tidak lagi menulis kunci `images: undefined` (kunci itu memblokir merge `opengraph-image.tsx`); test regresi ditambahkan       |
+
+**Keputusan:** `seo_title`/`seo_description` di DB **dibiarkan kosong** (tidak mengarang klaim) —
+metadata memakai fallback `title`/`summary`. OG alt masih statis dan route OG masih dinamis; masuk M7.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **31 file / 134 test** · `pnpm build` 37 static page · `pnpm test:e2e` **18 lulus**
+(termasuk simpan domain di admin + cek `CreativeWork` di detail). Gate OG: HTTP 200 `image/png`
+55.870 byte, `og:image`/`twitter:image` 1200×630.
+
+**Titik mulai berikutnya:** M4 — Beranda baru (hero `3 sistem operasional`, metric rail, signal panel,
+ticker, featured work, capabilities), lanjut sampai M8 baru merge ke `main`.
+
+---
+
+### Sesi 2026-10-28 — M4 beranda Signal Room
+
+**M4:** `docs/redesign/baseline/M4-REPORT.md` (lokal). Beranda lama (hero 3 CTA, kartu proyek seragam,
+kartu skill) diganti tujuh section: **hero → ticker → featured work → proof strip → capabilities →
+about strip → contact CTA**.
+
+| Perubahan                             | Isi                                                                                                                                                |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Hero` + `MetricRail` + `SignalPanel` | H1 value prop; nama/peran mono; 2 CTA; metrik `3 sistem operasional`, `88,62%`, `10 → 2` dari `siteConfig.metrics`; panel 4 baris + “Hubungi saya” |
+| `SignalTicker`                        | Client; 4 studi kasus + outcome singkat; jeda (`aria-pressed`), hover/focus pause, `prefers-reduced-motion` mati; mobile 2×2 statis                |
+| `FeaturedWork` + `CaseCard`           | FTTH (feature) + DSE AI + SIRATA; domain · tipe · tahun; outcome hanya bila ada (FTTH disembunyikan); `StackList`; satu tautan utama               |
+| `ProofStrip`                          | 1,2 juta+ baris, 88,62%, AUC 0,86 — hanya dirender bila proyek Water ada                                                                           |
+| `Capabilities`                        | 3 baris (Backend & API, Data & Automation, Applied AI & CV) + `ProofLink` nyata                                                                    |
+| `AboutStrip` + `ContactCta`           | Indosat/Polines/Brebes; CTA tanpa kata “Konsultasi”                                                                                                |
+
+**Keputusan/penyimpangan:** (1) H1 = value prop (mengikuti `04 §12.2`; “H1 nama” di `06` tidak dipakai);
+(2) urutan 3 kartu ditentukan kode di `features/projects/home.ts`, bukan `is_featured` DB; (3) kartu standard tanpa cover
+tidak merender blok media agar tidak mengulang judul/stack — media muncul otomatis setelah cover diunggah;
+(4) `getFeaturedProjects` & `getTopSkills` dihapus (kode mati); (5) JSON-LD beranda tetap di M7.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **33 file / 148 test** · `pnpm build` 37 halaman statis · `pnpm test:e2e` **19 lulus** ·
+gate `docs/redesign/tools/m4-gate.mjs`: 1440/768/390/320 light+dark `overflow=0`, `h1=1`,
+`500+` tidak tampil, ticker pause & reduced motion bekerja, axe light/dark 0 violation ·
+screenshot `docs/redesign/screenshots/m4/` (lokal) · tinggi beranda 4011 → 3508 px.
+
+**Titik mulai berikutnya:** M5 — Proyek index & detail.
+
+---
+
+### Sesi 2026-10-28 — M5 proyek index & detail
+
+**M5:** `docs/redesign/baseline/M5-REPORT.md` (lokal). `/projects` kini `ProjectExplorer` (filter) +
+`CaseGrid`; halaman detail kini `CaseStudy` 7 section + `CaseToc`/`CaseFacts`/`CaseNext`. Komponen lama
+dihapus: `ProjectCard`, `ProjectGrid`, `ProjectDetail`, `ProjectGallery`, `TechStackList`.
+
+| Perubahan                             | Isi                                                                                                                                                                                                                                                                                                |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ProjectExplorer` (client)            | Chip domain `aria-pressed` 44px + `<select>` tipe berlabel; filter in-memory; URL `?domain=&type=` via `router.replace(..., { scroll: false })`; state diturunkan dari `useSearchParams` (back/forward aman); hitung hasil `aria-live="polite"`; `EmptyState` + "Reset filter"; tanpa filter skill |
+| SEO filter                            | `generateMetadata` `/projects` baca `searchParams` → `robots: noindex, follow` saat filter valid, canonical selalu `/projects`; halaman index jadi dynamic (revalidate 3600 dihapus); detail tetap ISR 1 jam                                                                                       |
+| `CaseStudy`                           | Header (meta mono · `StatusBadge` · H1 judul · summary · CTA) → media 16:9 → section Masalah/Peran & batasan/Solusi/Deskripsi & arsitektur/Hasil/Tantangan & pelajaran/Galeri; **Hasil disembunyikan bila `outcomes` kosong**; galeri hanya bila ada gambar                                        |
+| `CaseToc`                             | `IntersectionObserver` `-96px 0px -60% 0px`; sticky `top:88px` ≥1024; `<details>` mobile menutup setelah klik; `aria-current="location"`; <3 section → tidak dirender; tanpa smooth scroll                                                                                                         |
+| `CaseFacts` / `CaseNext` / `CaseGrid` | `<dl>` fakta + `StackList`; kartu "Proyek berikutnya" (berputar); grid standar `h2` gap 16/24                                                                                                                                                                                                      |
+| Baru di shared                        | `EmptyState`; `buildMetadata` menerima `robots` opsional; `PROJECT_TYPES` + `projectTypeToParam`/`resolveProjectType` di `taxonomy.ts`; `features/projects/case.ts` (`pickNextProject`, `resolveProjectStatus`)                                                                                    |
+| Perbaikan a11y                        | `SiteFooter` heading `h3` → `h2` (axe `heading-order` gagal di halaman tanpa H2, mis. `/projects` saat filter kosong); `CaseGrid` kartu `h2`                                                                                                                                                       |
+
+**Keputusan/penyimpangan:** (1) section spec "Arsitektur & keputusan" dirender sebagai "Deskripsi &
+arsitektur" dari `descriptionHtml` (konten tidak boleh diubah); (2) `?type=` memakai slug (`tugas-kuliah`);
+(3) TOC di rail kanan atas `CaseFacts`; (4) status: tanpa `endedAt` → Sedang dikerjakan, deployed → Live,
+tanpa repo → Kode privat, selainnya Arsip; (5) e2e selector pindah ke `[data-slot="case-card"]` dan tes
+robots menolerir meta default yang tidak dipancarkan Next.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **37 file / 172 test** · `pnpm build` sukses (`/projects` dynamic, 9 proyek SSG) ·
+`pnpm test:e2e` **21 lulus** · gate `docs/redesign/tools/m5-gate.mjs`: 4 viewport × light/dark
+`overflow=0`/`h1=1`/`cards=9`, filter 9→4→2→9 + empty state + noindex + back/forward, TOC sticky/anchor,
+axe (WCAG + best-practice) 12 pemeriksaan 0 violation · screenshot `docs/redesign/screenshots/m5/` (lokal).
+
+**Titik mulai berikutnya:** M6 — About, skills, contact (`AboutProof`, `Principles`,
+`ExperienceTimeline`, `CapabilityBoard`, `ContactForm` + wiring halaman & 404).
+
+---
+
+### Sesi 2026-10-28 — M6 about, skills, contact
+
+**M6:** `docs/redesign/baseline/M6-REPORT.md` (lokal). Tiga halaman publik terakhir dirapikan; 404
+memakai kerangka publik yang sama.
+
+| Perubahan  | Isi                                                                                                                                                                                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `/about`   | `AboutProof` (bio paragraf 68ch + fakta `9 studi kasus · 3 sistem operasional · 88,62% akurasi model`), `Principles` 3 baris, `ExperienceTimeline` `<ol>`, `CredentialRow` untuk pendidikan/sertifikasi/organisasi, `LanguageList` chip teks, CTA Hubungi/Unduh CV |
+| `/skills`  | `CapabilityBoard`: statistik 46/8/3 dari data, 4 capability group + bukti proyek, 8 kategori teknis sebagai rows (level teks, bukti maks 2 + `+n`), “Belum ada studi kasus” jujur, tanpa progress bar, “Sedang dipelajari”                                         |
+| `/contact` | `ContactForm` (intent select, Topik, pesan + hint, honeypot, `ErrorSummary` fokus + anchor, sukses `role="status"`, privacy line), `ContactPanel` (salin email `aria-live`, lokasi, respons, jejaring, CV), `ContactPaths`                                         |
+| 404        | `not-found.tsx` baru + `PublicShell` diekstrak dari layout `(public)` → header/footer + `<main>` (memperbaiki axe `landmark-one-main`/`region`)                                                                                                                    |
+| Shared     | `ErrorSummary`, `PublicShell`; `PROJECT_SHORT_LABELS` 9 proyek dipakai ticker + bukti skill                                                                                                                                                                        |
+| Dihapus    | `AboutContent`, `EducationCard`, `CertificateCard`, `OrganizationCard`, `SkillCard` (+test), `SkillsByCategory` (+test), `ContactInfoCard`                                                                                                                         |
+
+**Keputusan/penyimpangan:** (1) H1 `/skills` = “Keahlian” (`04 §12.2`), kategori teknis `h3` di bawah
+`h2 “Kategori teknis”`; (2) intent disimpan sebagai awalan subjek (`Rekruter: …`) karena `contact_messages`
+belum punya kolom intent dan `04 §9.2` tidak mengusulkannya — tanpa migrasi; (3) bio kosong menampilkan
+“Bio belum diisi.” (tidak menduplikasi copy di kode); (4) FAQ rekruter dilewati karena draft masih `TODO`;
+(5) `shouldFocusError: false` agar fokus dipegang `ErrorSummary`.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **39 file / 181 test** · `pnpm build` sukses · `pnpm test:e2e` **22 lulus** ·
+gate `docs/redesign/tools/m6-gate.mjs`: 4 halaman × 4 viewport × light/dark `overflow=0`/`h1=1`/tanpa
+progress bar, axe 16 pemeriksaan 0 violation, keyboard form + error summary fokus + salin email ·
+screenshot `docs/redesign/screenshots/m6/` (lokal).
+
+**Titik mulai berikutnya:** M7 — Motion, SEO, performa, header (motion 3 lapis + reduced motion,
+metadata semua rute/OG/sitemap/canonical/JSON-LD/robots, image sizes + JS budget, security headers +
+health + CSP report-only), lalu Lighthouse mobile ≥90.
+
+---
+
+### Sesi 2026-10-28 — M7 motion, SEO, performa, header
+
+**M7:** `docs/redesign/baseline/M7-REPORT.md` (lokal).
+
+| Perubahan | Isi                                                                                                                                                                                                                                                                                                                                                           |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Motion    | ticker 28s + pause `aria-pressed`; reduced motion `0.01ms` + `scroll-behavior: auto`; smooth scroll + `scroll-padding-top: 88px`; entrance hero 200ms; sheet admin ≤200ms                                                                                                                                                                                     |
+| SEO       | metadata per rute `04 §12.1` (absolute title, canonical, deskripsi); OG 1200×630 per rute (beranda/about/projects/skills/contact) + OG proyek; JSON-LD `WebSite/Person/ProfilePage`, `CollectionPage/ItemList`, `AboutPage/Person`, `ContactPage`, `CreativeWork/BreadcrumbList`; sitemap `updated_at`; robots disallow `/admin`+`/api`; 404 noindex otomatis |
+| Performa  | JS publik **330 → 176 KB** (contact 182 KB): barrel admin dipisah (`features/<x>/admin.ts`, `shared/components/admin.ts`), Toaster pindah ke layout admin, form kontak tanpa RHF/zod di klien, menu mobile `<dialog>` native (bukan Radix Sheet); font `display:"optional"`; dekorasi aura/grid dimatikan <768px; prioritas gambar ≤2                         |
+| Header    | HSTS, nosniff, XFO DENY, Referrer-Policy, Permissions-Policy, CSP Report-Only; `/api/health` 200                                                                                                                                                                                                                                                              |
+
+**Keputusan/penyimpangan:** (1) menu publik `dialog` native (sheet tetap untuk sidebar admin);
+(2) form kontak `noValidate` + validasi lokal, zod tetap di server; (3) `/resume.pdf` tidak masuk sitemap
+(berkas belum ada); (4) judul 404 default (status 404 + noindex dari Next); (5) intent kontak tetap
+awalan subjek.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus ·
+`pnpm test` **40 file / 186 test** · `pnpm build` sukses · `pnpm test:e2e` **23 lulus** ·
+gate `docs/redesign/tools/m7-gate.mjs`: 6 header + health, 6 OG unik, metadata/JSON-LD lengkap tanpa
+`missing`, JS 176/182 KB, LCP 1,6–2,6 s (CDP 4× CPU + Slow 4G), CLS 0, axe 24 pemeriksaan 0 violation,
+reduced motion & pause ticker, menu dialog (fokus/Escape/kembali), filter noindex.
+
+**⚠️ Lighthouse mobile:** gate **≥90 belum tercapai di host ini** — 3 run `/`: perf 67–69, LCP 3,4–3,6 s
+(simulated), TBT 1.030–1.200 ms, CLS 0; `/projects` 72. Host menjalankan ±50 proses Chrome pengguna
+(CPU 18–51%) dan TBT antar-sesi 230–1.390 ms. Dengan `--throttling-method=devtools` LCP 2,3 s.
+Best-practices/SEO/a11y = 100. Sisa beban: framework React/Next ~115 KB + hidrasi. Rekomendasi: ukur
+ulang di CI/host idle sebelum rilis (M8-T3).
+
+**Titik mulai berikutnya:** M8 — QA & rilis (test tambahan, e2e+axe+keyboard+reduced motion,
+visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
+
+---
+
+### Sesi 2026-10-28 — M8 QA & rilis
+
+**M8:** `docs/redesign/baseline/M8-REPORT.md` (lokal). QA lengkap + preview produksi lokal; **belum merge ke `main`**.
+
+| Perubahan      | Isi                                                                                                                                                                                                                                                                                                             |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unit/component | +4 tes: `ContactPanel` (salin email + `aria-live`, tautan), `app/not-found` (H1, 2 CTA, `<main>`), `siteConfig` (3 metrik, tanpa `500+`). Total **43 file / 190 tes**.                                                                                                                                          |
+| E2E            | `a11y.spec.ts` 5 rute × light/dark + detail × light/dark + 404 × light/dark (14 axe, 0 violation); `qa.spec.ts` skip link, filter keyboard, TOC desktop/mobile, error summary kontak, 404, reduced motion, TOC tidak menimpa fakta; `smoke.spec.ts` 6 rute + health + 404. Total **60 e2e lulus** (admin ikut). |
+| Visual         | `e2e/visual.spec.ts`: 6 rute × 4 viewport × 2 tema = 48 snapshot viewport; stabil 2 run. Baseline win32, indikator dev/scrollbar disembunyikan, font dimuat lalu reload.                                                                                                                                        |
+| Lighthouse     | 320/390/768/1440 + `/projects`: perf **92–100**, a11y/BP/SEO **100**, CLS 0; LCP mobile 2,5–3,1 s (host berbeban 46 Chrome). Bukan host idle.                                                                                                                                                                   |
+| Perbaikan      | `resume.pdf` tidak lagi di-prefetch RSC (`Link` → `<a>`); ticker `min-h-6` + tombol jeda `z-10` (target-size 768); tombol jeda disembunyikan saat reduced motion.                                                                                                                                               |
+| Preview        | `next start -p 3001`: 6 rute 200 + satu H1, health 200, 404, sitemap, robots, admin login, 6 header keamanan. Rollback readiness: tag GHCR lama tersedia; eksekusi VPS tidak dilakukan.                                                                                                                         |
+
+**Keputusan/penyimpangan:** snapshot visual viewport-only (bukan full page) agar repo tidak bengkak; baseline hanya win32; tidak ada dependency baru; rilis produksi tidak dijalankan karena instruksi sesi hanya push branch.
+
+**⚠️ Keamanan:** repo variable `NEXT_PUBLIC_SUPABASE_ANON_KEY` berisi JWT **service_role** dan repo publik. Sudah diganti dengan kunci `anon` yang benar. **Rotasi kunci `service_role` lama di Supabase** karena sudah terekspos.
+
+**⚠️ Blocker rilis:** `/resume.pdf` belum ada (404) → tombol CV belum berfungsi; LCP mobile belum konsisten <2,5 s di host berbeban (ukur di CI/idle).
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning pre-existing) · `pnpm typecheck` lulus · `pnpm test` **190** · `pnpm build` sukses (42 halaman) · `pnpm test:e2e` **60 lulus**.
+
+**Titik mulai berikutnya:** unggah `/resume.pdf`, ukur Lighthouse di CI/host idle, lalu merge `redesign/signal-room` → `main` setelah persetujuan (deploy.yml otomatis).
+
+---
+
+### Sesi 2026-10-28 (lanjutan) — TOC studi kasus menimpa fakta
+
+**Masalah:** TOC sticky di dalam rail bersama `CaseFacts` membuat TOC tertinggal/tertarik ke atas saat rail habis, lalu menutupi teks fakta di bawahnya.
+
+**Perbaikan:** sticky dipindah dari `<nav>` TOC ke seluruh `<aside>` lewat class `.case-rail` (aktif hanya ≥1024px dan tinggi viewport ≥760px), tanpa `overflow` internal sehingga tidak ada scrollbar di rail. `CaseToc` hanya `lg:block`. Tidak ada perubahan konten.
+
+**Tes regresi:** `e2e/qa.spec.ts` — scroll 1100 (TOC sticky di 88px) dan 1500 (TOC tidak menimpa fakta).
+
+**Verifikasi:** `pnpm lint` 0 error · `pnpm typecheck` lulus · `pnpm test` **193** · `pnpm build` sukses · `pnpm test:e2e` **60 lulus** · visual 12 tes lulus.
+
+---
+
+### Sesi 2026-10-28 (lanjutan) — CV bisa diganti dari admin
+
+**Masalah:** header/footer/menu mobile memakai `/resume.pdf`, sehingga upload CV lewat admin belum memperbaiki tautan tersebut; menaruh PDF di `public/` berarti masuk repo publik.
+
+**Perbaikan:** route dinamis `src/app/resume.pdf/route.ts` membaca `profile.resume_url`, mengambil PDF dari Supabase Storage, lalu mengirimnya sebagai lampiran (`Content-Disposition: attachment`). Tidak ada PDF di repo; admin cukup upload/ganti di `/admin/profile` → Berkas CV.
+
+**Perilaku:** 404 bila CV belum diunggah; 502 bila sumber bukan PDF; `no-store` agar perubahan langsung terlihat. Tidak perlu deploy ulang saat ganti CV.
+
+**Verifikasi:** 3 tes route · `pnpm test` **193** · `pnpm build` mendaftarkan `ƒ /resume.pdf` · route lokal mengembalikan 404 sebelum upload (sesuai harapan).
+
+---
+
+### Sesi 2026-10-28 (lanjutan) — Avatar di halaman tentang
+
+**Permintaan:** tampilkan foto avatar yang diunggah dari admin di `/about`; tata letak diserahkan ke agent.
+
+**Implementasi:** `ProfilePortrait` (1:1) di blok `AboutProof` — bio di kolom kiri 8/4 dan potret di kanan, caption nama + headline, fallback monogram RYW + “Foto menyusul” bila belum ada foto. Header halaman tetap full width di atas. `MediaFrame.caption` kini menerima `ReactNode`; gambar potret `priority` + `sizes` 320/280. Hero tetap tipografis agar arah Signal Room tidak berubah.
+
+**Catatan:** baseline visual `tentang-*` (8 snapshot) diperbarui dengan foto **dimask**, jadi gambar avatar tidak ikut tersimpan di repo publik dan mengganti avatar tidak mengubah baseline. Layout/caption tetap diuji.
+
+**Verifikasi:** `pnpm test` **195** (2 tes `ProfilePortrait`) · visual 12 tes lulus.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan Tahap 4 (SEO & Kualitas): JSON-LD Person/WebSite/Project, `generateMetadata`
-> lengkap, `opengraph-image` memakai cover proyek, dan header keamanan/CSP. Terapkan skill
-> clean-code, ponytail, fullstack-developer, senior-fullstack, code-reviewer,
-> frontend-developer, senior-frontend, ui-ux-pro-max. Verifikasi `pnpm lint && pnpm typecheck
-&& pnpm test && pnpm build && pnpm test:e2e`, lalu commit + push setiap perubahan."
+> "Lanjutkan **rilis Signal Room** setelah M8: (1) unggah/ganti CV lewat `/admin/profile` →
+> Berkas CV (`/resume.pdf` membaca `profile.resume_url`); (2) ukur Lighthouse mobile di CI/host idle
+> sampai LCP <2,5 s (laporan M8 ada di `docs/redesign/baseline/M8-REPORT.md`); (3) merge
+> `redesign/signal-room` → `main` setelah persetujuan, pantau `deploy.yml`, lalu smoke 6 rute +
+> `/api/health` + admin login; (4) siapkan rollback `IMAGE_TAG=<sha7-sebelumnya>` (<10 menit).
+> Terapkan `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`.
+> Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
+> `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push."
+>
+> Visual regression: `pnpm test:e2e` memakai baseline Windows di
+> `e2e/visual.spec.ts-snapshots/`; regenerasi dengan `--update-snapshots` bila UI memang berubah.
 >
 > Saat akun uji sudah siap: isi `E2E_ADMIN_EMAIL` & `E2E_ADMIN_PASSWORD` di `.env.local`,
 > jalankan `pnpm test:e2e`, dan pastikan blok admin di `e2e/admin-flow.spec.ts` hijau.

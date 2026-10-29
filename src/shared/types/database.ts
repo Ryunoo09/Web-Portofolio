@@ -445,6 +445,7 @@ export type Database = {
           created_at: string;
           demo_url: string | null;
           description_html: string | null;
+          domain: string | null;
           ended_at: string | null;
           features: string[];
           id: string;
@@ -474,6 +475,7 @@ export type Database = {
           created_at?: string;
           demo_url?: string | null;
           description_html?: string | null;
+          domain?: string | null;
           ended_at?: string | null;
           features?: string[];
           id?: string;
@@ -503,6 +505,7 @@ export type Database = {
           created_at?: string;
           demo_url?: string | null;
           description_html?: string | null;
+          domain?: string | null;
           ended_at?: string | null;
           features?: string[];
           id?: string;

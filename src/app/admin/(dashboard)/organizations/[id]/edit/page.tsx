@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { AdminPageHeader } from "@/shared/components";
-import { OrganizationForm, getAllOrganizations } from "@/features/organizations";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { OrganizationForm } from "@/features/organizations/admin";
+import { getAllOrganizations } from "@/features/organizations";
 
 export default async function AdminOrganizationsEditPage({
   params,

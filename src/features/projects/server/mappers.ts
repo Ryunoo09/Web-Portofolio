@@ -1,4 +1,5 @@
 import type { Database } from "@/shared/types/database";
+import { resolveProjectDomain } from "@/shared/lib/taxonomy";
 import type { Project, ProjectImage } from "../types";
 
 type ProjectRow = Database["public"]["Tables"]["projects"]["Row"];
@@ -38,6 +39,7 @@ export function toProject(row: ProjectWithRelations): Project {
     isFeatured: row.is_featured,
     isPublished: row.is_published,
     createdAt: row.created_at,
+    updatedAt: row.updated_at,
     sortOrder: row.sort_order,
     projectType: row.project_type,
     role: row.role,
@@ -48,6 +50,9 @@ export function toProject(row: ProjectWithRelations): Project {
     outcomes: row.outcomes ?? [],
     challenges: row.challenges,
     isDeployed: row.is_deployed,
+    domain: resolveProjectDomain(row.slug, row.domain),
+    seoTitle: row.seo_title,
+    seoDescription: row.seo_description,
     skills: (row.project_skills ?? [])
       .map((ps) => ps.skills)
       .filter((s): s is { id: string; name: string } => s !== null),

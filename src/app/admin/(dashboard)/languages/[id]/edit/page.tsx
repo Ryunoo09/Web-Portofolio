@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { AdminPageHeader } from "@/shared/components";
-import { LanguageForm, getAllLanguages } from "@/features/languages";
+import { AdminPageHeader } from "@/shared/components/admin";
+import { LanguageForm } from "@/features/languages/admin";
+import { getAllLanguages } from "@/features/languages";
 
 export default async function AdminLanguagesEditPage({
   params,
