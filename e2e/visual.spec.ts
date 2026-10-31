@@ -64,8 +64,12 @@ for (const theme of ["light", "dark"] as const) {
         );
       });
 
-      // Foto profil tidak ikut disimpan di baseline publik; layout tetap diuji.
-      const masks = route.name === "tentang" ? [page.locator("figure img")] : [];
+      // Foto profil & dokumentasi pengalaman tidak ikut disimpan di baseline publik;
+      // layout tetap diuji.
+      const masks =
+        route.name === "tentang"
+          ? [page.locator("figure img"), page.locator('[data-slot="experience-gallery"] img')]
+          : [];
 
       for (const viewport of viewports) {
         await page.setViewportSize({ width: viewport.width, height: viewport.height });
