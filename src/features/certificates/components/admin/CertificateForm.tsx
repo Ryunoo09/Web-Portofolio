@@ -12,6 +12,7 @@ import { ROUTES } from "@/shared/constants/routes";
 import { FormField, ImageUploadField } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
+import { Textarea } from "@/shared/components/ui/textarea";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import type { Certificate } from "../../types";
 
@@ -33,6 +34,7 @@ export function CertificateForm({ certificate }: CertificateFormProps) {
     defaultValues: {
       title: certificate?.title ?? "",
       issuer: certificate?.issuer ?? "",
+      description: certificate?.description ?? "",
       issuedAt: certificate?.issuedAt ?? "",
       credentialUrl: certificate?.credentialUrl ?? "",
       imageUrl: certificate?.imageUrl ?? "",
@@ -75,6 +77,15 @@ export function CertificateForm({ certificate }: CertificateFormProps) {
 
       <FormField label="Tanggal Terbit" name="issuedAt" error={errors.issuedAt?.message}>
         {(props) => <Input type="date" {...props} {...register("issuedAt")} />}
+      </FormField>
+
+      <FormField
+        label="Deskripsi"
+        name="description"
+        error={errors.description?.message}
+        hint="Ringkasan isi sertifikat, tampil di /about."
+      >
+        {(props) => <Textarea rows={3} {...props} {...register("description")} />}
       </FormField>
 
       <FormField

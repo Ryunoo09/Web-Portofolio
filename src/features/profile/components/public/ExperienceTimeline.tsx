@@ -1,4 +1,4 @@
-import { BulletPoints } from "@/shared/components";
+import { BulletPoints, MediaFrame } from "@/shared/components";
 import { formatMonthPeriod } from "@/shared/lib/utils";
 import type { Experience } from "../../types";
 
@@ -27,6 +27,24 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
                 text={experience.description}
                 className="text-muted-foreground mt-3 text-sm leading-relaxed"
               />
+            )}
+            {experience.images.length > 0 && (
+              <ul
+                data-slot="experience-gallery"
+                className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3"
+              >
+                {experience.images.map((image) => (
+                  <li key={image.id}>
+                    <MediaFrame
+                      src={image.url}
+                      alt={image.alt}
+                      aspect="4/3"
+                      sizes="(min-width: 640px) 220px, 45vw"
+                      fallback={null}
+                    />
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </li>

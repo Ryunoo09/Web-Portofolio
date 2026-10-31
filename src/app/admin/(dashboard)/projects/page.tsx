@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { requireAdminPage } from "@/features/auth";
 import { ROUTES } from "@/shared/constants/routes";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
@@ -8,6 +9,8 @@ import { getAllProjects } from "@/features/projects/server/queries";
 import type { ProjectRow } from "@/features/projects/components/admin/ProjectTable";
 
 export default async function AdminProjectsPage() {
+  await requireAdminPage();
+
   const projects = await getAllProjects();
 
   const rows: ProjectRow[] = projects.map((p) => ({

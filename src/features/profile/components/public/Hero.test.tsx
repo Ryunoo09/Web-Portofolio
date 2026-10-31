@@ -13,7 +13,7 @@ describe("Hero", () => {
       }),
     ).toBeInTheDocument();
     expect(screen.getByText("Rakha Yuda Wicaksono")).toBeInTheDocument();
-    expect(screen.getByText("Backend & Data Engineer")).toBeInTheDocument();
+    expect(screen.getByText("Software Engineer & Data Engineer")).toBeInTheDocument();
   });
 
   it("menampilkan tiga metrik tanpa angka 500+", () => {
@@ -37,7 +37,7 @@ describe("Hero", () => {
     const panel = screen.getByRole("complementary");
     expect(panel).toHaveTextContent("Terbuka untuk Backend & Data Engineer");
     expect(panel).toHaveTextContent("Brebes, Jawa Tengah, Indonesia · WIB");
-    expect(panel).toHaveTextContent("Python · FastAPI · PostgreSQL");
+    expect(panel).toHaveTextContent("Python · FastAPI · PostgreSQL · Laravel · Next.js");
     expect(screen.getByRole("link", { name: "Validasi FTTH" })).toHaveAttribute(
       "href",
       "/projects/validasi-ftth-yolo26-paddleocr",

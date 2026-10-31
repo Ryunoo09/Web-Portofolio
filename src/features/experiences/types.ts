@@ -1,3 +1,10 @@
+export type ExperienceImage = {
+  id: string;
+  url: string;
+  alt: string;
+  sortOrder: number;
+};
+
 export type Experience = {
   id: string;
   company: string;
@@ -8,4 +15,5 @@ export type Experience = {
   endedAt: string | null;
   sortOrder: number;
   isPublished: boolean;
+  images: ExperienceImage[];
 };

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { getProjectById } from "@/features/projects/server/queries";
 import { ProjectForm } from "@/features/projects/components/admin/ProjectForm";
@@ -11,6 +12,8 @@ export default async function AdminProjectEditPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  await requireAdminPage();
+
   const [project, skills] = await Promise.all([getProjectById(id), getAllSkills()]);
 
   if (!project) notFound();

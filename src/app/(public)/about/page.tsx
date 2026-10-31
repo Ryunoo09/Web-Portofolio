@@ -72,7 +72,7 @@ export default async function AboutPage() {
         <SectionIntro
           as="h1"
           title="Tentang Rakha"
-          description="Backend & Data Engineer yang membangun sistem sampai dipakai."
+          description="Software Engineer & Data Engineer yang membangun sistem sampai dipakai."
         />
       </header>
 
@@ -143,6 +143,7 @@ export default async function AboutPage() {
                 key={certificate.id}
                 title={certificate.title}
                 subtitle={certificate.issuer}
+                description={certificate.description}
                 period={
                   certificate.issuedAt
                     ? String(new Date(certificate.issuedAt).getUTCFullYear())

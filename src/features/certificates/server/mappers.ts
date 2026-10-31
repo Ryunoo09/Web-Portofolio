@@ -8,6 +8,7 @@ export function toCertificate(row: CertificateRow): Certificate {
     id: row.id,
     title: row.title,
     issuer: row.issuer,
+    description: row.description,
     issuedAt: row.issued_at,
     credentialUrl: row.credential_url,
     imageUrl: row.image_url,

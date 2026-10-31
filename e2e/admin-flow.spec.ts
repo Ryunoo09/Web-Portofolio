@@ -28,12 +28,13 @@ async function login(page: Page) {
 async function confirmDelete(page: Page) {
   await page.getByRole("button", { name: "Hapus", exact: true }).click();
   // Server action + `router.refresh()` bisa lambat saat dev server baru meng-compile.
-  await expect(page.getByRole("dialog")).toBeHidden({ timeout: 25_000 });
+  await expect(page.getByRole("dialog")).toBeHidden({ timeout: 45_000 });
 }
 
 test.describe("alur admin", () => {
-  // Alur admin menempuh banyak navigasi + aksi server; beri ruang lebih dari 30 detik bawaan.
-  test.describe.configure({ timeout: 60_000 });
+  // Tes admin berbagi database dan dev server. Jalankan berurutan agar tidak
+  // saling berebut kompilasi/Server Action; timeout dinaikkan untuk CI lambat.
+  test.describe.configure({ mode: "serial", timeout: 120_000 });
 
   test.skip(!hasCredentials, "Butuh E2E_ADMIN_EMAIL dan E2E_ADMIN_PASSWORD di .env.local.");
 
@@ -227,5 +228,75 @@ test.describe("alur admin", () => {
         [],
       );
     }
+  });
+
+  test("sertifikat: deskripsi tampil di /about, lalu dibersihkan lagi", async ({ page }) => {
+    await login(page);
+
+    const stamp = Date.now();
+    const title = `E2E Sertifikat ${stamp}`;
+    const description = `Ringkasan sertifikat uji ${stamp}.`;
+
+    await page.goto("/admin/certificates/new");
+    await page.getByLabel("Nama Sertifikat").fill(title);
+    await page.getByLabel("Penerbit").fill("E2E Penerbit");
+    await page.getByLabel("Deskripsi").fill(description);
+    await page.getByLabel("Publikasikan").check();
+    await page.getByRole("button", { name: "Buat Sertifikat" }).click();
+
+    await expect(page).toHaveURL(/\/admin\/certificates$/);
+    await page.goto("/about");
+    await expect(page.getByText(description)).toBeVisible();
+
+    await page.goto("/admin/certificates");
+    await page.getByRole("button", { name: `Hapus sertifikat ${title}` }).click();
+    await confirmDelete(page);
+  });
+
+  test("pengalaman: unggah dokumentasi lalu tampil di /about, lalu dibersihkan lagi", async ({
+    page,
+  }) => {
+    await login(page);
+
+    const stamp = Date.now();
+    const role = `E2E Dokumentasi ${stamp}`;
+    const alt = `Dokumentasi uji ${stamp}`;
+
+    await page.goto("/admin/experiences/new");
+    await page.getByLabel("Posisi").fill(role);
+    await page.getByLabel("Perusahaan").fill("PT E2E");
+    await page.getByLabel("Mulai").fill("2025-01-01");
+    await page.getByLabel("Publikasikan").check();
+    await page.getByRole("button", { name: "Buat Pengalaman" }).click();
+    await expect(page).toHaveURL(/\/admin\/experiences$/);
+
+    // Dokumentasi hanya tersedia di halaman ubah setelah data tersimpan.
+    await page.getByRole("link", { name: `Ubah pengalaman ${role}` }).click();
+    await expect(
+      page.getByRole("heading", { level: 2, name: "Dokumentasi Pengalaman" }),
+    ).toBeVisible();
+
+    await page.locator('input[type="file"]').setInputFiles({
+      name: "dokumentasi.png",
+      mimeType: "image/png",
+      buffer: TINY_PNG,
+    });
+    // Unggahan selesai ketika kartu dokumentasi (alt sementara) muncul.
+    await expect(page.getByAltText(/Dokumentasi 1/)).toBeVisible({ timeout: 30_000 });
+
+    await page.getByLabel("Teks alternatif").fill(alt);
+    await page.getByLabel("Teks alternatif").blur();
+    await expect(page.getByText("Teks alternatif disimpan.")).toBeVisible();
+
+    await page.goto("/about");
+    await expect(page.getByAltText(alt)).toBeVisible();
+
+    // Bersihkan: hapus pengalaman ikut membersihkan baris & berkas dokumentasi.
+    await page.goto("/admin/experiences");
+    await page.getByRole("button", { name: `Hapus pengalaman ${role}` }).click();
+    await confirmDelete(page);
+
+    await page.goto("/about");
+    await expect(page.getByText(role)).toHaveCount(0);
   });
 });

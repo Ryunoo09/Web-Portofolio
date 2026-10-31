@@ -53,19 +53,30 @@ for (const theme of ["light", "dark"] as const) {
         await Promise.all(Array.from(document.fonts).map((font) => font.load()));
         await document.fonts.ready;
         await Promise.all(
-          Array.from(document.images).map((image) =>
-            image.complete
-              ? undefined
-              : new Promise((resolve) => {
-                  image.addEventListener("load", resolve, { once: true });
-                  image.addEventListener("error", resolve, { once: true });
-                }),
-          ),
+          Array.from(document.images)
+            // Screenshot hanya area viewport. Gambar lazy di bawah lipatan tidak
+            // pernah diminta browser, jadi menunggunya akan menggantung.
+            .filter((image) => {
+              const rect = image.getBoundingClientRect();
+              return rect.top < window.innerHeight && rect.bottom > 0;
+            })
+            .map((image) =>
+              image.complete
+                ? undefined
+                : new Promise((resolve) => {
+                    image.addEventListener("load", resolve, { once: true });
+                    image.addEventListener("error", resolve, { once: true });
+                  }),
+            ),
         );
       });
 
-      // Foto profil tidak ikut disimpan di baseline publik; layout tetap diuji.
-      const masks = route.name === "tentang" ? [page.locator("figure img")] : [];
+      // Foto profil & dokumentasi pengalaman tidak ikut disimpan di baseline publik;
+      // layout tetap diuji.
+      const masks =
+        route.name === "tentang"
+          ? [page.locator("figure img"), page.locator('[data-slot="experience-gallery"] img')]
+          : [];
 
       for (const viewport of viewports) {
         await page.setViewportSize({ width: viewport.width, height: viewport.height });

@@ -1,7 +1,10 @@
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { ExperienceForm } from "@/features/experiences/admin";
 
-export default function AdminExperienceNewPage() {
+export default async function AdminExperienceNewPage() {
+  await requireAdminPage();
+
   return (
     <main className="space-y-6">
       <AdminPageHeader
@@ -9,6 +12,9 @@ export default function AdminExperienceNewPage() {
         description="Pengalaman berstatus terbit langsung tampil di halaman /about."
       />
       <ExperienceForm />
+      <p className="text-muted-foreground max-w-xl text-sm">
+        Simpan pengalaman dulu, lalu tambah dokumentasi di halaman ubah.
+      </p>
     </main>
   );
 }

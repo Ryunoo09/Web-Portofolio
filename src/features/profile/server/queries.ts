@@ -2,7 +2,13 @@ import { createPublicClient } from "@/shared/lib/supabase/public";
 import { createServerSupabase } from "@/shared/lib/supabase/server";
 import { withOfflineFallback } from "@/shared/lib/query";
 import type { Certificate, Education, Experience, Profile } from "../types";
-import { toCertificate, toEducation, toExperience, toProfile } from "./mappers";
+import {
+  toCertificate,
+  toEducation,
+  toExperience,
+  toProfile,
+  type ExperienceWithImages,
+} from "./mappers";
 
 export function getProfile(): Promise<Profile | null> {
   return withOfflineFallback(async () => {
@@ -27,12 +33,12 @@ export function getExperiences(): Promise<Experience[]> {
     const supabase = createPublicClient();
     const { data, error } = await supabase
       .from("experiences")
-      .select("*")
+      .select("*, experience_images(id, url, alt, sort_order)")
       .eq("is_published", true)
       .order("sort_order");
 
     if (error) throw new Error(`Gagal memuat pengalaman: ${error.message}`);
-    return data.map(toExperience);
+    return (data as unknown as ExperienceWithImages[]).map(toExperience);
   }, []);
 }
 

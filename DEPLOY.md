@@ -100,6 +100,31 @@ proxy_set_header X-Forwarded-Proto $scheme;
 
 Karena SSL di origin (NPM) sudah `Full (strict)`, jangan pakai mode **Flexible**.
 
+### 3a. Jangan pernah cache `/admin*`
+
+Aplikasi sudah mengirim `Cache-Control: no-store` dan `X-Robots-Tag: noindex` untuk
+setiap respons `/admin/**`, tapi aturan CDN menang atas header origin. Satu halaman
+admin yang tersimpan di edge bisa tersaji ke pengunjung lain.
+
+**Rules → Cache Rules → Create rule** (wajib, sebelum aturan cache lain dibuat):
+
+| Field     | Nilai                                          |
+| --------- | ---------------------------------------------- |
+| Rule name | `Bypass admin`                                 |
+| If        | `starts_with(http.request.uri.path, "/admin")` |
+| Then      | **Bypass cache**                               |
+
+Checklist sebelum men-deploy perubahan auth:
+
+- [ ] Cache Rule `Bypass admin` aktif dan berada di urutan teratas.
+- [ ] Tidak ada Page Rule / Cache Rule bertipe **Cache Everything** yang mencakup
+      `/admin*` (cek juga aturan lama yang masih tersisa).
+- [ ] Setelah deploy, cek header dari edge:
+      `curl -sI https://<domain>/admin/login | Select-String "cache-control|x-robots-tag"`
+      harus berisi `no-store` dan `noindex`.
+- [ ] Tanpa sesi, URL admin tetap `307` ke `/admin/login` (bukan HTML ter-cache);
+      bila ragu, **Caching → Configuration → Purge Everything** sekali.
+
 ---
 
 ## 4. GitHub — Variables & Secrets

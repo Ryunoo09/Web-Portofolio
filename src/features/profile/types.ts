@@ -12,6 +12,13 @@ export type Profile = {
   seoDescription: string | null;
 };
 
+export type ExperienceImage = {
+  id: string;
+  url: string;
+  alt: string;
+  sortOrder: number;
+};
+
 export type Experience = {
   id: string;
   company: string;
@@ -20,6 +27,7 @@ export type Experience = {
   location: string | null;
   startedAt: string;
   endedAt: string | null;
+  images: ExperienceImage[];
 };
 
 export type Education = {
@@ -36,6 +44,7 @@ export type Certificate = {
   id: string;
   title: string;
   issuer: string;
+  description: string | null;
   issuedAt: string | null;
   credentialUrl: string | null;
   imageUrl: string | null;

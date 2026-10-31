@@ -58,13 +58,14 @@
 | Project ref  | `kggrbhvbowszljemvxan`                                                                                                               |
 | URL          | `https://kggrbhvbowszljemvxan.supabase.co`                                                                                           |
 | `.env.local` | Terisi: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`             |
-| Migrasi      | ✅ `0001_init` (11 tabel) · `0002_rls` · `0003_storage` — sudah diterapkan                                                           |
+| Migrasi      | ✅ `0001`–`0008` terpasang di project linked (rincian di catatan sesi 2026-10-31)                                                    |
 | Tipe DB      | ✅ `src/shared/types/database.ts` (hasil `pnpm db:types`)                                                                            |
 | Seed         | ✅ 6 proyek · 12 skill · 3 pengalaman · 1 pendidikan · 3 sertifikat · 1 profil                                                       |
 | Akun admin   | Email: `admin@example.com` · user_id: `3840f40e-6746-4256-83d5-b407b96d98b2` · **password: lihat password manager (JANGAN commit!)** |
 
 **Tabel:** `admins`, `profile`, `skills`, `projects`, `project_images`, `project_skills`,
-`experiences`, `education`, `organizations`, `languages`, `certificates`, `contact_messages`, `posts`.
+`experiences`, `experience_images`, `education`, `organizations`, `languages`, `certificates`,
+`contact_messages`, `posts`.
 
 > 🔴 **Tindakan yang belum dipastikan:** matikan **"Allow new users to sign up"** di Supabase Auth,
 > dan ganti password admin.
@@ -97,8 +98,9 @@
 **Sudah semua:** `login`/`logout`, guard `getCurrentAdmin()` + `requireAdmin()`, `proxy.ts`
 (refresh sesi + proteksi), layout admin + sidebar responsif (drawer di mobile), halaman
 **Ringkasan** (hitungan semua konten + 5 pesan terbaru). CRUD **Proyek** (termasuk unggah
-**cover + galeri** ke Supabase Storage), **Keahlian**, **Pengalaman**, **Pendidikan**,
-**Sertifikat** (termasuk gambar), **Edit Profil** (avatar, CV PDF, tautan sosial, SEO), dan
+**cover + galeri** ke Supabase Storage), **Keahlian**, **Pengalaman** (termasuk **galeri
+dokumentasi** di halaman ubah), **Pendidikan**, **Sertifikat** (termasuk gambar dan
+**deskripsi** yang tampil di `/about`), **Edit Profil** (avatar, CV PDF, tautan sosial, SEO), dan
 **Kotak masuk pesan** (tandai dibaca/belum, hapus).
 
 **Belum:** Reorder galeri/skill dengan drag & drop (A-12) dan CRUD Blog (A-13) — sengaja
@@ -234,7 +236,8 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
 ## 🚧 UTANG TEKNIS (sengaja dilewati, tercatat)
 
 - **Reorder galeri/skill (A-12)** masih lewat input angka `sort_order`; ada komentar
-  `shortcut:` di `features/projects/server/actions.ts`.
+  `shortcut:` di `features/projects/server/actions.ts`. **Galeri dokumentasi pengalaman** juga
+  belum punya drag & drop urutan (hanya `sort_order` otomatis) dan belum punya lightbox.
 - **Tiptap (A-10)** dilewati — deskripsi proyek tetap `<Textarea>` HTML + `sanitizeHtml`.
 - **Kolom `icon` keahlian** belum dirender di UI mana pun, jadi belum diekspos di form
   admin (update tidak menyentuh kolom itu, nilai lama tetap utuh). Lihat
@@ -243,14 +246,27 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
   outcome). Beranda/about/skills/contact belum punya OG; cover proyek belum dipakai sebagai
   gambar OG. Alt OG masih statis. Dikerjakan di M7.
 - **Login belum ada rate-limit kustom.**
-- **Proxy tidak me-redirect admin yang sudah login** dari `/admin/login` (sengaja, hindari loop).
+- **Proxy tidak memeriksa sesi di `/admin/login`** (sengaja: `getUser()` di sana berlomba dengan
+  `Set-Cookie` dari Server Action login). Pengalihan admin aktif dikerjakan halaman login lewat
+  `getCurrentAdmin()`, bukan proxy, agar user auth non-admin tidak terjebak loop.
+- **Balapan baca-sesi `@supabase/ssr`** — di bawah beban paralel, sesi yang baru ditulis Server
+  Action login sesekali belum terbaca pada request berikutnya (`Auth session missing!` walau cookie
+  sudah ada di jar; terbukti di dev maupun build produksi). Karena itu asersi "admin aktif yang
+  membuka `/admin/login` diarahkan ke `/admin`" sengaja tidak di-e2e-kan. Perilakunya ada di kode;
+  uji ulang setelah `@supabase/ssr` dinaikkan versinya.
+  **Koreksi:** akarnya bukan sesi gagal dibaca. Instrumentasi membuktikan setiap request yang gagal
+  datang dengan header `Cookie` kosong — sesi sudah dicabut sebelumnya. Pelakunya `signOut()` tanpa
+  scope (= `global`), yang mencabut semua sesi akun sehingga tes logout paralel melempar tes lain ke
+  login. Sudah diperbaiki `signOut({ scope: "local" })` dan asersi tadi dikembalikan. Utang yang
+  tersisa hanya jaringan `Auth session missing!` di E2E 3× paralel (artefak stres, bukan perilaku app).
 - **AboutContent** — grid "Prinsip & Filosofi" masih hardcoded (DB tak punya kolomnya).
 - **JSON-LD baru di detail proyek** (`CreativeWork` + `BreadcrumbList`). `Person`/`WebSite` di
   beranda dan schema halaman lain belum dipasang (M7).
 - **`getTopSkills(4)`** = 4 skill pertama by `sort_order` (skema skill tak punya `featured`).
 - **Duplikasi tipe/mapper** antara `features/profile` (konsumsi halaman publik) dan
   `features/{experiences,education,certificates}` (CRUD admin) untuk tabel yang sama.
-  Menyatukan ownership domain perlu refactor terpisah.
+  Menyatukan ownership domain perlu refactor terpisah. Sejak `0008_experience_images`, tipe
+  `ExperienceImage` dan mapper dokumentasi juga terduplikasi di kedua fitur tersebut.
 - **Test mappers** memakai fixture manual; belum ada tes integrasi ke Supabase.
 - **`/resume.pdf` belum diunggah** → tombol Unduh CV masih 404 (blocker rilis M8).
 - **Lighthouse LCP mobile** 2,5–3,1 s di host berbeban; perlu pengukuran CI/idle.
@@ -872,13 +888,137 @@ visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
 
 ---
 
+### Sesi 2026-10-31 — Galeri dokumentasi pengalaman + deskripsi sertifikat
+
+**Permintaan:** halaman pengalaman bisa menampilkan gambar dokumentasi, halaman sertifikat bisa
+menyimpan deskripsi, tiap perubahan di-commit.
+
+**Branch:** `feat/galeri-pengalaman-deskripsi-sertifikat` (dibuat dari `redesign/signal-room`;
+`main` tidak disentuh). Lima commit: deskripsi sertifikat, galeri dokumentasi, E2E, graphify,
+handoff.
+
+**Migrasi (diterapkan ke project linked):**
+
+- `0007_certificate_description.sql` — `certificates.description text` (nullable).
+- `0008_experience_images.sql` — tabel `experience_images` (FK cascade ke `experiences`, index
+  `(experience_id, sort_order)`, RLS: publik baca hanya bila pengalaman induk terbit, admin all).
+- `pnpm db:types` dijalankan ulang; diff `database.ts` hanya menambah kolom/tabel di atas.
+
+**File baru:** `supabase/migrations/0007_*`, `0008_*`,
+`features/experiences/components/admin/ExperienceGalleryManager.tsx` (+ test),
+`features/certificates/components/admin/CertificateForm.test.tsx`.
+
+**Cara pakai admin:** sertifikat — isi field **Deskripsi** (maks 500 karakter), tampil sebagai
+paragraf di baris sertifikat `/about`. Pengalaman — **simpan dulu** pengalaman baru, lalu buka
+halaman ubah untuk mengunggah **Dokumentasi Pengalaman** (banyak berkas sekaligus, drag & drop,
+teks alternatif disimpan saat blur). Hapus gambar atau pengalaman ikut membersihkan objek Storage.
+
+**Tampilan publik:** `ExperienceTimeline` merender grid `2`/`3` kolom `MediaFrame` (`4/3`) di
+bawah bullet, hanya untuk pengalaman terbit, `data-slot="experience-gallery"` untuk mask visual.
+Prop `CredentialRow.description` yang sudah ada kini dipakai sertifikat.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama di `.opencode/plugins/graphify.js`) ·
+`pnpm typecheck` bersih · `pnpm test` **208** tes (47 file) · `pnpm build` sukses ·
+`pnpm test:e2e` **62 tes lulus** (termasuk 2 alur admin baru) · RLS dicek dengan anon key
+(SELECT 200, INSERT 401).
+
+**Baseline visual:** `proyek-*` dan `tentang-*` di-regenerasi karena **konten DB berubah** sejak
+baseline lama (bio profil baru dan kartu proyek DSE AI), bukan karena perubahan layout; gambar
+dokumentasi dimask, jadi foto pribadi tidak masuk repo. Baseline Linux tetap ditunda.
+
+---
+
+### Sesi 2026-10-31 (lanjutan) — Hardening auth admin
+
+**Permintaan:** baca `docs/PLANNING-ADMIN-AUTH-HARDENING.md` lalu eksekusi seluruh rencananya.
+Keputusan pemilik: kerjakan semua commit sekarang, **sesi 12 jam** (bukan 7 hari), commit per
+perubahan logis + push ke `origin`. `main` tidak disentuh.
+
+**Branch:** `fix/admin-auth-hardening` (dari `feat/galeri-pengalaman-deskripsi-sertifikat`), 13 commit.
+
+| Commit    | Isi                                                                                                       |
+| --------- | --------------------------------------------------------------------------------------------------------- |
+| `d0d52bb` | `shared/lib/supabase/cookie-options.ts` sebagai satu sumber opsi cookie; dipakai `server.ts` + `proxy.ts` |
+| `823cc7e` | `admin/login/page.tsx` jadi `async` + `getCurrentAdmin()` → admin aktif dialihkan ke `/admin`             |
+| `d2a7208` | `login` menolak akun yang tidak ada di tabel `admins`, lalu `signOut()`                                   |
+| `940d721` | `logout` fallback `signOut({ scope: "local" })` + `revalidatePath("/admin", "layout")`                    |
+| `43f6e21` | redirect proxy tidak membuang cookie hasil refresh; header `no-store` dari `setAll` ikut disalin          |
+| `9bb6411` | `getCurrentAdmin` dibungkus `cache()` + `requireAdminPage()`                                              |
+| `9040183` | guard `requireAdminPage()` di 24 page `(dashboard)` (5 page `new` sekaligus jadi `async`)                 |
+| `1579673` | layout admin `dynamic = "force-dynamic"` + `revalidate = 0`                                               |
+| `498d2e3` | `Cache-Control: no-store` + `X-Robots-Tag: noindex` untuk semua respons `/admin/**`                       |
+| `eb1e554` | proxy melewati cek sesi di `/admin/login` — perbaikan balapan `Set-Cookie`                                |
+| `391297a` | `data-scroll-behavior="smooth"` di `<html>` (syarat Next.js 16 karena CSS memakai smooth scroll)          |
+| `0a66eee` | `e2e/auth-guard.spec.ts`: 25 rute tanpa sesi + header no-store/noindex + atribut cookie + logout          |
+| `57f86a0` | `DEPLOY.md §3a`: Cache Rule Cloudflare `Bypass admin` + checklist pra-deploy                              |
+
+**Keputusan/penyimpangan:** (1) `maxAge` **tidak** ditulis di `AUTH_COOKIE_OPTIONS` —
+`applyServerStorage()` di `@supabase/ssr` selalu menimpanya dengan bawaan 400 hari, jadi durasi
+sesi dipaksa lewat `withSessionMaxAge()` dan nilai `maxAge: 0` milik library dibiarkan agar logout
+tetap menghapus semua chunk; (2) halaman yang dijaga **24**, bukan 26 seperti di planning — dua
+path di daftar rencana tidak ada di repo; (3) guard layout tidak cukup karena layout tidak
+dirender ulang saat navigasi klien, sehingga guard per page wajib; (4) `signOut()` diubah ke
+`scope: "local"` — scope global (bawaan) mencabut **semua** sesi akun sehingga logout di satu tab
+melempar pengguna lain (dan tes E2E paralel) ke halaman login; (5) `devIndicators: false` dicoba
+lalu dibatalkan — widget dev tools tetap menutupi tombol "Keluar", solusinya `page.addStyleTag`
+seperti di `visual.spec.ts`.
+
+**Koreksi diagnosis:** mula-mula gejala `Auth session missing!` dicurigai sebagai balapan baca
+cookie `@supabase/ssr`, sehingga asersi redirect `/admin/login` sempat dihapus. Instrumentasi
+menunjukkan semua request gagal datang tanpa cookie sama sekali — sesi sudah dicabut lebih dulu oleh
+`signOut` global. Setelah scope diperbaiki, asersi dikembalikan (3/3 lulus pada `--repeat-each=3`).
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama di `.opencode/plugins/graphify.js`) ·
+`pnpm typecheck` bersih · `pnpm test` **47 file / 208 tes** · `pnpm build` sukses (semua `/admin/**`
+`ƒ Dynamic`) · `pnpm test:e2e` **90 tes lulus** (termasuk 48 snapshot visual) · `auth-guard.spec.ts`
+140/140 dengan `--repeat-each=5` · cookie sesi terukur ≈43.200 s (12 jam), access token tetap 1 jam.
+
+**Titik mulai berikutnya:** tinjau 13 commit di `fix/admin-auth-hardening` lalu merge ke
+`redesign/signal-room` setelah persetujuan; tambahkan rate-limit login; uji ulang balapan
+`@supabase/ssr` setelah library dinaikkan.
+
+---
+
+### Sesi 2026-11-01 — Branding _Software Engineer_ + stabilisasi E2E
+
+**Permintaan:** selesaikan branding (`about`, `opengraph-image`, `page`, `siteConfig`), perbarui
+8 snapshot `tentang-*`, jalankan `pnpm test:e2e` sampai 91/91, jangan masukkan e2e ke CI dulu.
+
+**Commit tambahan di `fix/admin-auth-hardening`:**
+
+| Commit    | Isi                                                                              |
+| --------- | -------------------------------------------------------------------------------- |
+| `f587616` | `feat(branding)`: peran/title/deskripsi jadi _Software Engineer & Data Engineer_ |
+| `0415517` | `test(e2e)`: regenerasi 8 snapshot `tentang-*` karena konten DB berubah          |
+| `16262ac` | `test(e2e)`: hitungan proyek dibandingkan dengan kondisi awal, bukan angka tetap |
+| `3bcaa82` | `test(e2e)`: `workers: 1` karena DB uji bersama dan tes admin menulis data       |
+
+**Keputusan:** (1) `ci.yml` hanya menjalankan `lint`, `typecheck`, `test`, `build`; `test:e2e`
+belum jadi gerbang CI dan `deploy.yml` berjalan terpisah, jadi e2e gagal tidak memblokir deploy —
+tetapi AGENTS.md tetap mewajibkan e2e hijau secara lokal; (2) snapshot `/about` membaca bio dan
+caption dari Supabase sehingga tetap rapuh bila konten DB berubah; opsi jangka panjangnya adalah
+mask bagian dinamis atau DB test deterministik; (3) tes admin dibuat serial + timeout 120 detik,
+dialog hapus 45 detik; (4) tes visual memakai `workers: 1` agar tidak berebut data dengan tes admin.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama di `.opencode/plugins/graphify.js`) ·
+`pnpm typecheck` bersih · `pnpm test` **47 file / 208 tes** · `pnpm build` sukses ·
+`pnpm test:e2e` **91/91 lulus** (5,0 menit, 1 worker).
+
+**Titik mulai berikutnya:** tinjau lalu merge `fix/admin-auth-hardening` ke `redesign/signal-room`;
+verifikasi header produksi (`cache-control`, `x-robots-tag`, `cf-cache-status`) setelah deploy;
+rate-limit login masih ditunda; pertimbangkan e2e di CI hanya setelah ada DB test deterministik.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan **rilis Signal Room** setelah M8: (1) unggah/ganti CV lewat `/admin/profile` →
-> Berkas CV (`/resume.pdf` membaca `profile.resume_url`); (2) ukur Lighthouse mobile di CI/host idle
-> sampai LCP <2,5 s (laporan M8 ada di `docs/redesign/baseline/M8-REPORT.md`); (3) merge
+> "Lanjutkan **rilis Signal Room** setelah M8: (1) tinjau lalu merge
+> `feat/galeri-pengalaman-deskripsi-sertifikat` → `redesign/signal-room` (sudah di-push, menunggu
+> persetujuan pemilik; migrasi `0007`/`0008` sudah terpasang di project linked); (2) unggah/ganti CV lewat `/admin/profile` →
+> Berkas CV (`/resume.pdf` membaca `profile.resume_url`); (3) ukur Lighthouse mobile di CI/host idle
+> sampai LCP <2,5 s (laporan M8 ada di `docs/redesign/baseline/M8-REPORT.md`); (4) merge
 > `redesign/signal-room` → `main` setelah persetujuan, pantau `deploy.yml`, lalu smoke 6 rute +
-> `/api/health` + admin login; (4) siapkan rollback `IMAGE_TAG=<sha7-sebelumnya>` (<10 menit).
+> `/api/health` + admin login; (5) siapkan rollback `IMAGE_TAG=<sha7-sebelumnya>` (<10 menit).
 > Terapkan `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`.
 > Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
 > `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push."

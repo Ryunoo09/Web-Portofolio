@@ -18,9 +18,24 @@ const row: ExperienceRow = {
   updated_at: "2023-01-01T00:00:00Z",
 };
 
+const images = [
+  {
+    id: "img-2",
+    url: "https://demo.supabase.co/dua.png",
+    alt: "Demo internal",
+    sort_order: 2,
+  },
+  {
+    id: "img-1",
+    url: "https://demo.supabase.co/satu.png",
+    alt: "Rapat tim",
+    sort_order: 1,
+  },
+];
+
 describe("toExperience", () => {
   it("memetakan kolom snake_case ke camelCase", () => {
-    expect(toExperience(row)).toEqual({
+    expect(toExperience({ ...row, experience_images: [] })).toEqual({
       id: "e1",
       company: "PT Maju Jaya",
       role: "Backend Engineer",
@@ -30,6 +45,30 @@ describe("toExperience", () => {
       endedAt: null,
       sortOrder: 4,
       isPublished: false,
+      images: [],
     });
+  });
+
+  it("memetakan field dokumentasi dan mengurutkan berdasarkan sortOrder", () => {
+    const experience = toExperience({ ...row, experience_images: images });
+
+    expect(experience.images).toEqual([
+      {
+        id: "img-1",
+        url: "https://demo.supabase.co/satu.png",
+        alt: "Rapat tim",
+        sortOrder: 1,
+      },
+      {
+        id: "img-2",
+        url: "https://demo.supabase.co/dua.png",
+        alt: "Demo internal",
+        sortOrder: 2,
+      },
+    ]);
+  });
+
+  it("memakai array kosong bila experience_images null", () => {
+    expect(toExperience({ ...row, experience_images: null }).images).toEqual([]);
   });
 });

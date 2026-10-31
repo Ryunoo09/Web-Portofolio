@@ -42,6 +42,7 @@ describe("toCertificate", () => {
       id: "c1",
       title: "AWS Certified Developer",
       issuer: "Amazon Web Services",
+      description: "Bukti kompetensi pengembangan aplikasi cloud.",
       issued_at: "2024-03-01",
       credential_url: null,
       image_url: "https://demo.supabase.co/cert.png",
@@ -52,5 +53,6 @@ describe("toCertificate", () => {
     });
 
     expect(certificate.imageUrl).toBe("https://demo.supabase.co/cert.png");
+    expect(certificate.description).toBe("Bukti kompetensi pengembangan aplikasi cloud.");
   });
 });

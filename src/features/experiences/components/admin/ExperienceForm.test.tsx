@@ -45,6 +45,7 @@ describe("ExperienceForm", () => {
           endedAt: null,
           sortOrder: 2,
           isPublished: false,
+          images: [],
         }}
       />,
     );

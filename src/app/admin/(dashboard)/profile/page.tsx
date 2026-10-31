@@ -1,8 +1,11 @@
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { ProfileForm } from "@/features/profile/admin";
 import { getProfileForAdmin } from "@/features/profile";
 
 export default async function AdminProfilePage() {
+  await requireAdminPage();
+
   const profile = await getProfileForAdmin();
 
   return (

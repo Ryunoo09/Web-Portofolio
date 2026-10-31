@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import type { Experience } from "../../types";
 import { AboutProof } from "./AboutProof";
+import { CredentialRow } from "./CredentialRow";
 import { ExperienceTimeline } from "./ExperienceTimeline";
 import { Principles } from "./Principles";
 
@@ -13,6 +14,7 @@ const experience: Experience = {
   location: "Semarang",
   startedAt: "2025-08-04",
   endedAt: "2025-12-31",
+  images: [],
 };
 
 describe("AboutProof", () => {
@@ -76,6 +78,32 @@ describe("Principles", () => {
   });
 });
 
+describe("CredentialRow", () => {
+  it("merender deskripsi sertifikat", () => {
+    render(
+      <ul>
+        <CredentialRow
+          title="AWS Certified Developer"
+          subtitle="Amazon Web Services"
+          description="Bukti kompetensi pengembangan aplikasi cloud."
+        />
+      </ul>,
+    );
+
+    expect(screen.getByText("Bukti kompetensi pengembangan aplikasi cloud.")).toBeInTheDocument();
+  });
+
+  it("tidak merender paragraf deskripsi saat kosong", () => {
+    const { container } = render(
+      <ul>
+        <CredentialRow title="AWS Certified Developer" subtitle="Amazon Web Services" />
+      </ul>,
+    );
+
+    expect(container.querySelectorAll("li p")).toHaveLength(1);
+  });
+});
+
 describe("ExperienceTimeline", () => {
   it("memakai ol kronologis dengan periode dan bullet", () => {
     const { container } = render(<ExperienceTimeline experiences={[experience]} />);
@@ -87,5 +115,31 @@ describe("ExperienceTimeline", () => {
     expect(screen.getByText("PT Contoh")).toBeInTheDocument();
     expect(screen.getByText("Membangun API.")).toBeInTheDocument();
     expect(screen.getByText("Agu 2025 — Des 2025")).toBeInTheDocument();
+  });
+
+  it("merender dokumentasi dengan alt dari database", () => {
+    render(
+      <ExperienceTimeline
+        experiences={[
+          {
+            ...experience,
+            images: [
+              { id: "i1", url: "https://demo.supabase.co/a.png", alt: "Rapat tim", sortOrder: 0 },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByAltText("Rapat tim")).toBeInTheDocument();
+    expect(document.querySelector('[data-slot="experience-gallery"]')).not.toBeNull();
+  });
+
+  it("tidak merender grid dokumentasi bila tidak ada gambar", () => {
+    const { container } = render(
+      <ExperienceTimeline experiences={[{ ...experience, images: [] }]} />,
+    );
+
+    expect(container.querySelector('[data-slot="experience-gallery"]')).toBeNull();
   });
 });

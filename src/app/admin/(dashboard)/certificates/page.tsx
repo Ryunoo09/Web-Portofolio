@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { requireAdminPage } from "@/features/auth";
 import { ROUTES } from "@/shared/constants/routes";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
@@ -7,6 +8,8 @@ import { CertificateTable } from "@/features/certificates/admin";
 import { getAllCertificates } from "@/features/certificates";
 
 export default async function AdminCertificatesPage() {
+  await requireAdminPage();
+
   const certificates = await getAllCertificates();
 
   return (

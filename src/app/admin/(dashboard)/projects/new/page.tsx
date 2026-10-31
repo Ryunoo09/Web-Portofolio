@@ -1,8 +1,11 @@
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { ProjectForm } from "@/features/projects/components/admin/ProjectForm";
 import { getAllSkills } from "@/features/skills/server/queries";
 
 export default async function AdminProjectNewPage() {
+  await requireAdminPage();
+
   const skills = await getAllSkills();
 
   return (
