@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { createServerSupabase } from "@/shared/lib/supabase/server";
@@ -42,6 +43,13 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
 
 export async function logout(): Promise<void> {
   const supabase = await createServerSupabase();
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+
+  // Bila sign-out global gagal (mis. jaringan), hapus sesi lokal juga supaya
+  // cookie tidak tertinggal dan pengguna benar-benar keluar perangkat ini.
+  if (error) await supabase.auth.signOut({ scope: "local" });
+
+  // Halaman admin yang sudah dirender tidak boleh tersaji ulang dari cache router.
+  revalidatePath("/admin", "layout");
   redirect(ROUTES.admin.login);
 }
