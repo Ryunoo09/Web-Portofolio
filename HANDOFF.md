@@ -979,6 +979,37 @@ menunjukkan semua request gagal datang tanpa cookie sama sekali — sesi sudah d
 
 ---
 
+### Sesi 2026-11-01 — Branding _Software Engineer_ + stabilisasi E2E
+
+**Permintaan:** selesaikan branding (`about`, `opengraph-image`, `page`, `siteConfig`), perbarui
+8 snapshot `tentang-*`, jalankan `pnpm test:e2e` sampai 91/91, jangan masukkan e2e ke CI dulu.
+
+**Commit tambahan di `fix/admin-auth-hardening`:**
+
+| Commit    | Isi                                                                              |
+| --------- | -------------------------------------------------------------------------------- |
+| `f587616` | `feat(branding)`: peran/title/deskripsi jadi _Software Engineer & Data Engineer_ |
+| `0415517` | `test(e2e)`: regenerasi 8 snapshot `tentang-*` karena konten DB berubah          |
+| `16262ac` | `test(e2e)`: hitungan proyek dibandingkan dengan kondisi awal, bukan angka tetap |
+| `3bcaa82` | `test(e2e)`: `workers: 1` karena DB uji bersama dan tes admin menulis data       |
+
+**Keputusan:** (1) `ci.yml` hanya menjalankan `lint`, `typecheck`, `test`, `build`; `test:e2e`
+belum jadi gerbang CI dan `deploy.yml` berjalan terpisah, jadi e2e gagal tidak memblokir deploy —
+tetapi AGENTS.md tetap mewajibkan e2e hijau secara lokal; (2) snapshot `/about` membaca bio dan
+caption dari Supabase sehingga tetap rapuh bila konten DB berubah; opsi jangka panjangnya adalah
+mask bagian dinamis atau DB test deterministik; (3) tes admin dibuat serial + timeout 120 detik,
+dialog hapus 45 detik; (4) tes visual memakai `workers: 1` agar tidak berebut data dengan tes admin.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama di `.opencode/plugins/graphify.js`) ·
+`pnpm typecheck` bersih · `pnpm test` **47 file / 208 tes** · `pnpm build` sukses ·
+`pnpm test:e2e` **91/91 lulus** (5,0 menit, 1 worker).
+
+**Titik mulai berikutnya:** tinjau lalu merge `fix/admin-auth-hardening` ke `redesign/signal-room`;
+verifikasi header produksi (`cache-control`, `x-robots-tag`, `cf-cache-status`) setelah deploy;
+rate-limit login masih ditunda; pertimbangkan e2e di CI hanya setelah ada DB test deterministik.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
 > "Lanjutkan **rilis Signal Room** setelah M8: (1) tinjau lalu merge
