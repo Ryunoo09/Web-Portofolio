@@ -1,7 +1,10 @@
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { CertificateForm } from "@/features/certificates/admin";
 
-export default function AdminCertificateNewPage() {
+export default async function AdminCertificateNewPage() {
+  await requireAdminPage();
+
   return (
     <main className="space-y-6">
       <AdminPageHeader

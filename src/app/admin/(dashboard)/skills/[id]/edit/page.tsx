@@ -1,10 +1,13 @@
 import { notFound } from "next/navigation";
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { SkillForm } from "@/features/skills/components/admin/SkillForm";
 import { getAllSkills } from "@/features/skills/server/queries";
 
 export default async function AdminSkillEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  await requireAdminPage();
+
   const skills = await getAllSkills();
   const skill = skills.find((item) => item.id === id);
 

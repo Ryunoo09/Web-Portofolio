@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { ExperienceForm, ExperienceGalleryManager } from "@/features/experiences/admin";
 import { getAllExperiences } from "@/features/experiences";
@@ -9,6 +10,8 @@ export default async function AdminExperienceEditPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  await requireAdminPage();
+
   const experiences = await getAllExperiences();
   const experience = experiences.find((item) => item.id === id);
 

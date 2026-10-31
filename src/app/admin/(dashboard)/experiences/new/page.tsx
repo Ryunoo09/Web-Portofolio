@@ -1,7 +1,10 @@
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { ExperienceForm } from "@/features/experiences/admin";
 
-export default function AdminExperienceNewPage() {
+export default async function AdminExperienceNewPage() {
+  await requireAdminPage();
+
   return (
     <main className="space-y-6">
       <AdminPageHeader

@@ -9,6 +9,7 @@ import {
   Mail,
   Wrench,
 } from "lucide-react";
+import { requireAdminPage } from "@/features/auth";
 import { ROUTES } from "@/shared/constants/routes";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { Card } from "@/shared/components/ui/card";
@@ -22,6 +23,8 @@ import { countCertificates } from "@/features/certificates";
 import { getContactMessages } from "@/features/contact";
 
 export default async function AdminDashboardPage() {
+  await requireAdminPage();
+
   const [
     projects,
     skills,

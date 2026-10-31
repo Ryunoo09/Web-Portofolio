@@ -1,8 +1,11 @@
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { SkillForm } from "@/features/skills/components/admin/SkillForm";
 import { getAllSkills } from "@/features/skills/server/queries";
 
 export default async function AdminSkillNewPage() {
+  await requireAdminPage();
+
   const skills = await getAllSkills();
   const categories = [...new Set(skills.map((skill) => skill.category))];
 
