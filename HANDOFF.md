@@ -254,6 +254,11 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
   sudah ada di jar; terbukti di dev maupun build produksi). Karena itu asersi "admin aktif yang
   membuka `/admin/login` diarahkan ke `/admin`" sengaja tidak di-e2e-kan. Perilakunya ada di kode;
   uji ulang setelah `@supabase/ssr` dinaikkan versinya.
+  **Koreksi:** akarnya bukan sesi gagal dibaca. Instrumentasi membuktikan setiap request yang gagal
+  datang dengan header `Cookie` kosong — sesi sudah dicabut sebelumnya. Pelakunya `signOut()` tanpa
+  scope (= `global`), yang mencabut semua sesi akun sehingga tes logout paralel melempar tes lain ke
+  login. Sudah diperbaiki `signOut({ scope: "local" })` dan asersi tadi dikembalikan. Utang yang
+  tersisa hanya jaringan `Auth session missing!` di E2E 3× paralel (artefak stres, bukan perilaku app).
 - **AboutContent** — grid "Prinsip & Filosofi" masih hardcoded (DB tak punya kolomnya).
 - **JSON-LD baru di detail proyek** (`CreativeWork` + `BreadcrumbList`). `Person`/`WebSite` di
   beranda dan schema halaman lain belum dipasang (M7).
@@ -952,10 +957,16 @@ perubahan logis + push ke `origin`. `main` tidak disentuh.
 sesi dipaksa lewat `withSessionMaxAge()` dan nilai `maxAge: 0` milik library dibiarkan agar logout
 tetap menghapus semua chunk; (2) halaman yang dijaga **24**, bukan 26 seperti di planning — dua
 path di daftar rencana tidak ada di repo; (3) guard layout tidak cukup karena layout tidak
-dirender ulang saat navigasi klien, sehingga guard per page wajib; (4) asersi e2e "admin aktif
-tidak melihat form login" dihapus (lihat utang teknis balapan `@supabase/ssr`), bukan karena
-fiturnya dibatalkan; (5) `devIndicators: false` dicoba lalu dibatalkan — widget dev tools tetap
-menutupi tombol "Keluar", solusinya `page.addStyleTag` seperti di `visual.spec.ts`.
+dirender ulang saat navigasi klien, sehingga guard per page wajib; (4) `signOut()` diubah ke
+`scope: "local"` — scope global (bawaan) mencabut **semua** sesi akun sehingga logout di satu tab
+melempar pengguna lain (dan tes E2E paralel) ke halaman login; (5) `devIndicators: false` dicoba
+lalu dibatalkan — widget dev tools tetap menutupi tombol "Keluar", solusinya `page.addStyleTag`
+seperti di `visual.spec.ts`.
+
+**Koreksi diagnosis:** mula-mula gejala `Auth session missing!` dicurigai sebagai balapan baca
+cookie `@supabase/ssr`, sehingga asersi redirect `/admin/login` sempat dihapus. Instrumentasi
+menunjukkan semua request gagal datang tanpa cookie sama sekali — sesi sudah dicabut lebih dulu oleh
+`signOut` global. Setelah scope diperbaiki, asersi dikembalikan (3/3 lulus pada `--repeat-each=3`).
 
 **Verifikasi:** `pnpm lint` 0 error (1 warning lama di `.opencode/plugins/graphify.js`) ·
 `pnpm typecheck` bersih · `pnpm test` **47 file / 208 tes** · `pnpm build` sukses (semua `/admin/**`
