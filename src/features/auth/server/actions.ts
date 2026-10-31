@@ -18,10 +18,23 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
   }
 
   const supabase = await createServerSupabase();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
 
-  if (error) {
+  if (error || !data.user) {
     return { error: "Email atau password salah." };
+  }
+
+  // Sesi Supabase bisa dimiliki akun mana pun (mis. sisa pendaftaran lama);
+  // akses admin hanya untuk user yang terdaftar di tabel `admins`.
+  const { data: adminRow } = await supabase
+    .from("admins")
+    .select("user_id")
+    .eq("user_id", data.user.id)
+    .maybeSingle();
+
+  if (!adminRow) {
+    await supabase.auth.signOut();
+    return { error: "Akun ini tidak memiliki akses admin." };
   }
 
   redirect(ROUTES.admin.root);
