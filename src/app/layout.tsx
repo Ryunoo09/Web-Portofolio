@@ -61,9 +61,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  // CSS memakai `scroll-behavior: smooth`; `data-scroll-behavior` memberi tahu
+  // router agar transisi halaman tidak ikut dihaluskan (syarat Next.js 16).
   return (
     <html
       lang="id"
+      data-scroll-behavior="smooth"
       className={`${spaceGrotesk.variable} ${jakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
