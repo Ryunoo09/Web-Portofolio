@@ -24,6 +24,9 @@ loadE2ECredentials();
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
+  // Database uji adalah Supabase bersama dan tes admin menulis data. Jalankan
+  // berurutan agar jumlah/isi halaman publik tidak berubah di tengah snapshot.
+  workers: 1,
   reporter: "html",
   // Kompilasi pertama dev server (Turbopack) bisa memakan beberapa detik.
   expect: { timeout: 15_000 },

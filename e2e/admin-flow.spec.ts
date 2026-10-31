@@ -28,12 +28,13 @@ async function login(page: Page) {
 async function confirmDelete(page: Page) {
   await page.getByRole("button", { name: "Hapus", exact: true }).click();
   // Server action + `router.refresh()` bisa lambat saat dev server baru meng-compile.
-  await expect(page.getByRole("dialog")).toBeHidden({ timeout: 25_000 });
+  await expect(page.getByRole("dialog")).toBeHidden({ timeout: 45_000 });
 }
 
 test.describe("alur admin", () => {
-  // Alur admin menempuh banyak navigasi + aksi server; beri ruang lebih dari 30 detik bawaan.
-  test.describe.configure({ timeout: 60_000 });
+  // Tes admin berbagi database dan dev server. Jalankan berurutan agar tidak
+  // saling berebut kompilasi/Server Action; timeout dinaikkan untuk CI lambat.
+  test.describe.configure({ mode: "serial", timeout: 120_000 });
 
   test.skip(!hasCredentials, "Butuh E2E_ADMIN_EMAIL dan E2E_ADMIN_PASSWORD di .env.local.");
 

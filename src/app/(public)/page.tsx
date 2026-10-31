@@ -24,9 +24,9 @@ import {
 export const revalidate = 3600;
 
 export const metadata: Metadata = buildMetadata({
-  title: "Rakha Yuda Wicaksono — Backend & Data Engineer",
+  title: "Rakha Yuda Wicaksono — Software Engineer & Data Engineer",
   description:
-    "Portofolio Rakha Yuda Wicaksono, Backend & Data Engineer di Brebes. Python, FastAPI, PostgreSQL, pipeline data, dan computer vision untuk proses yang lebih cepat.",
+    "Portofolio Rakha Yuda Wicaksono, Software Engineer & Data Engineer di Brebes. Python, FastAPI, PostgreSQL, pipeline data, dan computer vision untuk proses yang lebih cepat.",
   path: "/",
 });
 

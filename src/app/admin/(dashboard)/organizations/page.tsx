@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { requireAdminPage } from "@/features/auth";
 import { ROUTES } from "@/shared/constants/routes";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { Button } from "@/shared/components/ui/button";
@@ -7,6 +8,8 @@ import { OrganizationTable } from "@/features/organizations/admin";
 import { getAllOrganizations } from "@/features/organizations";
 
 export default async function AdminOrganizationsPage() {
+  await requireAdminPage();
+
   const organizations = await getAllOrganizations();
 
   return (

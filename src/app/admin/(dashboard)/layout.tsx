@@ -5,6 +5,11 @@ import { AdminSidebar } from "@/features/auth/admin";
 import { getCurrentAdmin } from "@/features/auth";
 import { countUnreadMessages } from "@/features/contact";
 
+// Admin tidak boleh pernah disajikan dari cache: isinya data per-pengguna dan
+// harus selalu mengecek sesi pada setiap request.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminDashboardLayout({ children }: { children: ReactNode }) {
   // Pengecekan aman (bukan hanya proxy): sesi + keanggotaan tabel admins.
   const admin = await getCurrentAdmin();

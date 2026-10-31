@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { LanguageForm } from "@/features/languages/admin";
 import { getAllLanguages } from "@/features/languages";
@@ -9,6 +10,8 @@ export default async function AdminLanguagesEditPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  await requireAdminPage();
+
   const languages = await getAllLanguages();
   const language = languages.find((item) => item.id === id);
 

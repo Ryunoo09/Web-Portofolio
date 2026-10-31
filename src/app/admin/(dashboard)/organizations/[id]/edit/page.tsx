@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { requireAdminPage } from "@/features/auth";
 import { AdminPageHeader } from "@/shared/components/admin";
 import { OrganizationForm } from "@/features/organizations/admin";
 import { getAllOrganizations } from "@/features/organizations";
@@ -9,6 +10,8 @@ export default async function AdminOrganizationsEditPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  await requireAdminPage();
+
   const organizations = await getAllOrganizations();
   const organization = organizations.find((item) => item.id === id);
 
