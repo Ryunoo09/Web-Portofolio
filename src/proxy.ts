@@ -4,6 +4,16 @@ import { ROUTES } from "@/shared/constants/routes";
 import { AUTH_COOKIE_OPTIONS, withSessionMaxAge } from "@/shared/lib/supabase/cookie-options";
 
 /**
+ * Semua response admin — termasuk redirect — tidak boleh masuk cache browser
+ * atau CDN (satu sesi bisa tersaji ke pengguna lain) dan tidak boleh diindeks.
+ */
+function withAdminHeaders<T extends NextResponse>(response: T): T {
+  response.headers.set("Cache-Control", "no-store, max-age=0, must-revalidate");
+  response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return response;
+}
+
+/**
  * Lapis pertama (optimistic): refresh sesi Supabase dan redirect bila belum
  * login. Tanpa query database — hanya cek sesi dari cookie. Pengecekan
  * keanggotaan admin yang sebenarnya ada di guard (getCurrentAdmin) dan RLS.
@@ -50,10 +60,10 @@ export async function proxy(request: NextRequest) {
     const redirectResponse = NextResponse.redirect(url);
     response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
     authHeaders.forEach((value, key) => redirectResponse.headers.set(key, value));
-    return redirectResponse;
+    return withAdminHeaders(redirectResponse);
   }
 
-  return response;
+  return withAdminHeaders(response);
 }
 
 export const config = { matcher: ["/admin", "/admin/:path*"] };
