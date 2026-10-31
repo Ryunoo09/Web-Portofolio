@@ -58,13 +58,14 @@
 | Project ref  | `kggrbhvbowszljemvxan`                                                                                                               |
 | URL          | `https://kggrbhvbowszljemvxan.supabase.co`                                                                                           |
 | `.env.local` | Terisi: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`             |
-| Migrasi      | ✅ `0001_init` (11 tabel) · `0002_rls` · `0003_storage` — sudah diterapkan                                                           |
+| Migrasi      | ✅ `0001`–`0008` terpasang di project linked (rincian di catatan sesi 2026-10-31)                                                    |
 | Tipe DB      | ✅ `src/shared/types/database.ts` (hasil `pnpm db:types`)                                                                            |
 | Seed         | ✅ 6 proyek · 12 skill · 3 pengalaman · 1 pendidikan · 3 sertifikat · 1 profil                                                       |
 | Akun admin   | Email: `admin@example.com` · user_id: `3840f40e-6746-4256-83d5-b407b96d98b2` · **password: lihat password manager (JANGAN commit!)** |
 
 **Tabel:** `admins`, `profile`, `skills`, `projects`, `project_images`, `project_skills`,
-`experiences`, `education`, `organizations`, `languages`, `certificates`, `contact_messages`, `posts`.
+`experiences`, `experience_images`, `education`, `organizations`, `languages`, `certificates`,
+`contact_messages`, `posts`.
 
 > 🔴 **Tindakan yang belum dipastikan:** matikan **"Allow new users to sign up"** di Supabase Auth,
 > dan ganti password admin.
@@ -97,8 +98,9 @@
 **Sudah semua:** `login`/`logout`, guard `getCurrentAdmin()` + `requireAdmin()`, `proxy.ts`
 (refresh sesi + proteksi), layout admin + sidebar responsif (drawer di mobile), halaman
 **Ringkasan** (hitungan semua konten + 5 pesan terbaru). CRUD **Proyek** (termasuk unggah
-**cover + galeri** ke Supabase Storage), **Keahlian**, **Pengalaman**, **Pendidikan**,
-**Sertifikat** (termasuk gambar), **Edit Profil** (avatar, CV PDF, tautan sosial, SEO), dan
+**cover + galeri** ke Supabase Storage), **Keahlian**, **Pengalaman** (termasuk **galeri
+dokumentasi** di halaman ubah), **Pendidikan**, **Sertifikat** (termasuk gambar dan
+**deskripsi** yang tampil di `/about`), **Edit Profil** (avatar, CV PDF, tautan sosial, SEO), dan
 **Kotak masuk pesan** (tandai dibaca/belum, hapus).
 
 **Belum:** Reorder galeri/skill dengan drag & drop (A-12) dan CRUD Blog (A-13) — sengaja
@@ -234,7 +236,8 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
 ## 🚧 UTANG TEKNIS (sengaja dilewati, tercatat)
 
 - **Reorder galeri/skill (A-12)** masih lewat input angka `sort_order`; ada komentar
-  `shortcut:` di `features/projects/server/actions.ts`.
+  `shortcut:` di `features/projects/server/actions.ts`. **Galeri dokumentasi pengalaman** juga
+  belum punya drag & drop urutan (hanya `sort_order` otomatis) dan belum punya lightbox.
 - **Tiptap (A-10)** dilewati — deskripsi proyek tetap `<Textarea>` HTML + `sanitizeHtml`.
 - **Kolom `icon` keahlian** belum dirender di UI mana pun, jadi belum diekspos di form
   admin (update tidak menyentuh kolom itu, nilai lama tetap utuh). Lihat
@@ -250,7 +253,8 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
 - **`getTopSkills(4)`** = 4 skill pertama by `sort_order` (skema skill tak punya `featured`).
 - **Duplikasi tipe/mapper** antara `features/profile` (konsumsi halaman publik) dan
   `features/{experiences,education,certificates}` (CRUD admin) untuk tabel yang sama.
-  Menyatukan ownership domain perlu refactor terpisah.
+  Menyatukan ownership domain perlu refactor terpisah. Sejak `0008_experience_images`, tipe
+  `ExperienceImage` dan mapper dokumentasi juga terduplikasi di kedua fitur tersebut.
 - **Test mappers** memakai fixture manual; belum ada tes integrasi ke Supabase.
 - **`/resume.pdf` belum diunggah** → tombol Unduh CV masih 404 (blocker rilis M8).
 - **Lighthouse LCP mobile** 2,5–3,1 s di host berbeban; perlu pengukuran CI/idle.
@@ -872,13 +876,55 @@ visual regression + Lighthouse 4 viewport, preview/rilis/smoke/rollback).
 
 ---
 
+### Sesi 2026-10-31 — Galeri dokumentasi pengalaman + deskripsi sertifikat
+
+**Permintaan:** halaman pengalaman bisa menampilkan gambar dokumentasi, halaman sertifikat bisa
+menyimpan deskripsi, tiap perubahan di-commit.
+
+**Branch:** `feat/galeri-pengalaman-deskripsi-sertifikat` (dibuat dari `redesign/signal-room`;
+`main` tidak disentuh). Lima commit: deskripsi sertifikat, galeri dokumentasi, E2E, graphify,
+handoff.
+
+**Migrasi (diterapkan ke project linked):**
+
+- `0007_certificate_description.sql` — `certificates.description text` (nullable).
+- `0008_experience_images.sql` — tabel `experience_images` (FK cascade ke `experiences`, index
+  `(experience_id, sort_order)`, RLS: publik baca hanya bila pengalaman induk terbit, admin all).
+- `pnpm db:types` dijalankan ulang; diff `database.ts` hanya menambah kolom/tabel di atas.
+
+**File baru:** `supabase/migrations/0007_*`, `0008_*`,
+`features/experiences/components/admin/ExperienceGalleryManager.tsx` (+ test),
+`features/certificates/components/admin/CertificateForm.test.tsx`.
+
+**Cara pakai admin:** sertifikat — isi field **Deskripsi** (maks 500 karakter), tampil sebagai
+paragraf di baris sertifikat `/about`. Pengalaman — **simpan dulu** pengalaman baru, lalu buka
+halaman ubah untuk mengunggah **Dokumentasi Pengalaman** (banyak berkas sekaligus, drag & drop,
+teks alternatif disimpan saat blur). Hapus gambar atau pengalaman ikut membersihkan objek Storage.
+
+**Tampilan publik:** `ExperienceTimeline` merender grid `2`/`3` kolom `MediaFrame` (`4/3`) di
+bawah bullet, hanya untuk pengalaman terbit, `data-slot="experience-gallery"` untuk mask visual.
+Prop `CredentialRow.description` yang sudah ada kini dipakai sertifikat.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama di `.opencode/plugins/graphify.js`) ·
+`pnpm typecheck` bersih · `pnpm test` **208** tes (47 file) · `pnpm build` sukses ·
+`pnpm test:e2e` **62 tes lulus** (termasuk 2 alur admin baru) · RLS dicek dengan anon key
+(SELECT 200, INSERT 401).
+
+**Baseline visual:** `proyek-*` dan `tentang-*` di-regenerasi karena **konten DB berubah** sejak
+baseline lama (bio profil baru dan kartu proyek DSE AI), bukan karena perubahan layout; gambar
+dokumentasi dimask, jadi foto pribadi tidak masuk repo. Baseline Linux tetap ditunda.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
-> "Lanjutkan **rilis Signal Room** setelah M8: (1) unggah/ganti CV lewat `/admin/profile` →
-> Berkas CV (`/resume.pdf` membaca `profile.resume_url`); (2) ukur Lighthouse mobile di CI/host idle
-> sampai LCP <2,5 s (laporan M8 ada di `docs/redesign/baseline/M8-REPORT.md`); (3) merge
+> "Lanjutkan **rilis Signal Room** setelah M8: (1) tinjau lalu merge
+> `feat/galeri-pengalaman-deskripsi-sertifikat` → `redesign/signal-room` (sudah di-push, menunggu
+> persetujuan pemilik; migrasi `0007`/`0008` sudah terpasang di project linked); (2) unggah/ganti CV lewat `/admin/profile` →
+> Berkas CV (`/resume.pdf` membaca `profile.resume_url`); (3) ukur Lighthouse mobile di CI/host idle
+> sampai LCP <2,5 s (laporan M8 ada di `docs/redesign/baseline/M8-REPORT.md`); (4) merge
 > `redesign/signal-room` → `main` setelah persetujuan, pantau `deploy.yml`, lalu smoke 6 rute +
-> `/api/health` + admin login; (4) siapkan rollback `IMAGE_TAG=<sha7-sebelumnya>` (<10 menit).
+> `/api/health` + admin login; (5) siapkan rollback `IMAGE_TAG=<sha7-sebelumnya>` (<10 menit).
 > Terapkan `ponytail`, `clean-code`, `code-reviewer`, `senior-frontend`, `ui-ux-pro-max`.
 > Jangan ubah konten/klaim. Verifikasi `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`,
 > `pnpm test:e2e` (PowerShell tidak mendukung `&&`), lalu commit + push."
