@@ -19,6 +19,17 @@ function withAdminHeaders<T extends NextResponse>(response: T): T {
  * keanggotaan admin yang sebenarnya ada di guard (getCurrentAdmin) dan RLS.
  */
 export async function proxy(request: NextRequest) {
+  const isLoginPath = request.nextUrl.pathname === ROUTES.admin.login;
+
+  // `/admin/login` tidak dijaga di sini. Server Action login mem-`POST` ke path
+  // ini; kalau proxy juga memanggil `getUser()` tanpa sesi, library auth bisa
+  // memancarkan cookie penghapus yang berlomba dengan `Set-Cookie` sesi baru dari
+  // Server Action — sesi yang baru dibuat lalu hilang (login acak gagal).
+  // Halaman login sendiri sudah mengalihkan admin yang aktif ke `/admin`.
+  if (isLoginPath) {
+    return withAdminHeaders(NextResponse.next({ request }));
+  }
+
   let response = NextResponse.next({ request });
   // Header no-store dari @supabase/ssr; ikut disalin bila response diganti redirect.
   const authHeaders = new Headers();
@@ -50,8 +61,7 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isLoginPath = request.nextUrl.pathname === ROUTES.admin.login;
-  if (!user && !isLoginPath) {
+  if (!user) {
     const url = request.nextUrl.clone();
     url.pathname = ROUTES.admin.login;
 
