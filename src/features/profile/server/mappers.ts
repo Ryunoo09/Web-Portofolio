@@ -1,7 +1,23 @@
 import type { Database } from "@/shared/types/database";
-import type { Certificate, Education, Experience, Profile } from "../types";
+import type { Certificate, Education, Experience, ExperienceImage, Profile } from "../types";
 
 type Row<T extends keyof Database["public"]["Tables"]> = Database["public"]["Tables"][T]["Row"];
+
+type ExperienceImageFields = Pick<Row<"experience_images">, "id" | "url" | "alt" | "sort_order">;
+
+/** Baris pengalaman beserta dokumentasi hasil embed `experience_images(...)`. */
+export type ExperienceWithImages = Row<"experiences"> & {
+  experience_images: ExperienceImageFields[] | null;
+};
+
+export function toExperienceImage(row: ExperienceImageFields): ExperienceImage {
+  return {
+    id: row.id,
+    url: row.url,
+    alt: row.alt,
+    sortOrder: row.sort_order,
+  };
+}
 
 export function toProfile(row: Row<"profile">): Profile {
   return {
@@ -20,7 +36,7 @@ export function toProfile(row: Row<"profile">): Profile {
   };
 }
 
-export function toExperience(row: Row<"experiences">): Experience {
+export function toExperience(row: ExperienceWithImages): Experience {
   return {
     id: row.id,
     company: row.company,
@@ -29,6 +45,9 @@ export function toExperience(row: Row<"experiences">): Experience {
     location: row.location,
     startedAt: row.started_at,
     endedAt: row.ended_at,
+    images: (row.experience_images ?? [])
+      .map(toExperienceImage)
+      .sort((a, b) => a.sortOrder - b.sortOrder),
   };
 }
 

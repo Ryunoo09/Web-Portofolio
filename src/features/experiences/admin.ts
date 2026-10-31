@@ -4,3 +4,4 @@
  */
 export { ExperienceTable } from "./components/admin/ExperienceTable";
 export { ExperienceForm } from "./components/admin/ExperienceForm";
+export { ExperienceGalleryManager } from "./components/admin/ExperienceGalleryManager";

@@ -162,6 +162,41 @@ export type Database = {
         };
         Relationships: [];
       };
+      experience_images: {
+        Row: {
+          alt: string;
+          created_at: string;
+          experience_id: string;
+          id: string;
+          sort_order: number;
+          url: string;
+        };
+        Insert: {
+          alt?: string;
+          created_at?: string;
+          experience_id: string;
+          id?: string;
+          sort_order?: number;
+          url: string;
+        };
+        Update: {
+          alt?: string;
+          created_at?: string;
+          experience_id?: string;
+          id?: string;
+          sort_order?: number;
+          url?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "experience_images_experience_id_fkey";
+            columns: ["experience_id"];
+            isOneToOne: false;
+            referencedRelation: "experiences";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       experiences: {
         Row: {
           company: string;

@@ -94,6 +94,12 @@ export function ExperienceForm({ experience }: ExperienceFormProps) {
         {(props) => <Textarea rows={5} {...props} {...register("description")} />}
       </FormField>
 
+      {isEdit && (
+        <p className="text-muted-foreground text-sm">
+          Dokumentasi foto diunggah di bagian bawah halaman ini, setelah data tersimpan.
+        </p>
+      )}
+
       <FormField label="Urutan Tampil" name="sortOrder" error={errors.sortOrder?.message}>
         {(props) => (
           <Input

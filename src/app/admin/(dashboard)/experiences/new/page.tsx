@@ -9,6 +9,9 @@ export default function AdminExperienceNewPage() {
         description="Pengalaman berstatus terbit langsung tampil di halaman /about."
       />
       <ExperienceForm />
+      <p className="text-muted-foreground max-w-xl text-sm">
+        Simpan pengalaman dulu, lalu tambah dokumentasi di halaman ubah.
+      </p>
     </main>
   );
 }

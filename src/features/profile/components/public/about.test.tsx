@@ -14,6 +14,7 @@ const experience: Experience = {
   location: "Semarang",
   startedAt: "2025-08-04",
   endedAt: "2025-12-31",
+  images: [],
 };
 
 describe("AboutProof", () => {
@@ -114,5 +115,31 @@ describe("ExperienceTimeline", () => {
     expect(screen.getByText("PT Contoh")).toBeInTheDocument();
     expect(screen.getByText("Membangun API.")).toBeInTheDocument();
     expect(screen.getByText("Agu 2025 — Des 2025")).toBeInTheDocument();
+  });
+
+  it("merender dokumentasi dengan alt dari database", () => {
+    render(
+      <ExperienceTimeline
+        experiences={[
+          {
+            ...experience,
+            images: [
+              { id: "i1", url: "https://demo.supabase.co/a.png", alt: "Rapat tim", sortOrder: 0 },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByAltText("Rapat tim")).toBeInTheDocument();
+    expect(document.querySelector('[data-slot="experience-gallery"]')).not.toBeNull();
+  });
+
+  it("tidak merender grid dokumentasi bila tidak ada gambar", () => {
+    const { container } = render(
+      <ExperienceTimeline experiences={[{ ...experience, images: [] }]} />,
+    );
+
+    expect(container.querySelector('[data-slot="experience-gallery"]')).toBeNull();
   });
 });

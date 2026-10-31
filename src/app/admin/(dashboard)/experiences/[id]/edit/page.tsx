@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { AdminPageHeader } from "@/shared/components/admin";
-import { ExperienceForm } from "@/features/experiences/admin";
+import { ExperienceForm, ExperienceGalleryManager } from "@/features/experiences/admin";
 import { getAllExperiences } from "@/features/experiences";
 
 export default async function AdminExperienceEditPage({
@@ -18,6 +18,7 @@ export default async function AdminExperienceEditPage({
     <main className="space-y-6">
       <AdminPageHeader title="Ubah Pengalaman" description={experience.role} />
       <ExperienceForm experience={experience} />
+      <ExperienceGalleryManager experienceId={experience.id} images={experience.images} />
     </main>
   );
 }
