@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { ROUTES } from "@/shared/constants/routes";
+import { AUTH_COOKIE_OPTIONS, withSessionMaxAge } from "@/shared/lib/supabase/cookie-options";
 
 /**
  * Lapis pertama (optimistic): refresh sesi Supabase dan redirect bila belum
@@ -14,14 +15,17 @@ export async function proxy(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
+      cookieOptions: AUTH_COOKIE_OPTIONS,
       cookies: {
         getAll: () => request.cookies.getAll(),
-        setAll: (cookiesToSet) => {
+        setAll: (cookiesToSet, headers) => {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
           response = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options),
+            response.cookies.set(name, value, withSessionMaxAge(options)),
           );
+          // Library mengirim header no-store tiap kali menulis cookie sesi.
+          Object.entries(headers).forEach(([key, value]) => response.headers.set(key, value));
         },
       },
     },
