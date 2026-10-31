@@ -42,9 +42,9 @@
     "semantic_hash": ""
   },
   "e2e/admin-flow.spec.ts": {
-    "mtime": 1793444795.3117325,
-    "seen": 1793456891.1358497,
-    "ast_hash": "7ab5c3532a661b95373a77aedcf2e79c",
+    "mtime": 1793463995.6618617,
+    "seen": 1793464221.1104486,
+    "ast_hash": "2d15bcfb850935127c9e7eef417f56e1",
     "semantic_hash": ""
   },
   "e2e/public-flow.spec.ts": {
@@ -102,9 +102,9 @@
     "semantic_hash": "2703798791fd9e4a3c5e6db291eec730"
   },
   "src/app/(public)/about/page.tsx": {
-    "mtime": 1793463244.9071107,
-    "seen": 1793463468.0978186,
-    "ast_hash": "359e207219a27b694a963770ebe13a26",
+    "mtime": 1793463510.1866648,
+    "seen": 1793464221.1145175,
+    "ast_hash": "6d44804f893ce182aca234b35df229b3",
     "semantic_hash": ""
   },
   "src/app/(public)/contact/page.tsx": {
@@ -120,9 +120,9 @@
     "semantic_hash": ""
   },
   "src/app/(public)/page.tsx": {
-    "mtime": 1793463244.9033515,
-    "seen": 1793463468.0985715,
-    "ast_hash": "9704da4c43120c7433b2c924a44cc845",
+    "mtime": 1793463510.1904979,
+    "seen": 1793464221.115273,
+    "ast_hash": "d43672986392912eef366991e6fe90e4",
     "semantic_hash": ""
   },
   "src/app/(public)/projects/[slug]/opengraph-image.tsx": {
@@ -1146,9 +1146,9 @@
     "semantic_hash": "29ac1aee2d412b9c5ab787d0c9ac16d4"
   },
   "src/shared/constants/siteConfig.ts": {
-    "mtime": 1793463262.2425714,
-    "seen": 1793463468.1639903,
-    "ast_hash": "cd9421e373aeddc933d535c797605848",
+    "mtime": 1793463510.0006948,
+    "seen": 1793464221.1862938,
+    "ast_hash": "55d808e3acc7b51cf98afd6010ee9f4c",
     "semantic_hash": ""
   },
   "src/shared/lib/query.ts": {
@@ -1746,9 +1746,9 @@
     "semantic_hash": ""
   },
   "src/app/(public)/opengraph-image.tsx": {
-    "mtime": 1793463244.9049597,
-    "seen": 1793463468.0985672,
-    "ast_hash": "dc43779640381d4d4b3c9f87f5612f8d",
+    "mtime": 1793463510.188661,
+    "seen": 1793464221.1152687,
+    "ast_hash": "1cd071c27a6e37fd151ac04451cbf90b",
     "semantic_hash": ""
   },
   "src/app/(public)/projects/opengraph-image.tsx": {

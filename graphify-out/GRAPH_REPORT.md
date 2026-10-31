@@ -1,9 +1,9 @@
 # Graph Report - portfolio  (2026-10-31)
 
 ## Corpus Check
-- 322 files · ~76,143 words
+- 322 files · ~76,161 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 35 file(s) not represented in the graph (top: (none) 29, .log 2, .example 1)
+- Unclassified: 34 file(s) not represented in the graph (top: (none) 29, .example 1, .log 1)
 
 ## Summary
 - 1326 nodes · 4280 edges · 69 communities (57 shown, 12 thin omitted)
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `43e6d52e`
+- Built from commit: `99a4c2ef`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
