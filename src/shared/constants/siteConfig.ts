@@ -8,19 +8,19 @@ export type SiteMetric = {
 export const siteConfig = {
   name: "Rakha Yuda Wicaksono",
   shortName: "Rakha",
-  title: "Rakha Yuda Wicaksono | Backend & Data Engineer",
+  title: "Rakha Yuda Wicaksono | Software Engineer & Data Engineer",
   description:
-    "Portofolio Rakha Yuda Wicaksono — Backend & Data Engineer. Python, FastAPI, Laravel, PostgreSQL, serta otomasi dan AI untuk menyelesaikan masalah nyata.",
+    "Portofolio Rakha Yuda Wicaksono — Software Engineer & Data Engineer. Python, FastAPI, Laravel, PostgreSQL, serta otomasi dan AI untuk menyelesaikan masalah nyata.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   locale: "id_ID",
-  role: "Backend & Data Engineer",
+  role: "Software Engineer & Data Engineer",
   valueProp:
     "Saya mengubah proses manual menjadi backend, pipeline data, dan sistem computer vision yang bisa diukur. Fresh graduate Teknologi Rekayasa Komputer, Politeknik Negeri Semarang.",
   location: "Brebes, Jawa Tengah, Indonesia",
   timezone: "WIB",
   availability: "Terbuka untuk Backend & Data Engineer",
-  /** Tiga teknologi yang ditonjolkan di panel status hero. */
-  focus: ["Python", "FastAPI", "PostgreSQL"],
+  /** Teknologi yang ditonjolkan di panel status hero. */
+  focus: ["Python", "FastAPI", "PostgreSQL", "Laravel", "Next.js"],
   /**
    * Metrik hero. `500+` sengaja tidak dipakai: definisi pengguna unik/akumulatif
    * belum terverifikasi (keputusan 27 Okt 2026). Ganti nilainya di sini lalu deploy.
