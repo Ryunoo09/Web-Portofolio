@@ -10,6 +10,8 @@ import { AUTH_COOKIE_OPTIONS, withSessionMaxAge } from "@/shared/lib/supabase/co
  */
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
+  // Header no-store dari @supabase/ssr; ikut disalin bila response diganti redirect.
+  const authHeaders = new Headers();
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -25,7 +27,10 @@ export async function proxy(request: NextRequest) {
             response.cookies.set(name, value, withSessionMaxAge(options)),
           );
           // Library mengirim header no-store tiap kali menulis cookie sesi.
-          Object.entries(headers).forEach(([key, value]) => response.headers.set(key, value));
+          Object.entries(headers).forEach(([key, value]) => {
+            authHeaders.set(key, value);
+            response.headers.set(key, value);
+          });
         },
       },
     },
@@ -39,7 +44,13 @@ export async function proxy(request: NextRequest) {
   if (!user && !isLoginPath) {
     const url = request.nextUrl.clone();
     url.pathname = ROUTES.admin.login;
-    return NextResponse.redirect(url);
+
+    // Redirect yang membuang cookie hasil refresh membuat sesi yang hampir
+    // kedaluwarsa hilang dan pengguna terpaksa login ulang.
+    const redirectResponse = NextResponse.redirect(url);
+    response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
+    authHeaders.forEach((value, key) => redirectResponse.headers.set(key, value));
+    return redirectResponse;
   }
 
   return response;
