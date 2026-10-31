@@ -94,10 +94,13 @@ test.describe("sesi admin", () => {
     }
   });
 
-  // Tidak diasersikan di sini: "admin aktif yang membuka /admin/login langsung
-  // diarahkan ke /admin". Di bawah beban paralel `@supabase/ssr` sesekali gagal
-  // membaca ulang sesi yang baru ditulis Server Action login, jadi asersi itu
-  // flaky (dicatat di HANDOFF sebagai utang teknis). Perilakunya ada di halaman login.
+  test("admin aktif yang membuka /admin/login dialihkan ke /admin", async ({ page }) => {
+    await login(page);
+
+    await page.goto("/admin/login");
+    await expect(page).toHaveURL(/\/admin$/);
+  });
+
   test("logout menghapus cookie dan menutup akses URL langsung", async ({ page, context }) => {
     await login(page);
 
