@@ -246,7 +246,14 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
   outcome). Beranda/about/skills/contact belum punya OG; cover proyek belum dipakai sebagai
   gambar OG. Alt OG masih statis. Dikerjakan di M7.
 - **Login belum ada rate-limit kustom.**
-- **Proxy tidak me-redirect admin yang sudah login** dari `/admin/login` (sengaja, hindari loop).
+- **Proxy tidak memeriksa sesi di `/admin/login`** (sengaja: `getUser()` di sana berlomba dengan
+  `Set-Cookie` dari Server Action login). Pengalihan admin aktif dikerjakan halaman login lewat
+  `getCurrentAdmin()`, bukan proxy, agar user auth non-admin tidak terjebak loop.
+- **Balapan baca-sesi `@supabase/ssr`** — di bawah beban paralel, sesi yang baru ditulis Server
+  Action login sesekali belum terbaca pada request berikutnya (`Auth session missing!` walau cookie
+  sudah ada di jar; terbukti di dev maupun build produksi). Karena itu asersi "admin aktif yang
+  membuka `/admin/login` diarahkan ke `/admin`" sengaja tidak di-e2e-kan. Perilakunya ada di kode;
+  uji ulang setelah `@supabase/ssr` dinaikkan versinya.
 - **AboutContent** — grid "Prinsip & Filosofi" masih hardcoded (DB tak punya kolomnya).
 - **JSON-LD baru di detail proyek** (`CreativeWork` + `BreadcrumbList`). `Person`/`WebSite` di
   beranda dan schema halaman lain belum dipasang (M7).
@@ -913,6 +920,51 @@ Prop `CredentialRow.description` yang sudah ada kini dipakai sertifikat.
 **Baseline visual:** `proyek-*` dan `tentang-*` di-regenerasi karena **konten DB berubah** sejak
 baseline lama (bio profil baru dan kartu proyek DSE AI), bukan karena perubahan layout; gambar
 dokumentasi dimask, jadi foto pribadi tidak masuk repo. Baseline Linux tetap ditunda.
+
+---
+
+### Sesi 2026-10-31 (lanjutan) — Hardening auth admin
+
+**Permintaan:** baca `docs/PLANNING-ADMIN-AUTH-HARDENING.md` lalu eksekusi seluruh rencananya.
+Keputusan pemilik: kerjakan semua commit sekarang, **sesi 12 jam** (bukan 7 hari), commit per
+perubahan logis + push ke `origin`. `main` tidak disentuh.
+
+**Branch:** `fix/admin-auth-hardening` (dari `feat/galeri-pengalaman-deskripsi-sertifikat`), 13 commit.
+
+| Commit    | Isi                                                                                                       |
+| --------- | --------------------------------------------------------------------------------------------------------- |
+| `d0d52bb` | `shared/lib/supabase/cookie-options.ts` sebagai satu sumber opsi cookie; dipakai `server.ts` + `proxy.ts` |
+| `823cc7e` | `admin/login/page.tsx` jadi `async` + `getCurrentAdmin()` → admin aktif dialihkan ke `/admin`             |
+| `d2a7208` | `login` menolak akun yang tidak ada di tabel `admins`, lalu `signOut()`                                   |
+| `940d721` | `logout` fallback `signOut({ scope: "local" })` + `revalidatePath("/admin", "layout")`                    |
+| `43f6e21` | redirect proxy tidak membuang cookie hasil refresh; header `no-store` dari `setAll` ikut disalin          |
+| `9bb6411` | `getCurrentAdmin` dibungkus `cache()` + `requireAdminPage()`                                              |
+| `9040183` | guard `requireAdminPage()` di 24 page `(dashboard)` (5 page `new` sekaligus jadi `async`)                 |
+| `1579673` | layout admin `dynamic = "force-dynamic"` + `revalidate = 0`                                               |
+| `498d2e3` | `Cache-Control: no-store` + `X-Robots-Tag: noindex` untuk semua respons `/admin/**`                       |
+| `eb1e554` | proxy melewati cek sesi di `/admin/login` — perbaikan balapan `Set-Cookie`                                |
+| `391297a` | `data-scroll-behavior="smooth"` di `<html>` (syarat Next.js 16 karena CSS memakai smooth scroll)          |
+| `0a66eee` | `e2e/auth-guard.spec.ts`: 25 rute tanpa sesi + header no-store/noindex + atribut cookie + logout          |
+| `57f86a0` | `DEPLOY.md §3a`: Cache Rule Cloudflare `Bypass admin` + checklist pra-deploy                              |
+
+**Keputusan/penyimpangan:** (1) `maxAge` **tidak** ditulis di `AUTH_COOKIE_OPTIONS` —
+`applyServerStorage()` di `@supabase/ssr` selalu menimpanya dengan bawaan 400 hari, jadi durasi
+sesi dipaksa lewat `withSessionMaxAge()` dan nilai `maxAge: 0` milik library dibiarkan agar logout
+tetap menghapus semua chunk; (2) halaman yang dijaga **24**, bukan 26 seperti di planning — dua
+path di daftar rencana tidak ada di repo; (3) guard layout tidak cukup karena layout tidak
+dirender ulang saat navigasi klien, sehingga guard per page wajib; (4) asersi e2e "admin aktif
+tidak melihat form login" dihapus (lihat utang teknis balapan `@supabase/ssr`), bukan karena
+fiturnya dibatalkan; (5) `devIndicators: false` dicoba lalu dibatalkan — widget dev tools tetap
+menutupi tombol "Keluar", solusinya `page.addStyleTag` seperti di `visual.spec.ts`.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama di `.opencode/plugins/graphify.js`) ·
+`pnpm typecheck` bersih · `pnpm test` **47 file / 208 tes** · `pnpm build` sukses (semua `/admin/**`
+`ƒ Dynamic`) · `pnpm test:e2e` **90 tes lulus** (termasuk 48 snapshot visual) · `auth-guard.spec.ts`
+140/140 dengan `--repeat-each=5` · cookie sesi terukur ≈43.200 s (12 jam), access token tetap 1 jam.
+
+**Titik mulai berikutnya:** tinjau 13 commit di `fix/admin-auth-hardening` lalu merge ke
+`redesign/signal-room` setelah persetujuan; tambahkan rate-limit login; uji ulang balapan
+`@supabase/ssr` setelah library dinaikkan.
 
 ---
 
