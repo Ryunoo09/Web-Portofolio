@@ -52,6 +52,7 @@ export type Database = {
         Row: {
           created_at: string;
           credential_url: string | null;
+          description: string | null;
           id: string;
           image_url: string | null;
           is_published: boolean;
@@ -64,6 +65,7 @@ export type Database = {
         Insert: {
           created_at?: string;
           credential_url?: string | null;
+          description?: string | null;
           id?: string;
           image_url?: string | null;
           is_published?: boolean;
@@ -76,6 +78,7 @@ export type Database = {
         Update: {
           created_at?: string;
           credential_url?: string | null;
+          description?: string | null;
           id?: string;
           image_url?: string | null;
           is_published?: boolean;

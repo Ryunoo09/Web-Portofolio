@@ -19,6 +19,7 @@ function toColumns(values: ParsedCertificate) {
   return {
     title: values.title.trim(),
     issuer: values.issuer.trim(),
+    description: emptyToNull(values.description),
     issued_at: values.issuedAt || null,
     credential_url: emptyToNull(values.credentialUrl),
     image_url: emptyToNull(values.imageUrl),

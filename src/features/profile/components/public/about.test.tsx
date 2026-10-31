@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import type { Experience } from "../../types";
 import { AboutProof } from "./AboutProof";
+import { CredentialRow } from "./CredentialRow";
 import { ExperienceTimeline } from "./ExperienceTimeline";
 import { Principles } from "./Principles";
 
@@ -73,6 +74,32 @@ describe("Principles", () => {
       "Ukur hasil",
       "Rawat setelah kirim",
     ]);
+  });
+});
+
+describe("CredentialRow", () => {
+  it("merender deskripsi sertifikat", () => {
+    render(
+      <ul>
+        <CredentialRow
+          title="AWS Certified Developer"
+          subtitle="Amazon Web Services"
+          description="Bukti kompetensi pengembangan aplikasi cloud."
+        />
+      </ul>,
+    );
+
+    expect(screen.getByText("Bukti kompetensi pengembangan aplikasi cloud.")).toBeInTheDocument();
+  });
+
+  it("tidak merender paragraf deskripsi saat kosong", () => {
+    const { container } = render(
+      <ul>
+        <CredentialRow title="AWS Certified Developer" subtitle="Amazon Web Services" />
+      </ul>,
+    );
+
+    expect(container.querySelectorAll("li p")).toHaveLength(1);
   });
 });
 

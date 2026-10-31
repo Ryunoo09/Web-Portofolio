@@ -143,6 +143,7 @@ export default async function AboutPage() {
                 key={certificate.id}
                 title={certificate.title}
                 subtitle={certificate.issuer}
+                description={certificate.description}
                 period={
                   certificate.issuedAt
                     ? String(new Date(certificate.issuedAt).getUTCFullYear())
