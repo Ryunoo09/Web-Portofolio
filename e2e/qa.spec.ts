@@ -21,13 +21,17 @@ test("skip link membawa fokus ke konten utama dengan keyboard", async ({ page })
 test("filter proyek dapat dipakai dengan keyboard", async ({ page }) => {
   await page.goto("/projects");
 
+  const count = page.getByText(/^\d+ proyek$/);
+  await expect(count).toBeVisible();
+  const total = await count.textContent();
+
   const backend = page.getByRole("button", { name: "Backend & API" });
   await backend.focus();
   await page.keyboard.press("Enter");
 
   await expect(page).toHaveURL(/domain=backend-system/);
   await expect(backend).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByText("4 proyek")).toBeVisible();
+  await expect(count).not.toHaveText(total!);
 });
 
 test("daftar isi desktop dapat dijangkau dan membuka section", async ({ page }) => {

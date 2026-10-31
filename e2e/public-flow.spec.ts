@@ -41,18 +41,24 @@ test("daftar proyek membuka detail proyek", async ({ page }) => {
 test("filter proyek menyinkronkan URL dan jumlah hasil", async ({ page }) => {
   await page.goto("/projects");
 
+  // Jumlah proyek berasal dari database yang bisa berubah; bandingkan dengan
+  // hitungan awal alih-alih menulis angka tetap.
+  const count = page.getByText(/^\d+ proyek$/);
+  await expect(count).toBeVisible();
+  const total = await count.textContent();
+
   await page.getByRole("button", { name: "Backend & API" }).click();
 
   await expect(page).toHaveURL(/domain=backend-system/);
-  await expect(page.getByText("4 proyek")).toBeVisible();
   await expect(page.getByRole("button", { name: "Backend & API" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
+  await expect(count).not.toHaveText(total!);
 
   await page.getByRole("button", { name: "Reset filter" }).click();
   await expect(page).toHaveURL(/\/projects$/);
-  await expect(page.getByText("9 proyek")).toBeVisible();
+  await expect(count).toHaveText(total!);
 });
 
 test("URL filter tidak diindeks mesin pencari", async ({ page }) => {
