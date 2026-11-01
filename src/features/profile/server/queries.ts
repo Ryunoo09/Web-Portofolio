@@ -7,6 +7,7 @@ import {
   toEducation,
   toExperience,
   toProfile,
+  type EducationWithImages,
   type ExperienceWithImages,
 } from "./mappers";
 
@@ -47,12 +48,12 @@ export function getEducation(): Promise<Education[]> {
     const supabase = createPublicClient();
     const { data, error } = await supabase
       .from("education")
-      .select("*")
+      .select("*, education_images(id, url, alt, sort_order)")
       .eq("is_published", true)
       .order("sort_order");
 
     if (error) throw new Error(`Gagal memuat pendidikan: ${error.message}`);
-    return data.map(toEducation);
+    return (data as unknown as EducationWithImages[]).map(toEducation);
   }, []);
 }
 

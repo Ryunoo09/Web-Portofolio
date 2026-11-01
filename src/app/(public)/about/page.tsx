@@ -123,6 +123,7 @@ export default async function AboutPage() {
                 meta={education.field}
                 period={formatPeriod(education.startedAt, education.endedAt)}
                 description={education.description}
+                images={education.images}
               />
             ))}
           </ul>
