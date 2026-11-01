@@ -1,5 +1,12 @@
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
+import { MediaFrame } from "@/shared/components";
+
+interface CredentialImage {
+  id: string;
+  url: string;
+  alt: string;
+}
 
 interface CredentialRowProps {
   title: string;
@@ -10,6 +17,7 @@ interface CredentialRowProps {
   linkLabel?: string;
   imageUrl?: string | null;
   meta?: string | null;
+  images?: CredentialImage[];
 }
 
 /**
@@ -25,6 +33,7 @@ export function CredentialRow({
   linkLabel = "Verifikasi sertifikat",
   imageUrl,
   meta,
+  images,
 }: CredentialRowProps) {
   return (
     <li className="grid gap-3 py-5 sm:grid-cols-[auto_1fr_auto] sm:items-start sm:gap-5">
@@ -66,6 +75,25 @@ export function CredentialRow({
         <p className="text-muted-foreground font-mono text-[11px] tracking-[0.14em] uppercase sm:text-right">
           {period}
         </p>
+      )}
+
+      {images && images.length > 0 && (
+        <ul
+          data-slot="credential-gallery"
+          className="mt-2 grid grid-cols-2 gap-2 sm:col-span-3 sm:grid-cols-3"
+        >
+          {images.map((image) => (
+            <li key={image.id}>
+              <MediaFrame
+                src={image.url}
+                alt={image.alt}
+                aspect="4/3"
+                sizes="(min-width: 640px) 220px, 45vw"
+                fallback={null}
+              />
+            </li>
+          ))}
+        </ul>
       )}
     </li>
   );

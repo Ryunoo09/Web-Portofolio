@@ -1,3 +1,10 @@
+export type EducationImage = {
+  id: string;
+  url: string;
+  alt: string;
+  sortOrder: number;
+};
+
 export type Education = {
   id: string;
   institution: string;
@@ -8,4 +15,5 @@ export type Education = {
   endedAt: string | null;
   sortOrder: number;
   isPublished: boolean;
+  images: EducationImage[];
 };

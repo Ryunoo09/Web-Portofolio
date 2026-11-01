@@ -72,7 +72,7 @@ export default async function AboutPage() {
         <SectionIntro
           as="h1"
           title="Tentang Rakha"
-          description="Software Engineer & Data Engineer yang membangun sistem sampai dipakai."
+          description="Software Engineer & Backend Engineer yang membangun sistem hingga digunakan di lapangan."
         />
       </header>
 
@@ -123,6 +123,7 @@ export default async function AboutPage() {
                 meta={education.field}
                 period={formatPeriod(education.startedAt, education.endedAt)}
                 description={education.description}
+                images={education.images}
               />
             ))}
           </ul>
@@ -174,6 +175,7 @@ export default async function AboutPage() {
                 meta={organization.memberCount ? `${organization.memberCount}+ anggota` : null}
                 period={formatPeriod(organization.startedAt, organization.endedAt)}
                 description={organization.description}
+                images={organization.images}
               />
             ))}
           </ul>

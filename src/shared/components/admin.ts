@@ -9,3 +9,4 @@ export { FieldError } from "./common/FieldError";
 export { FormField } from "./common/FormField";
 export type { FormFieldControlProps } from "./common/FormField";
 export { ImageUploadField } from "./common/ImageUploadField";
+export { GalleryManager, type GalleryImage } from "./common/GalleryManager";

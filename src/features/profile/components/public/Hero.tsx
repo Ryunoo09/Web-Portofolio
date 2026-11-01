@@ -37,7 +37,7 @@ export function Hero({ profile, latestProject }: HeroProps) {
             id="hero-title"
             className="text-foreground font-heading mt-5 max-w-[16ch] text-[2.5rem] leading-[1.05] font-semibold tracking-[-0.03em] text-balance sm:text-6xl md:text-[4rem] md:leading-[0.98]"
           >
-            Backend, data, dan otomasi yang dipakai di lapangan.
+            Software engineer yang membawa ide sampai dipakai ratusan pengguna.
           </h1>
 
           <p className="text-muted-foreground mt-6 max-w-[46ch] text-lg leading-relaxed md:text-[1.375rem]">

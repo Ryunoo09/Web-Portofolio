@@ -9,7 +9,7 @@ describe("Hero", () => {
     expect(
       screen.getByRole("heading", {
         level: 1,
-        name: "Backend, data, dan otomasi yang dipakai di lapangan.",
+        name: "Software engineer yang membawa ide sampai dipakai ratusan pengguna.",
       }),
     ).toBeInTheDocument();
     expect(screen.getByText("Rakha Yuda Wicaksono")).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe("Hero", () => {
     );
 
     const panel = screen.getByRole("complementary");
-    expect(panel).toHaveTextContent("Terbuka untuk Backend & Data Engineer");
+    expect(panel).toHaveTextContent("Terbuka untuk Software Engineer & Backend Engineer");
     expect(panel).toHaveTextContent("Brebes, Jawa Tengah, Indonesia · WIB");
     expect(panel).toHaveTextContent("Python · FastAPI · PostgreSQL · Laravel · Next.js");
     expect(screen.getByRole("link", { name: "Validasi FTTH" })).toHaveAttribute(

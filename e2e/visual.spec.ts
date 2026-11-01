@@ -71,11 +71,15 @@ for (const theme of ["light", "dark"] as const) {
         );
       });
 
-      // Foto profil & dokumentasi pengalaman tidak ikut disimpan di baseline publik;
-      // layout tetap diuji.
+      // Foto profil, dokumentasi pengalaman, dan galeri kredensial tidak ikut
+      // disimpan di baseline publik; layout tetap diuji.
       const masks =
         route.name === "tentang"
-          ? [page.locator("figure img"), page.locator('[data-slot="experience-gallery"] img')]
+          ? [
+              page.locator("figure img"),
+              page.locator('[data-slot="experience-gallery"] img'),
+              page.locator('[data-slot="credential-gallery"] img'),
+            ]
           : [];
 
       for (const viewport of viewports) {

@@ -30,6 +30,13 @@ export type Experience = {
   images: ExperienceImage[];
 };
 
+export type EducationImage = {
+  id: string;
+  url: string;
+  alt: string;
+  sortOrder: number;
+};
+
 export type Education = {
   id: string;
   institution: string;
@@ -38,6 +45,7 @@ export type Education = {
   description: string | null;
   startedAt: string | null;
   endedAt: string | null;
+  images: EducationImage[];
 };
 
 export type Certificate = {

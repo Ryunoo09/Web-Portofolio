@@ -8,5 +8,9 @@ export {
   updateOrganization,
   deleteOrganization,
   toggleOrganizationPublish,
+  uploadOrganizationImage,
+  createOrganizationImage,
+  updateOrganizationImage,
+  deleteOrganizationImage,
 } from "./server/actions";
-export type { Organization } from "./types";
+export type { Organization, OrganizationImage } from "./types";

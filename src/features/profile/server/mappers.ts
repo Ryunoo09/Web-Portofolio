@@ -1,13 +1,26 @@
 import type { Database } from "@/shared/types/database";
-import type { Certificate, Education, Experience, ExperienceImage, Profile } from "../types";
+import type {
+  Certificate,
+  Education,
+  EducationImage,
+  Experience,
+  ExperienceImage,
+  Profile,
+} from "../types";
 
 type Row<T extends keyof Database["public"]["Tables"]> = Database["public"]["Tables"][T]["Row"];
 
 type ExperienceImageFields = Pick<Row<"experience_images">, "id" | "url" | "alt" | "sort_order">;
+type EducationImageFields = Pick<Row<"education_images">, "id" | "url" | "alt" | "sort_order">;
 
 /** Baris pengalaman beserta dokumentasi hasil embed `experience_images(...)`. */
 export type ExperienceWithImages = Row<"experiences"> & {
   experience_images: ExperienceImageFields[] | null;
+};
+
+/** Baris pendidikan beserta foto hasil embed `education_images(...)`. */
+export type EducationWithImages = Row<"education"> & {
+  education_images: EducationImageFields[] | null;
 };
 
 export function toExperienceImage(row: ExperienceImageFields): ExperienceImage {
@@ -51,7 +64,7 @@ export function toExperience(row: ExperienceWithImages): Experience {
   };
 }
 
-export function toEducation(row: Row<"education">): Education {
+export function toEducation(row: EducationWithImages): Education {
   return {
     id: row.id,
     institution: row.institution,
@@ -60,6 +73,18 @@ export function toEducation(row: Row<"education">): Education {
     description: row.description,
     startedAt: row.started_at,
     endedAt: row.ended_at,
+    images: (row.education_images ?? [])
+      .map(toEducationImage)
+      .sort((a, b) => a.sortOrder - b.sortOrder),
+  };
+}
+
+export function toEducationImage(row: EducationImageFields): EducationImage {
+  return {
+    id: row.id,
+    url: row.url,
+    alt: row.alt,
+    sortOrder: row.sort_order,
   };
 }
 
