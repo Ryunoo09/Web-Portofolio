@@ -7,6 +7,7 @@ export { EmptyState } from "./common/EmptyState";
 export { ErrorSummary } from "./common/ErrorSummary";
 export type { ErrorSummaryEntry } from "./common/ErrorSummary";
 export { MediaFrame } from "./common/MediaFrame";
+export { ImageLightbox } from "./common/ImageLightbox";
 export { ProjectCoverFallback } from "./common/ProjectCoverFallback";
 export { Breadcrumbs } from "./common/Breadcrumbs";
 export { JsonLd } from "./common/JsonLd";

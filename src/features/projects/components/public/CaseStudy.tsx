@@ -1,7 +1,13 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { GithubIcon, MediaFrame, ProjectCoverFallback, StatusBadge } from "@/shared/components";
+import {
+  GithubIcon,
+  ImageLightbox,
+  MediaFrame,
+  ProjectCoverFallback,
+  StatusBadge,
+} from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
 import { sanitizeHtml } from "@/shared/lib/sanitize";
 import { getProjectDomainLabel } from "@/shared/lib/taxonomy";
@@ -257,18 +263,24 @@ export function CaseStudy({ project, nextProject }: CaseStudyProps) {
               <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {project.images.map((image, index) => (
                   <li key={image.id}>
-                    <MediaFrame
+                    <ImageLightbox
                       src={image.url}
                       alt={image.alt || `${project.title} — gambar ${index + 1}`}
-                      aspect="16/10"
-                      sizes="(min-width: 1024px) 44vw, 100vw"
-                      fallback={
-                        <span className="text-muted-foreground font-mono text-[11px]">
-                          {getProjectDomainLabel(project.domain) ?? "Proyek"}
-                        </span>
-                      }
-                      caption={image.alt || undefined}
-                    />
+                    >
+                      <MediaFrame
+                        src={image.url}
+                        alt={image.alt || `${project.title} — gambar ${index + 1}`}
+                        aspect="16/10"
+                        fit="contain"
+                        sizes="(min-width: 1024px) 44vw, 100vw"
+                        fallback={
+                          <span className="text-muted-foreground font-mono text-[11px]">
+                            {getProjectDomainLabel(project.domain) ?? "Proyek"}
+                          </span>
+                        }
+                        caption={image.alt || undefined}
+                      />
+                    </ImageLightbox>
                   </li>
                 ))}
               </ul>
