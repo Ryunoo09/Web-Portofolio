@@ -1061,6 +1061,42 @@ foto asli pendidikan/organisasi lewat `/admin/education/[id]/edit` dan
 
 ---
 
+### Sesi 2026-11-01 (lanjutan) — Timeout Supabase, akar 502 di `/admin`
+
+**Permintaan:** hilangkan 502 Cloudflare yang hanya muncul di `/admin` saat sesi aktif.
+
+**Diagnosis:** `/` prerender (`x-nextjs-cache: HIT`, 0 query); `/admin` dengan sesi menjalankan
+`getUser()` + ~10 query **tanpa timeout**; `/api/health` statis `{"status":"ok"}` sehingga container
+selalu `healthy`. NPM memutus upstream pada `proxy_read_timeout` 60 dtk → CF 502 "Host Error".
+VPS 2 GB + 4 GB swap → OOM bukan penyebab. Incognito normal karena tidak ada panggilan jaringan.
+
+**Perubahan:**
+
+| Berkas                                        | Isi                                                                                                                                    |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/shared/lib/supabase/timeout.ts` (baru)   | `createTimedFetch` + `timeoutFor`; query 8 dtk, proxy 5 dtk, health 2,5 dtk, `/storage/v1/*` 60 dtk                                    |
+| `supabase/server.ts`, `public.ts`, `admin.ts` | `global: { fetch: supabaseFetch }`                                                                                                     |
+| `src/proxy.ts`                                | `global: { fetch: proxyAuthFetch }`; `getUser()` gagal/timeout → dianggap belum login → redirect `/admin/login` (cookie tidak dihapus) |
+| `src/app/api/health/route.ts`                 | ping `profile` (RLS publik) + `abortSignal` 2,5 dtk → `503 {status:"degraded"}` / `200 {status:"ok",db:"ok",latencyMs}`                |
+| `DEPLOY.md` §2                                | `proxy_read_timeout 75s` (+ connect 10s, send 75s) sebagai jaring pengaman                                                             |
+
+**Keputusan:** health membalas `503` saat DB mati (bukan `200 degraded`) → deploy ikut gagal bila
+Supabase down; itu disengaja. Klien browser tidak diberi timeout (bukan jalur 502).
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama `.opencode/plugins/graphify.js`) ·
+`pnpm typecheck` bersih · `pnpm test` **50 file / 218 tes** · `pnpm build` sukses (`/api/health` `ƒ`) ·
+`pnpm test:e2e smoke+auth-guard` **37 lulus** · `admin-flow` **10 lulus** (unggah gambar tetap
+berhasil → pengecualian Storage terbukti) · lokal `/api/health` `{"status":"ok","db":"ok","latencyMs":332}` ·
+`/admin` tanpa sesi `307` + `no-store` + `noindex`.
+
+**Utang:** `/api/health` memakai koneksi anon (RLS `profile_public_read`) — bila tabel itu kelak
+dibatasi, health akan 503 walau DB sehat. Dashboard admin masih ~10 query terpisah.
+
+**Titik mulai berikutnya:** tinjau `fix/admin-timeout`, set `proxy_read_timeout 75s` di NPM,
+deploy, lalu pastikan `/api/health` 200 dari domain asli dan log NPM bersih dari `upstream timed out`.
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
 > "Lanjutkan **rilis Signal Room** setelah M8: (1) tinjau lalu merge
