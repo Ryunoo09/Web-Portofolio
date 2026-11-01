@@ -238,6 +238,9 @@ pnpm test:e2e    # Playwright: alur publik + axe; blok admin di-skip tanpa akun 
 - **Reorder galeri/skill (A-12)** masih lewat input angka `sort_order`; ada komentar
   `shortcut:` di `features/projects/server/actions.ts`. **Galeri dokumentasi pengalaman** juga
   belum punya drag & drop urutan (hanya `sort_order` otomatis) dan belum punya lightbox.
+- **Galeri foto pendidikan & organisasi** (2026-11-01) memakai `shared/components/common/GalleryManager`.
+  Belum ada lightbox dan drag & drop urutan; `ExperienceGalleryManager` **masih duplikat** dari
+  komponen generik itu (kandidat refactor terpisah, tesnya perlu ikut diubah).
 - **Tiptap (A-10)** dilewati — deskripsi proyek tetap `<Textarea>` HTML + `sanitizeHtml`.
 - **Kolom `icon` keahlian** belum dirender di UI mana pun, jadi belum diekspos di form
   admin (update tidak menyentuh kolom itu, nilai lama tetap utuh). Lihat
@@ -1007,6 +1010,54 @@ dialog hapus 45 detik; (4) tes visual memakai `workers: 1` agar tidak berebut da
 **Titik mulai berikutnya:** tinjau lalu merge `fix/admin-auth-hardening` ke `redesign/signal-room`;
 verifikasi header produksi (`cache-control`, `x-robots-tag`, `cf-cache-status`) setelah deploy;
 rate-limit login masih ditunda; pertimbangkan e2e di CI hanya setelah ada DB test deterministik.
+
+---
+
+### Sesi 2026-11-01 (lanjutan) — Galeri foto pendidikan & organisasi
+
+**Permintaan:** bagian Pendidikan dan Organisasi di `/about` bisa menampilkan foto, bentuk **galeri banyak
+foto**, tampil mirip bagian Pengalaman. Branch `feat/galeri-pendidikan-organisasi` (dibuat dari
+`fix/admin-auth-hardening`); `main` tidak disentuh.
+
+**Migrasi (diterapkan ke project linked):** `0009_education_organization_images.sql` — tabel
+`education_images` & `organization_images` (FK cascade, index `(induk_id, sort_order)`, RLS: publik baca
+hanya bila induk terbit, admin all). `pnpm db:types` dijalankan; diff `database.ts` hanya +70 baris
+(kedua tabel). Catatan: CLI 2.119 mengeluarkan tipe tanpa titik koma, jadi **jalankan `prettier --write`
+setelah `db:types`** agar diff tidak melebar 1.200 baris.
+
+| Perubahan  | Isi                                                                                                                                                                                                                            |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Shared     | `shared/components/common/GalleryManager.tsx` — satu komponen generik (unggah banyak, drag & drop, alt simpan saat blur, `ConfirmDeleteDialog`), dipakai lewat props action. Diekspor dari barrel `shared/components/admin.ts` |
+| Pendidikan | `EducationImage`/`Education.images`, mapper + `EDUCATION_SELECT` embed, 4 action gambar, `deleteEducation` membersihkan Storage, halaman ubah memasang `GalleryManager`                                                        |
+| Organisasi | Sama seperti pendidikan, tanpa duplikasi mapper                                                                                                                                                                                |
+| Publik     | `CredentialRow` dapat prop opsional `images` → grid `2`/`3` kolom `MediaFrame` `4/3`, `data-slot="credential-gallery"`; hanya dirender bila ada foto                                                                           |
+| Admin      | Halaman `new` memberi hint "simpan dulu, lalu unggah foto di halaman ubah"                                                                                                                                                     |
+
+**Keputusan/penyimpangan:** (1) `GalleryManager` generik dipakai langsung dari halaman server (Server
+Action dikirim sebagai prop) supaya pendidikan & organisasi tidak menyalin 200 baris;
+`ExperienceGalleryManager` **tidak** direfaktor (kode berjalan, di luar scope) sehingga masih duplikat;
+(2) foto pertama langsung tersimpan dengan alt kosong lalu alt diisi di kartu — sama seperti pengalaman;
+(3) `CredentialRow` tidak mengubah jalur thumbnail sertifikat (`imageUrl`).
+
+**Baseline visual:** 22 snapshot Windows (`beranda-*`, `proyek-*`, `tentang-*`) di-regenerasi karena
+**konten DB/salinan berubah** sejak baseline lama (H1 hero, bio, urutan kartu proyek) — bukan karena
+layout galeri. Diff diperiksa manual sebelum regenerasi. Galeri baru dimask lewat
+`[data-slot="credential-gallery"] img`.
+
+**Perbaikan di luar fitur:** `Hero.test.tsx` (2 asersi) diselaraskan dengan salinan hero terbaru; tes itu
+sudah gagal di baseline sejak commit `cb471d4` (`feat(branding)`).
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama di `.opencode/plugins/graphify.js`) ·
+`pnpm typecheck` bersih · `pnpm test` **48 file / 214 tes** lulus · `pnpm build` sukses ·
+`pnpm test:e2e` **91 lulus** (termasuk unggah foto pendidikan & organisasi + axe) · visual stabil 2 run.
+
+**Utang baru:** galeri pendidikan/organisasi belum punya lightbox dan drag & drop urutan;
+`ExperienceGalleryManager` masih duplikat dari `GalleryManager`; tes integrasi Storage belum ada
+(unggah diuji di E2E memakai PNG 1×1).
+
+**Titik mulai berikutnya:** review branch lalu merge ke branch kerja utama setelah persetujuan; unggah
+foto asli pendidikan/organisasi lewat `/admin/education/[id]/edit` dan
+`/admin/organizations/[id]/edit`.
 
 ---
 
