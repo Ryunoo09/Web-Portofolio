@@ -54,7 +54,7 @@ export default async function ProjectsPage() {
       <SectionIntro
         as="h1"
         title="Karya & Proyek"
-        description="Semua sistem yang saya bangun — dari computer vision dan data hingga backend yang dipakai tim sales."
+        description="Sistem dan aplikasi yang saya bangun, dari backend, pengolahan data, dan computer vision hingga otomasi dan IoT, untuk kebutuhan nyata di lapangan."
       />
 
       {/* `useSearchParams` wajib punya Suspense di server page. */}

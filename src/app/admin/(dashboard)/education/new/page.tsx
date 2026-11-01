@@ -9,7 +9,7 @@ export default async function AdminEducationNewPage() {
     <main className="space-y-6">
       <AdminPageHeader
         title="Pendidikan Baru"
-        description="Riwayat berstatus terbit langsung tampil di halaman /about."
+        description="Riwayat berstatus terbit langsung tampil di halaman /about. Simpan dulu, lalu unggah foto di halaman ubah."
       />
       <EducationForm />
     </main>

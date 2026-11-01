@@ -2,7 +2,10 @@ import { createPublicClient } from "@/shared/lib/supabase/public";
 import { createServerSupabase } from "@/shared/lib/supabase/server";
 import { withOfflineFallback } from "@/shared/lib/query";
 import type { Organization } from "../types";
-import { toOrganization } from "./mappers";
+import { toOrganization, type OrganizationWithRelations } from "./mappers";
+
+/** Kolom + embed galeri foto untuk semua query organisasi. */
+const ORGANIZATION_SELECT = "*, organization_images(id, url, alt, sort_order)";
 
 /** Organisasi yang boleh tampil di halaman publik. */
 export function getPublishedOrganizations(): Promise<Organization[]> {
@@ -10,22 +13,25 @@ export function getPublishedOrganizations(): Promise<Organization[]> {
     const supabase = createPublicClient();
     const { data, error } = await supabase
       .from("organizations")
-      .select("*")
+      .select(ORGANIZATION_SELECT)
       .eq("is_published", true)
       .order("sort_order");
 
     if (error) throw new Error(`Gagal memuat organisasi: ${error.message}`);
-    return data.map(toOrganization);
+    return (data as unknown as OrganizationWithRelations[]).map(toOrganization);
   }, []);
 }
 
 /** Semua organisasi (termasuk draf) untuk admin. */
 export async function getAllOrganizations(): Promise<Organization[]> {
   const supabase = await createServerSupabase();
-  const { data, error } = await supabase.from("organizations").select("*").order("sort_order");
+  const { data, error } = await supabase
+    .from("organizations")
+    .select(ORGANIZATION_SELECT)
+    .order("sort_order");
 
   if (error) throw new Error(`Gagal memuat organisasi: ${error.message}`);
-  return data.map(toOrganization);
+  return (data as unknown as OrganizationWithRelations[]).map(toOrganization);
 }
 
 /** Hitungan untuk dashboard admin (butuh sesi admin, termasuk data draf). */

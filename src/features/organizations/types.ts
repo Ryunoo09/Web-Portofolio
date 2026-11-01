@@ -1,3 +1,10 @@
+export type OrganizationImage = {
+  id: string;
+  url: string;
+  alt: string;
+  sortOrder: number;
+};
+
 export type Organization = {
   id: string;
   name: string;
@@ -8,4 +15,5 @@ export type Organization = {
   memberCount: number | null;
   sortOrder: number;
   isPublished: boolean;
+  images: OrganizationImage[];
 };

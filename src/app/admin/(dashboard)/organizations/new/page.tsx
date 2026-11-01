@@ -9,7 +9,7 @@ export default async function AdminOrganizationsNewPage() {
     <main className="space-y-6">
       <AdminPageHeader
         title="Organisasi Baru"
-        description="Organisasi berstatus terbit langsung tampil di halaman /about."
+        description="Organisasi berstatus terbit langsung tampil di halaman /about. Simpan dulu, lalu unggah foto di halaman ubah."
       />
       <OrganizationForm />
     </main>

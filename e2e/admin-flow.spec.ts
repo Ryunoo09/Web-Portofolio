@@ -118,18 +118,38 @@ test.describe("alur admin", () => {
     await confirmDelete(page);
   });
 
-  test("tambah pendidikan lalu muncul di /about, lalu dibersihkan lagi", async ({ page }) => {
+  test("tambah pendidikan + foto lalu muncul di /about, lalu dibersihkan lagi", async ({
+    page,
+  }) => {
     await login(page);
 
     const institution = `E2E Kampus ${Date.now()}`;
+    const alt = `Foto ${institution}`;
     await page.goto("/admin/education/new");
     await page.getByLabel("Institusi").fill(institution);
     await page.getByLabel("Jenjang / Gelar").fill("S1 Teknik Informatika");
     await page.getByRole("button", { name: "Buat Pendidikan" }).click();
 
     await expect(page).toHaveURL(/\/admin\/education$/);
+
+    // Foto hanya bisa diunggah setelah entri tersimpan (halaman ubah).
+    await page
+      .getByRole("row", { name: new RegExp(institution) })
+      .getByRole("link", { name: /Ubah pendidikan/ })
+      .click();
+    await page.locator('input[type="file"]').setInputFiles({
+      name: "kampus.png",
+      mimeType: "image/png",
+      buffer: TINY_PNG,
+    });
+    await expect(page.getByLabel("Teks alternatif").first()).toBeVisible({ timeout: 45_000 });
+    await page.getByLabel("Teks alternatif").first().fill(alt);
+    await page.getByLabel("Teks alternatif").first().blur();
+    await expect(page.getByText("Teks alternatif disimpan.")).toBeVisible();
+
     await page.goto("/about");
     await expect(page.getByText(institution)).toBeVisible();
+    await expect(page.getByAltText(alt)).toBeVisible();
 
     // Bersihkan jejak uji agar tidak menumpuk di /about.
     await page.goto("/admin/education");
@@ -138,6 +158,9 @@ test.describe("alur admin", () => {
       .getByRole("button", { name: /Hapus pendidikan/ })
       .click();
     await confirmDelete(page);
+
+    await page.goto("/about");
+    await expect(page.getByText(institution)).toHaveCount(0);
   });
 
   test("pesan kontak: kirim lewat /contact lalu tandai dibaca dan hapus", async ({ page }) => {
@@ -171,18 +194,37 @@ test.describe("alur admin", () => {
     expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
   });
 
-  test("organisasi: tambah lalu muncul di /about, lalu dibersihkan lagi", async ({ page }) => {
+  test("organisasi: tambah + foto lalu muncul di /about, lalu dibersihkan lagi", async ({
+    page,
+  }) => {
     await login(page);
 
     const name = `E2E Organisasi ${Date.now()}`;
+    const alt = `Foto ${name}`;
     await page.goto("/admin/organizations/new");
     await page.getByLabel("Nama Organisasi").fill(name);
     await page.getByLabel("Peran").fill("Anggota Aktif");
     await page.getByRole("button", { name: "Buat Organisasi" }).click();
 
     await expect(page).toHaveURL(/\/admin\/organizations$/);
+
+    await page
+      .getByRole("row", { name: new RegExp(name) })
+      .getByRole("link", { name: /Ubah organisasi/ })
+      .click();
+    await page.locator('input[type="file"]').setInputFiles({
+      name: "organisasi.png",
+      mimeType: "image/png",
+      buffer: TINY_PNG,
+    });
+    await expect(page.getByLabel("Teks alternatif").first()).toBeVisible({ timeout: 45_000 });
+    await page.getByLabel("Teks alternatif").first().fill(alt);
+    await page.getByLabel("Teks alternatif").first().blur();
+    await expect(page.getByText("Teks alternatif disimpan.")).toBeVisible();
+
     await page.goto("/about");
     await expect(page.getByText(name)).toBeVisible();
+    await expect(page.getByAltText(alt)).toBeVisible();
 
     await page.goto("/admin/organizations");
     await page
@@ -190,6 +232,9 @@ test.describe("alur admin", () => {
       .getByRole("button", { name: /Hapus organisasi/ })
       .click();
     await confirmDelete(page);
+
+    await page.goto("/about");
+    await expect(page.getByText(name)).toHaveCount(0);
   });
 
   test("bahasa: tambah lalu muncul di /about, lalu dibersihkan lagi", async ({ page }) => {

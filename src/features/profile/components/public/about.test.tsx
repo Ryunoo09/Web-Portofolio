@@ -102,6 +102,34 @@ describe("CredentialRow", () => {
 
     expect(container.querySelectorAll("li p")).toHaveLength(1);
   });
+
+  it("merender galeri foto dengan teks alternatif", () => {
+    render(
+      <ul>
+        <CredentialRow
+          title="S1 Teknik Informatika"
+          subtitle="Politeknik Negeri Semarang"
+          images={[
+            { id: "i1", url: "https://cdn.test/1.png", alt: "Gedung kampus" },
+            { id: "i2", url: "https://cdn.test/2.png", alt: "Wisuda" },
+          ]}
+        />
+      </ul>,
+    );
+
+    expect(screen.getByAltText("Gedung kampus")).toBeInTheDocument();
+    expect(screen.getByAltText("Wisuda")).toBeInTheDocument();
+  });
+
+  it("tidak merender galeri bila tidak ada foto", () => {
+    const { container } = render(
+      <ul>
+        <CredentialRow title="S1 Teknik Informatika" subtitle="Politeknik Negeri Semarang" />
+      </ul>,
+    );
+
+    expect(container.querySelector('[data-slot="credential-gallery"]')).toBeNull();
+  });
 });
 
 describe("ExperienceTimeline", () => {

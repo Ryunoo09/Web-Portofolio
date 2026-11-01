@@ -4,5 +4,9 @@ export {
   updateEducation,
   deleteEducation,
   toggleEducationPublish,
+  uploadEducationImage,
+  createEducationImage,
+  updateEducationImage,
+  deleteEducationImage,
 } from "./server/actions";
-export type { Education } from "./types";
+export type { Education, EducationImage } from "./types";

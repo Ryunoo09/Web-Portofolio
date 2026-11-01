@@ -162,6 +162,41 @@ export type Database = {
         };
         Relationships: [];
       };
+      education_images: {
+        Row: {
+          alt: string;
+          created_at: string;
+          education_id: string;
+          id: string;
+          sort_order: number;
+          url: string;
+        };
+        Insert: {
+          alt?: string;
+          created_at?: string;
+          education_id: string;
+          id?: string;
+          sort_order?: number;
+          url: string;
+        };
+        Update: {
+          alt?: string;
+          created_at?: string;
+          education_id?: string;
+          id?: string;
+          sort_order?: number;
+          url?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "education_images_education_id_fkey";
+            columns: ["education_id"];
+            isOneToOne: false;
+            referencedRelation: "education";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       experience_images: {
         Row: {
           alt: string;
@@ -271,6 +306,41 @@ export type Database = {
           updated_at?: string;
         };
         Relationships: [];
+      };
+      organization_images: {
+        Row: {
+          alt: string;
+          created_at: string;
+          id: string;
+          organization_id: string;
+          sort_order: number;
+          url: string;
+        };
+        Insert: {
+          alt?: string;
+          created_at?: string;
+          id?: string;
+          organization_id: string;
+          sort_order?: number;
+          url: string;
+        };
+        Update: {
+          alt?: string;
+          created_at?: string;
+          id?: string;
+          organization_id?: string;
+          sort_order?: number;
+          url?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "organization_images_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       organizations: {
         Row: {
