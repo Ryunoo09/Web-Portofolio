@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/shared/types/database";
+import { supabaseFetch } from "./timeout";
 
 /**
  * Klien TANPA cookies untuk query publik.
@@ -9,6 +10,6 @@ export function createPublicClient() {
   return createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { auth: { persistSession: false } },
+    { auth: { persistSession: false }, global: { fetch: supabaseFetch } },
   );
 }
