@@ -12,6 +12,8 @@ interface MediaFrameProps {
   fallback: React.ReactNode;
   /** `false` untuk kartu: gambar menempel tanpa border/radius tambahan. */
   framed?: boolean;
+  /** `contain` menampilkan seluruh foto di rasio tetap (tidak dipotong). */
+  fit?: "cover" | "contain";
   className?: string;
 }
 
@@ -35,6 +37,7 @@ export function MediaFrame({
   caption,
   fallback,
   framed = true,
+  fit = "cover",
   className,
 }: MediaFrameProps) {
   return (
@@ -53,7 +56,7 @@ export function MediaFrame({
             fill
             sizes={sizes}
             priority={priority}
-            className="object-cover"
+            className={fit === "contain" ? "object-contain" : "object-cover"}
           />
         ) : (
           <div className="absolute inset-0">{fallback}</div>

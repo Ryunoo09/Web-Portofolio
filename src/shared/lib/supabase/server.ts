@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import type { Database } from "@/shared/types/database";
 import { AUTH_COOKIE_OPTIONS, withSessionMaxAge } from "./cookie-options";
+import { supabaseFetch } from "./timeout";
 
 /** Klien DENGAN cookies (sesi admin). Pakai di /admin dan Server Actions. */
 export async function createServerSupabase() {
@@ -23,6 +24,7 @@ export async function createServerSupabase() {
           }
         },
       },
+      global: { fetch: supabaseFetch },
     },
   );
 }

@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { ROUTES } from "@/shared/constants/routes";
 import { AUTH_COOKIE_OPTIONS, withSessionMaxAge } from "@/shared/lib/supabase/cookie-options";
+import { proxyAuthFetch } from "@/shared/lib/supabase/timeout";
 
 /**
  * Semua response admin — termasuk redirect — tidak boleh masuk cache browser
@@ -54,12 +55,18 @@ export async function proxy(request: NextRequest) {
           });
         },
       },
+      // Batas waktu 5 dtk: request admin tidak boleh menggantung sampai proxy
+      // memutus upstream (502 Cloudflare).
+      global: { fetch: proxyAuthFetch },
     },
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Gagal/timeout membaca sesi diperlakukan sebagai belum login: pengguna
+  // diarahkan ke form login, bukan menunggu halaman 502 dari Cloudflare.
+  const user = await supabase.auth.getUser().then(
+    ({ data }) => data.user,
+    () => null,
+  );
 
   if (!user) {
     const url = request.nextUrl.clone();
