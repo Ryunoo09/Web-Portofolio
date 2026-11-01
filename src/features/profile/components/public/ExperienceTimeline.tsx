@@ -1,4 +1,4 @@
-import { BulletPoints, MediaFrame } from "@/shared/components";
+import { BulletPoints, ImageLightbox, MediaFrame } from "@/shared/components";
 import { formatMonthPeriod } from "@/shared/lib/utils";
 import type { Experience } from "../../types";
 
@@ -35,13 +35,16 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
               >
                 {experience.images.map((image) => (
                   <li key={image.id}>
-                    <MediaFrame
-                      src={image.url}
-                      alt={image.alt}
-                      aspect="4/3"
-                      sizes="(min-width: 640px) 220px, 45vw"
-                      fallback={null}
-                    />
+                    <ImageLightbox src={image.url} alt={image.alt}>
+                      <MediaFrame
+                        src={image.url}
+                        alt={image.alt}
+                        aspect="4/3"
+                        fit="contain"
+                        sizes="(min-width: 640px) 220px, 45vw"
+                        fallback={null}
+                      />
+                    </ImageLightbox>
                   </li>
                 ))}
               </ul>

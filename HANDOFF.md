@@ -1061,6 +1061,32 @@ foto asli pendidikan/organisasi lewat `/admin/education/[id]/edit` dan
 
 ---
 
+### Sesi 2026-11-02 — Lightbox galeri + foto utuh (branch `feat/galeri-lightbox`)
+
+**Permintaan:** foto galeri di studi kasus terlihat terpotong/ter-zoom; minta foto bisa ditekan lalu
+muncul pop up ukuran besar.
+
+**Sebab crop:** `MediaFrame` memaksa rasio tetap (`16/10` galeri proyek, `4/3` pengalaman &
+pendidikan) lalu `object-cover` — bukan salah unggah.
+
+**Perubahan:** (1) prop opsional `fit` di `MediaFrame` (`cover` default, `contain` untuk tiga galeri);
+(2) komponen client `ImageLightbox` membungkus thumbnail dengan `Dialog` (Radix) yang sudah ada,
+foto penuh `object-contain` setinggi `80vh`, `DialogTitle` `sr-only` memakai `alt`; (3) tes
+`ImageLightbox.test.tsx` (buka dialog, foto tampil).
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama) · `pnpm typecheck` bersih · `pnpm test` **215**
+tes (49 file) · `pnpm build` sukses · `pnpm test:e2e public-flow` 10/10 lulus.
+
+**Catatan:** `visual.spec.ts` gagal 4 snapshot (`proyek-1440`, `studi-kasus-1440`, terang & gelap)
+karena **isi gambar cover di DB berubah** sejak baseline `main` — bukan akibat perubahan ini; diff
+sudah diperiksa (piksel hanya di area cover). Baseline terbaru ada di branch
+`feat/galeri-pendidikan-organisasi`, jadi jangan regenerasi di sini supaya tidak bentrok.
+
+**Utang baru:** tidak ada; utang lama "galeri pendidikan/organisasi belum punya lightbox" **selesai**
+(sekarang ketiga galeri pakai `ImageLightbox`).
+
+---
+
 ## ▶️ CARA MEMULAI SESI BERIKUTNYA
 
 > "Lanjutkan **rilis Signal Room** setelah M8: (1) tinjau lalu merge
