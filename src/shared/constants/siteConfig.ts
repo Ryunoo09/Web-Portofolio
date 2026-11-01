@@ -15,10 +15,10 @@ export const siteConfig = {
   locale: "id_ID",
   role: "Software Engineer & Data Engineer",
   valueProp:
-    "Saya mengubah proses manual menjadi backend, pipeline data, dan sistem computer vision yang bisa diukur. Fresh graduate Teknologi Rekayasa Komputer, Politeknik Negeri Semarang.",
+    "Saya mengubah proses manual menjadi sistem terintegrasi, pipeline data, dan sistem computer vision yang bisa diukur. Fresh graduate Teknologi Rekayasa Komputer, Politeknik Negeri Semarang.",
   location: "Brebes, Jawa Tengah, Indonesia",
   timezone: "WIB",
-  availability: "Terbuka untuk Backend & Data Engineer",
+  availability: "Terbuka untuk Software Engineer & Backend Engineer",
   /** Teknologi yang ditonjolkan di panel status hero. */
   focus: ["Python", "FastAPI", "PostgreSQL", "Laravel", "Next.js"],
   /**
