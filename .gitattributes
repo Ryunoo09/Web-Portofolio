@@ -1,0 +1,7 @@
+# graph.html adalah output generator graphify (~1,6 MB inline data + script).
+# Tetap di-commit untuk preview lokal, tapi jangan dihitung sebagai bahasa
+# di statistik GitHub linguist.
+graphify-out/graph.html linguist-generated=true linguist-detectable=false
+
+# Snapshot visual Playwright: binary, jangan di-diff/merge sebagai teks.
+e2e/visual.spec.ts-snapshots/*.png binary
