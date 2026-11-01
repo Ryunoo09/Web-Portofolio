@@ -82,7 +82,15 @@ keduanya berada di network `npm-net`.
 add_header X-Content-Type-Options "nosniff" always;
 add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 proxy_set_header X-Forwarded-Proto $scheme;
+proxy_connect_timeout 10s;
+proxy_read_timeout 75s;
+proxy_send_timeout 75s;
 ```
+
+> **Kenapa 75 dtk.** Aplikasi sudah membatasi sendiri panggilan Supabase (8 dtk query,
+> 5 dtk sesi di proxy, 2,5 dtk health), jadi request yang macet gagal cepat di dalam app.
+> Nilai 75 dtk hanya jaring pengaman supaya NPM tidak memutus lebih dulu — kalau nilai ini
+> yang terpakai, berarti ada jalur yang belum ber-timeout.
 
 > Bila "Request a new SSL Certificate" gagal, biasanya Cloudflare masih mem-proxy (awan oranye)
 > sementara SSL/TLS mode belum **Full (strict)**. Set dulu modenya di Cloudflare, lalu ulangi.
