@@ -72,7 +72,7 @@ export default async function AboutPage() {
         <SectionIntro
           as="h1"
           title="Tentang Rakha"
-          description="Software Engineer & Data Engineer yang membangun sistem sampai dipakai."
+          description="Software Engineer & Backend Engineer yang membangun sistem hingga digunakan di lapangan."
         />
       </header>
 
