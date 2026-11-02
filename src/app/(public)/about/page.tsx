@@ -4,6 +4,7 @@ import { Button } from "@/shared/components/ui/button";
 import { JsonLd, PageContainer, SectionIntro } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
 import { aboutPageNode } from "@/shared/lib/seo/structured-data";
+import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { formatPeriod } from "@/shared/lib/utils";
 import {
@@ -42,7 +43,6 @@ export default async function AboutPage() {
       getPublishedProjects(),
     ]);
 
-  const resumeUrl = profile?.resumeUrl ?? "/resume.pdf";
   const name = profile?.fullName ?? siteConfig.name;
   const role = profile?.headline ?? siteConfig.role;
 
@@ -202,7 +202,7 @@ export default async function AboutPage() {
           </Link>
         </Button>
         <Button asChild size="lg" variant="secondary">
-          <a href={resumeUrl} download className="flex items-center gap-2">
+          <a href={CV_DOWNLOAD_PATH} download className="flex items-center gap-2">
             <span>Unduh CV</span>
             <ArrowUpRight className="size-4" aria-hidden="true" />
           </a>

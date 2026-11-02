@@ -14,6 +14,8 @@ const profileRow: ProfileRow = {
   email: "halo@example.com",
   location: "Jakarta",
   social_links: [{ platform: "github", url: "https://github.com/ryunoo09" }],
+  whatsapp_number: "6281234567890",
+  whatsapp_message: "Halo Rakha",
   seo_title: "Rakha — Engineer",
   seo_description: "Portofolio Rakha.",
   updated_at: "2024-01-01T00:00:00Z",
@@ -28,6 +30,8 @@ describe("toProfile", () => {
     expect(profile.socialLinks).toEqual([
       { platform: "github", url: "https://github.com/ryunoo09" },
     ]);
+    expect(profile.whatsappNumber).toBe("6281234567890");
+    expect(profile.whatsappMessage).toBe("Halo Rakha");
     expect(profile.seoTitle).toBe("Rakha — Engineer");
   });
 

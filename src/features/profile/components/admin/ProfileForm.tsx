@@ -35,6 +35,8 @@ export function ProfileForm({ profile }: ProfileFormProps) {
       avatarUrl: profile.avatarUrl ?? "",
       resumeUrl: profile.resumeUrl ?? "",
       socialLinks: profile.socialLinks,
+      whatsappNumber: profile.whatsappNumber ?? "",
+      whatsappMessage: profile.whatsappMessage ?? "",
       seoTitle: profile.seoTitle ?? "",
       seoDescription: profile.seoDescription ?? "",
     },
@@ -175,6 +177,47 @@ export function ProfileForm({ profile }: ProfileFormProps) {
           <Plus className="size-4" aria-hidden="true" />
           Tambah tautan
         </Button>
+      </fieldset>
+
+      <fieldset className="space-y-3">
+        <legend className="text-sm font-medium">WhatsApp</legend>
+        <p className="text-muted-foreground text-sm">
+          Tautan WhatsApp tampil di footer dan halaman kontak. Kosongkan nomor untuk
+          menyembunyikannya.
+        </p>
+
+        <FormField
+          label="Nomor WhatsApp"
+          name="whatsappNumber"
+          error={errors.whatsappNumber?.message}
+          hint="Format internasional tanpa +. Nomor 08... otomatis diubah ke 628..."
+        >
+          {(props) => (
+            <Input
+              type="tel"
+              inputMode="tel"
+              placeholder="6281234567890"
+              {...props}
+              {...register("whatsappNumber")}
+            />
+          )}
+        </FormField>
+
+        <FormField
+          label="Pesan otomatis"
+          name="whatsappMessage"
+          error={errors.whatsappMessage?.message}
+          hint="Teks ini terisi saat pengunjung menekan tombol WhatsApp."
+        >
+          {(props) => (
+            <Textarea
+              rows={3}
+              placeholder="Halo Rakha, saya ingin berdiskusi tentang..."
+              {...props}
+              {...register("whatsappMessage")}
+            />
+          )}
+        </FormField>
       </fieldset>
 
       <div className="grid gap-6 sm:grid-cols-2">

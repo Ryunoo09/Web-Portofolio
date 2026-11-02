@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Download, Menu } from "lucide-react";
+import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { Button } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";
@@ -68,7 +69,7 @@ export function SiteHeader() {
         <div className="hidden items-center gap-3 md:flex">
           <ThemeSwitch />
           <Button asChild variant="secondary" size="sm">
-            <a href="/resume.pdf" download className="flex items-center gap-2">
+            <a href={CV_DOWNLOAD_PATH} download className="flex items-center gap-2">
               <Download className="size-4" aria-hidden="true" />
               <span>Unduh CV</span>
             </a>

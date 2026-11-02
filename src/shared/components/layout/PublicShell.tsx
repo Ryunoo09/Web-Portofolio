@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { SocialProfile } from "@/shared/lib/social-links";
 import { SiteFooter } from "./SiteFooter";
 import { SiteHeader } from "./SiteHeader";
 import { SkipLink } from "@/shared/components/common/SkipLink";
@@ -8,7 +9,12 @@ import { SkipLink } from "@/shared/components/common/SkipLink";
  * dan footer. Dipakai layout `(public)` dan halaman 404 supaya keduanya punya
  * landmark + navigasi yang sama.
  */
-export function PublicShell({ children }: { children: ReactNode }) {
+interface PublicShellProps {
+  children: ReactNode;
+  profile?: SocialProfile | null;
+}
+
+export function PublicShell({ children, profile }: PublicShellProps) {
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-clip">
       <SkipLink />
@@ -18,7 +24,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <main id="main-content" tabIndex={-1} className="relative z-10 flex-1">
         {children}
       </main>
-      <SiteFooter />
+      <SiteFooter profile={profile} />
     </div>
   );
 }

@@ -12,7 +12,7 @@ export default async function AdminProfilePage() {
     <main className="space-y-6">
       <AdminPageHeader
         title="Profil"
-        description="Data ini dipakai di beranda, /about, dan meta description situs."
+        description="Data ini dipakai di beranda, /about, /contact, footer, dan meta description situs."
       />
 
       {profile ? (

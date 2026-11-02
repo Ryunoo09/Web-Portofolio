@@ -1,11 +1,15 @@
 import Link from "next/link";
+import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
+import { resolveSocialLinks, type SocialProfile } from "@/shared/lib/social-links";
 
 interface ContactPathsProps {
-  resumeUrl: string;
+  profile?: SocialProfile | null;
 }
 
 /** Dua jalur kontak sebagai baris bergaris, bukan dua kartu identik. */
-export function ContactPaths({ resumeUrl }: ContactPathsProps) {
+export function ContactPaths({ profile }: ContactPathsProps) {
+  const whatsapp = resolveSocialLinks(profile).find((link) => link.platform === "whatsapp");
+
   return (
     <section aria-labelledby="jalur-kontak-title" className="space-y-4">
       <h2
@@ -23,7 +27,7 @@ export function ContactPaths({ resumeUrl }: ContactPathsProps) {
           </p>
           <div className="flex flex-wrap gap-4">
             <a
-              href={resumeUrl}
+              href={CV_DOWNLOAD_PATH}
               download
               className="text-gold-muted hover:text-foreground focus-visible:ring-ring rounded-sm text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none"
             >
@@ -44,6 +48,16 @@ export function ContactPaths({ resumeUrl }: ContactPathsProps) {
             Proyek, otomasi, serta pekerjaan backend dan data.
           </p>
           <div className="flex flex-wrap gap-4">
+            {whatsapp && (
+              <a
+                href={whatsapp.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gold-muted hover:text-foreground focus-visible:ring-ring rounded-sm text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              >
+                WhatsApp
+              </a>
+            )}
             <Link
               href="#kirim-pesan"
               className="text-gold-muted hover:text-foreground focus-visible:ring-ring rounded-sm text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none"

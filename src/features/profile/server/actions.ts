@@ -7,6 +7,7 @@ import { createServerSupabase } from "@/shared/lib/supabase/server";
 import { revalidateProfile } from "@/shared/lib/revalidate";
 import { removeFiles, uploadFile } from "@/shared/lib/storage";
 import { emptyToNull } from "@/shared/lib/validation";
+import { normalizeWhatsAppNumber } from "@/shared/lib/whatsapp";
 import { profileFormSchema, type ProfileFormValues } from "../schemas";
 
 type ParsedProfile = z.output<typeof profileFormSchema>;
@@ -69,6 +70,8 @@ export async function updateProfile(input: ProfileFormValues): Promise<ActionRes
     const values: ParsedProfile = parsed.data;
     const avatarUrl = emptyToNull(values.avatarUrl);
     const resumeUrl = emptyToNull(values.resumeUrl);
+    const whatsappNumber = emptyToNull(normalizeWhatsAppNumber(values.whatsappNumber));
+    const whatsappMessage = emptyToNull(values.whatsappMessage);
 
     const { error } = await supabase
       .from("profile")
@@ -81,6 +84,8 @@ export async function updateProfile(input: ProfileFormValues): Promise<ActionRes
         avatar_url: avatarUrl,
         resume_url: resumeUrl,
         social_links: values.socialLinks,
+        whatsapp_number: whatsappNumber,
+        whatsapp_message: whatsappMessage,
         seo_title: emptyToNull(values.seoTitle),
         seo_description: emptyToNull(values.seoDescription),
       })

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { JsonLd, PageContainer, SectionIntro } from "@/shared/components";
+import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
 import { collectionPageNode } from "@/shared/lib/seo/structured-data";
 import { slugify } from "@/shared/lib/utils";
@@ -12,7 +13,6 @@ import {
   getLearningSkills,
   getSkills,
 } from "@/features/skills";
-import { getProfile } from "@/features/profile";
 import { getPublishedProjects } from "@/features/projects";
 
 export const revalidate = 3600;
@@ -25,15 +25,13 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function SkillsPage() {
-  const [skills, learningSkills, projects, profile] = await Promise.all([
+  const [skills, learningSkills, projects] = await Promise.all([
     getSkills(),
     getLearningSkills(),
     getPublishedProjects(),
-    getProfile(),
   ]);
 
   const categoryCount = new Set(skills.map((skill) => skill.category)).size;
-  const resumeUrl = profile?.resumeUrl ?? "/resume.pdf";
 
   return (
     <PageContainer className="space-y-10 py-8 md:py-12">
@@ -65,7 +63,7 @@ export default async function SkillsPage() {
           </Link>
         </Button>
         <Button asChild size="lg" variant="secondary">
-          <a href={resumeUrl} download className="flex items-center gap-2">
+          <a href={CV_DOWNLOAD_PATH} download className="flex items-center gap-2">
             <span>Unduh CV</span>
             <ArrowUpRight className="size-4" aria-hidden="true" />
           </a>

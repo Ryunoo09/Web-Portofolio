@@ -16,7 +16,6 @@ export const metadata: Metadata = buildMetadata({
 
 export default async function ContactPage() {
   const profile = await getProfile();
-  const resumeUrl = profile?.resumeUrl ?? "/resume.pdf";
 
   return (
     <PageContainer className="space-y-12 py-8 md:py-12">
@@ -33,11 +32,11 @@ export default async function ContactPage() {
           <ContactForm />
         </div>
         <div className="lg:col-span-5">
-          <ContactPanel resumeUrl={resumeUrl} />
+          <ContactPanel profile={profile} />
         </div>
       </div>
 
-      <ContactPaths resumeUrl={resumeUrl} />
+      <ContactPaths profile={profile} />
     </PageContainer>
   );
 }

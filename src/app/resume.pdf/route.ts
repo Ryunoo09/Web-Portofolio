@@ -1,4 +1,5 @@
 import { getProfile } from "@/features/profile";
+import { buildCvFilename } from "@/shared/lib/cv";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,8 @@ export async function GET(request: Request) {
   const resumeUrl = profile?.resumeUrl;
 
   if (!resumeUrl) return notFound();
+
+  const filename = buildCvFilename(profile?.fullName);
 
   let target: URL;
   try {
@@ -37,7 +40,7 @@ export async function GET(request: Request) {
   return new Response(upstream.body, {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": 'attachment; filename="resume.pdf"',
+      "Content-Disposition": `attachment; filename="${filename}"`,
       "Cache-Control": "no-store",
     },
   });

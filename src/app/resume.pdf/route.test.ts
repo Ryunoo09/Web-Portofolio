@@ -38,6 +38,7 @@ describe("GET /resume.pdf", () => {
 
   it("mengirim PDF dari URL profil sebagai lampiran", async () => {
     mocks.getProfile.mockResolvedValue({
+      fullName: "Rakha Yuda Wicaksono",
       resumeUrl: "https://example.supabase.co/storage/v1/object/public/portfolio-media/cv.pdf",
     });
     mocks.fetch.mockResolvedValue(pdfResponse());
@@ -46,12 +47,15 @@ describe("GET /resume.pdf", () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get("content-type")).toBe("application/pdf");
-    expect(response.headers.get("content-disposition")).toContain("attachment");
+    expect(response.headers.get("content-disposition")).toBe(
+      'attachment; filename="CV ATS Rakha Yuda Wicaksono.pdf"',
+    );
     expect(await response.text()).toContain("%PDF");
   });
 
   it("mengembalikan 502 bila sumber bukan PDF", async () => {
     mocks.getProfile.mockResolvedValue({
+      fullName: "Rakha Yuda Wicaksono",
       resumeUrl: "https://example.supabase.co/storage/v1/object/public/portfolio-media/cv.pdf",
     });
     mocks.fetch.mockResolvedValue(

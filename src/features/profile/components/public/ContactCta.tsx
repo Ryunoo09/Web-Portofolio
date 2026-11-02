@@ -1,16 +1,13 @@
 import Link from "next/link";
 import { ArrowUpRight, Download } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-
-interface ContactCtaProps {
-  resumeUrl: string;
-}
+import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 
 /**
  * Ajakan terakhir halaman beranda. Tanpa kata "Konsultasi" dan tanpa janji
  * tanggal ketersediaan.
  */
-export function ContactCta({ resumeUrl }: ContactCtaProps) {
+export function ContactCta() {
   return (
     <section aria-labelledby="contact-cta-title" className="border-border border-t pt-10 md:pt-14">
       <div className="grid gap-6 md:grid-cols-12 md:items-end">
@@ -35,7 +32,7 @@ export function ContactCta({ resumeUrl }: ContactCtaProps) {
             </Link>
           </Button>
           <Button asChild size="lg" variant="secondary">
-            <a href={resumeUrl} download className="flex items-center gap-2">
+            <a href={CV_DOWNLOAD_PATH} download className="flex items-center gap-2">
               <Download className="size-4" aria-hidden="true" />
               <span>Unduh CV</span>
             </a>

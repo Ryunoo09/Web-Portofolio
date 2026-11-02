@@ -58,7 +58,7 @@
 | Project ref  | `kggrbhvbowszljemvxan`                                                                                                               |
 | URL          | `https://kggrbhvbowszljemvxan.supabase.co`                                                                                           |
 | `.env.local` | Terisi: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`             |
-| Migrasi      | ✅ `0001`–`0008` terpasang di project linked (rincian di catatan sesi 2026-10-31)                                                    |
+| Migrasi      | ✅ `0001`–`0012` terpasang di project linked (rincian di catatan sesi 2026-10-31 & 2026-11-02)                                       |
 | Tipe DB      | ✅ `src/shared/types/database.ts` (hasil `pnpm db:types`)                                                                            |
 | Seed         | ✅ 6 proyek · 12 skill · 3 pengalaman · 1 pendidikan · 3 sertifikat · 1 profil                                                       |
 | Akun admin   | Email: `admin@example.com` · user_id: `3840f40e-6746-4256-83d5-b407b96d98b2` · **password: lihat password manager (JANGAN commit!)** |
@@ -1115,3 +1115,48 @@ deploy, lalu pastikan `/api/health` 200 dari domain asli dan log NPM bersih dari
 >
 > Saat akun uji sudah siap: isi `E2E_ADMIN_EMAIL` & `E2E_ADMIN_PASSWORD` di `.env.local`,
 > jalankan `pnpm test:e2e`, dan pastikan blok admin di `e2e/admin-flow.spec.ts` hijau.
+
+---
+
+### Sesi 2026-11-02 � WhatsApp dari dashboard + nama file CV
+
+**Permintaan:** tautan sosial/WhatsApp yang diisi di `/admin/profile` tampil di footer dan
+`/contact`; pesan pembuka WhatsApp bisa diatur dari dashboard; unduhan CV bernama
+`CV ATS Rakha Yuda Wicaksono.pdf`.
+
+**Akar masalah:** footer dan `ContactPanel` memakai `siteConfig.socials` statis, bukan
+`profile.social_links`. Model tautan sosial juga belum punya kolom nomor/pesan WhatsApp.
+Route `/resume.pdf` mengirim `Content-Disposition: filename="resume.pdf"`, dan sebagian tombol
+memakai URL Supabase langsung sehingga atribut `download` diabaikan browser.
+
+**Perubahan:**
+
+| Berkas                                                          | Isi                                               |
+| --------------------------------------------------------------- | ------------------------------------------------- |
+| `supabase/migrations/0010_profile_whatsapp.sql`                 | kolom `whatsapp_number`, `whatsapp_message`       |
+| `supabase/migrations/0011_backfill_whatsapp.sql`                | pindahkan entri WhatsApp lama dari `social_links` |
+| `supabase/migrations/0012_profile_whatsapp_default_message.sql` | pesan pembuka default                             |
+| `src/shared/lib/whatsapp.ts`                                    | normalisasi nomor + URL `wa.me`                   |
+| `src/shared/lib/social-links.ts`                                | gabung tautan DB + fallback `siteConfig`, dedupe  |
+| `src/shared/components/common/SocialLinks.tsx`                  | render tautan + ikon                              |
+| `src/shared/components/layout/SiteFooter.tsx`                   | email/lokasi/tautan dari profil                   |
+| `src/features/contact/components/public/ContactPanel.tsx`       | email/lokasi/jejaring/WhatsApp dari profil        |
+| `src/features/contact/components/public/ContactPaths.tsx`       | jalur WhatsApp                                    |
+| `src/features/profile/components/admin/ProfileForm.tsx`         | field nomor + pesan WhatsApp                      |
+| `src/app/resume.pdf/route.ts`                                   | nama unduhan dari `profile.full_name`             |
+| `src/shared/constants/downloads.ts`                             | `CV_DOWNLOAD_PATH`                                |
+| `src/shared/lib/revalidate.ts`                                  | revalidasi `/contact` + layout publik             |
+
+**Keputusan:** WhatsApp memakai kolom khusus, bukan JSON `social_links`. Nomor `08...`
+dinormalisasi ke `628...`. Semua tombol CV lewat `/resume.pdf` agar header route menentukan nama.
+
+**Data live:** migrasi `0010`�`0012` sudah di-push ke project linked. Backfill menghasilkan
+`whatsapp_number = 6282135253017`; pesan default `Halo Rakha, saya ingin berdiskusi tentang ...`.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama) · `pnpm typecheck` bersih · `pnpm test`
+**55 file / 238 tes** lulus · `pnpm build` sukses · `pnpm test:e2e` 91 lulus setelah
+12 snapshot visual `proyek-*`/`studi-kasus-*` di-regenerasi karena konten proyek di DB berubah
+(gambar sampul dan deskripsi), bukan karena perubahan footer.
+
+**Utang:** 404 memakai footer fallback statis (tidak mengambil profil) agar `not-found` tetap
+komponen sinkron yang bisa diuji. `personNode` JSON-LD masih memakai `siteConfig.socials`.
