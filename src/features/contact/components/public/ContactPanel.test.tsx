@@ -19,7 +19,7 @@ function stubClipboard() {
 
 describe("ContactPanel", () => {
   it("menampilkan email, lokasi, jejaring, dan tautan CV", () => {
-    render(<ContactPanel resumeUrl="/resume.pdf" />);
+    render(<ContactPanel />);
 
     expect(screen.getByRole("heading", { name: "Informasi kontak" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: siteConfig.socials.email })).toHaveAttribute(
@@ -34,10 +34,26 @@ describe("ContactPanel", () => {
     expect(screen.getByRole("link", { name: "CV" })).toHaveAttribute("href", "/resume.pdf");
   });
 
+  it("menampilkan WhatsApp dari profil dengan pesan otomatis", () => {
+    render(
+      <ContactPanel
+        profile={{
+          whatsappNumber: "0812-3456-7890",
+          whatsappMessage: "Halo Rakha",
+        }}
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: "WhatsApp" })).toHaveAttribute(
+      "href",
+      "https://wa.me/6281234567890?text=Halo%20Rakha",
+    );
+  });
+
   it("menyalin email dan mengumumkannya lewat aria-live", async () => {
     const user = userEvent.setup();
     stubClipboard();
-    render(<ContactPanel resumeUrl="/resume.pdf" />);
+    render(<ContactPanel />);
 
     await user.click(screen.getByRole("button", { name: "Salin email" }));
 

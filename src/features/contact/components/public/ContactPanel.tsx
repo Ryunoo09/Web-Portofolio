@@ -2,18 +2,23 @@
 
 import * as React from "react";
 import { Check, Copy } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/shared/components";
+import { SocialLinks } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
+import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 import { siteConfig } from "@/shared/constants/siteConfig";
+import { resolveSocialLinks, type SocialProfile } from "@/shared/lib/social-links";
 
 interface ContactPanelProps {
-  resumeUrl: string;
+  profile?: SocialProfile | null;
 }
 
 /** Panel informasi kontak: email + salin, lokasi, waktu respons, jejaring. */
-export function ContactPanel({ resumeUrl }: ContactPanelProps) {
+export function ContactPanel({ profile }: ContactPanelProps) {
   const [copied, setCopied] = React.useState(false);
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const email = profile?.email?.trim() || siteConfig.socials.email;
+  const location = profile?.location?.trim() || siteConfig.location;
+  const socialLinks = resolveSocialLinks(profile);
 
   React.useEffect(() => {
     return () => {
@@ -23,7 +28,7 @@ export function ContactPanel({ resumeUrl }: ContactPanelProps) {
 
   const copyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(siteConfig.socials.email);
+      await navigator.clipboard.writeText(email);
       setCopied(true);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => setCopied(false), 2000);
@@ -43,10 +48,10 @@ export function ContactPanel({ resumeUrl }: ContactPanelProps) {
           <dt className="text-muted-foreground shrink-0 text-xs">Email</dt>
           <dd className="flex items-center gap-2">
             <a
-              href={`mailto:${siteConfig.socials.email}`}
+              href={`mailto:${email}`}
               className="text-foreground hover:text-gold-muted focus-visible:ring-ring rounded-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
             >
-              {siteConfig.socials.email}
+              {email}
             </a>
             <Button
               type="button"
@@ -66,7 +71,7 @@ export function ContactPanel({ resumeUrl }: ContactPanelProps) {
 
         <div className="flex items-start justify-between gap-4 py-3">
           <dt className="text-muted-foreground shrink-0 text-xs">Lokasi</dt>
-          <dd className="text-foreground text-right">{siteConfig.location} (WIB / UTC+7)</dd>
+          <dd className="text-foreground text-right">{location} (WIB / UTC+7)</dd>
         </div>
 
         <div className="flex items-start justify-between gap-4 py-3">
@@ -77,26 +82,12 @@ export function ContactPanel({ resumeUrl }: ContactPanelProps) {
         <div className="flex items-start justify-between gap-4 py-3">
           <dt className="text-muted-foreground shrink-0 text-xs">Jejaring</dt>
           <dd className="flex flex-wrap items-center justify-end gap-3">
+            <SocialLinks
+              links={socialLinks}
+              className="flex flex-wrap items-center justify-end gap-3"
+            />
             <a
-              href={siteConfig.socials.github}
-              target="_blank"
-              rel="noreferrer"
-              className="text-gold-muted hover:text-foreground focus-visible:ring-ring inline-flex items-center gap-1 rounded-sm text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
-            >
-              <GithubIcon className="size-3.5" aria-hidden="true" />
-              GitHub
-            </a>
-            <a
-              href={siteConfig.socials.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className="text-gold-muted hover:text-foreground focus-visible:ring-ring inline-flex items-center gap-1 rounded-sm text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
-            >
-              <LinkedinIcon className="size-3.5" aria-hidden="true" />
-              LinkedIn
-            </a>
-            <a
-              href={resumeUrl}
+              href={CV_DOWNLOAD_PATH}
               download
               className="text-gold-muted hover:text-foreground focus-visible:ring-ring rounded-sm text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
             >

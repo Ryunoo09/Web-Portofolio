@@ -15,6 +15,15 @@ export const profileFormSchema = z.object({
       url: z.string().url("URL tautan tidak valid"),
     }),
   ),
+  whatsappNumber: z
+    .string()
+    .max(20, "Nomor maksimal 20 karakter")
+    .refine(
+      (value) => !value || /^[0-9+\-\s()]+$/.test(value),
+      "Nomor hanya boleh berisi angka, +, spasi, tanda hubung, atau kurung.",
+    )
+    .optional(),
+  whatsappMessage: z.string().max(500, "Pesan maksimal 500 karakter").optional(),
   seoTitle: z.string().max(70).optional(),
   seoDescription: z.string().max(160).optional(),
 });

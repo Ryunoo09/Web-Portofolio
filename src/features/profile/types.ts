@@ -8,6 +8,8 @@ export type Profile = {
   email: string | null;
   location: string | null;
   socialLinks: { platform: string; url: string }[];
+  whatsappNumber: string | null;
+  whatsappMessage: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
 };

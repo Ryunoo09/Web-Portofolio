@@ -449,6 +449,8 @@ export type Database = {
           seo_title: string | null;
           social_links: Json;
           updated_at: string;
+          whatsapp_message: string | null;
+          whatsapp_number: string | null;
         };
         Insert: {
           avatar_url?: string | null;
@@ -463,6 +465,8 @@ export type Database = {
           seo_title?: string | null;
           social_links?: Json;
           updated_at?: string;
+          whatsapp_message?: string | null;
+          whatsapp_number?: string | null;
         };
         Update: {
           avatar_url?: string | null;
@@ -477,6 +481,8 @@ export type Database = {
           seo_title?: string | null;
           social_links?: Json;
           updated_at?: string;
+          whatsapp_message?: string | null;
+          whatsapp_number?: string | null;
         };
         Relationships: [];
       };

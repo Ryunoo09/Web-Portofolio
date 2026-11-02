@@ -42,8 +42,6 @@ export default async function HomePage() {
         title: getProjectShortLabel(latestProject.slug, latestProject.title),
       }
     : null;
-  const resumeUrl = profile?.resumeUrl ?? "/resume.pdf";
-
   const publishedSlugs = new Set(projects.map((project) => project.slug));
   const tickerItems = HOME_TICKER_ITEMS.flatMap(({ slug, label, detail }) =>
     publishedSlugs.has(slug) ? [{ href: `/projects/${slug}`, label, detail }] : [],
@@ -65,7 +63,7 @@ export default async function HomePage() {
         <ProofStrip project={proofProject} />
         <Capabilities projects={projects} />
         <AboutStrip />
-        <ContactCta resumeUrl={resumeUrl} />
+        <ContactCta />
       </div>
     </PageContainer>
   );

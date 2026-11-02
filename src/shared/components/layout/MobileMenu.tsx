@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Download, X } from "lucide-react";
+import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { Button } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";
@@ -103,7 +104,7 @@ export function MobileMenu({ open, onOpenChange }: MobileMenuProps) {
 
         <div className="border-border border-t p-4">
           <Button asChild variant="secondary" className="w-full justify-center">
-            <a href="/resume.pdf" download className="flex items-center gap-2">
+            <a href={CV_DOWNLOAD_PATH} download className="flex items-center gap-2">
               <Download className="size-4" aria-hidden="true" />
               <span>Unduh CV</span>
               <ArrowUpRight className="size-3.5" aria-hidden="true" />

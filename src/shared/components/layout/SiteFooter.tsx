@@ -1,15 +1,24 @@
 import * as React from "react";
 import Link from "next/link";
-import { ArrowUpRight, Download, Mail } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "../common/Icons";
+import { Download, Mail } from "lucide-react";
 import { siteConfig } from "@/shared/constants/siteConfig";
+import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
+import { resolveSocialLinks, type SocialProfile } from "@/shared/lib/social-links";
 import { PageContainer } from "@/shared/components/common/PageContainer";
+import { SocialLinks } from "../common/SocialLinks";
+
+interface SiteFooterProps {
+  profile?: SocialProfile | null;
+}
 
 /**
  * Footer publik: 3 kolom, copy Backend/Data, tanpa badge/gradient.
  */
-export function SiteFooter() {
+export function SiteFooter({ profile }: SiteFooterProps) {
   const currentYear = new Date().getFullYear();
+  const socialLinks = resolveSocialLinks(profile);
+  const email = profile?.email?.trim() || siteConfig.socials.email;
+  const location = profile?.location?.trim() || siteConfig.location;
 
   return (
     <footer className="border-border bg-surface mt-auto border-t">
@@ -28,9 +37,9 @@ export function SiteFooter() {
               </span>
             </div>
             <p className="text-muted-foreground max-w-sm text-sm leading-relaxed">
-              Backend, data, dan otomasi untuk masalah nyata.
+              Software Engineer yang membangun backend dan data untuk masalah nyata.
             </p>
-            <p className="text-muted-foreground text-sm">{siteConfig.location}</p>
+            <p className="text-muted-foreground text-sm">{location}</p>
           </div>
 
           <nav aria-label="Navigasi footer" className="space-y-3 md:col-span-3">
@@ -54,40 +63,19 @@ export function SiteFooter() {
             <ul className="space-y-2.5 text-sm">
               <li>
                 <a
-                  href={`mailto:${siteConfig.socials.email}`}
+                  href={`mailto:${email}`}
                   className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
                 >
                   <Mail className="size-4 shrink-0" aria-hidden="true" />
-                  <span>{siteConfig.socials.email}</span>
+                  <span>{email}</span>
                 </a>
               </li>
               <li>
-                <a
-                  href={siteConfig.socials.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
-                >
-                  <GithubIcon className="size-4 shrink-0" />
-                  <span>GitHub</span>
-                  <ArrowUpRight className="size-3 shrink-0" aria-hidden="true" />
-                </a>
+                <SocialLinks links={socialLinks} />
               </li>
               <li>
                 <a
-                  href={siteConfig.socials.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
-                >
-                  <LinkedinIcon className="size-4 shrink-0" />
-                  <span>LinkedIn</span>
-                  <ArrowUpRight className="size-3 shrink-0" aria-hidden="true" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/resume.pdf"
+                  href={CV_DOWNLOAD_PATH}
                   download
                   className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
                 >

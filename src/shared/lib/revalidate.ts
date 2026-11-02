@@ -27,6 +27,9 @@ export function revalidateAbout(): void {
 export function revalidateProfile(): void {
   revalidatePath("/");
   revalidatePath("/about");
+  revalidatePath("/contact");
+  // Footer publik ada di layout semua halaman.
+  revalidatePath("/", "layout");
 }
 
 /** Pesan memengaruhi badge sidebar admin dan hitungan di ringkasan. */

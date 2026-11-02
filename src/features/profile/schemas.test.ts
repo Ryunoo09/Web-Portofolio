@@ -46,4 +46,21 @@ describe("profileFormSchema", () => {
     });
     expect(result.success).toBe(false);
   });
+
+  it("menerima nomor dan pesan WhatsApp", () => {
+    const result = profileFormSchema.safeParse({
+      ...valid,
+      whatsappNumber: "0812-3456-7890",
+      whatsappMessage: "Halo Rakha",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("menolak nomor WhatsApp dengan huruf", () => {
+    const result = profileFormSchema.safeParse({
+      ...valid,
+      whatsappNumber: "0812abc",
+    });
+    expect(result.success).toBe(false);
+  });
 });

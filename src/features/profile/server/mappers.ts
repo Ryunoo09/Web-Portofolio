@@ -44,6 +44,8 @@ export function toProfile(row: Row<"profile">): Profile {
     location: row.location,
     // social_links tersimpan sebagai jsonb: [{ platform, url }]
     socialLinks: (row.social_links ?? []) as { platform: string; url: string }[],
+    whatsappNumber: row.whatsapp_number,
+    whatsappMessage: row.whatsapp_message,
     seoTitle: row.seo_title,
     seoDescription: row.seo_description,
   };

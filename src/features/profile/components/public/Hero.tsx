@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Download } from "lucide-react";
+import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { Button } from "@/shared/components/ui/button";
 import type { Project } from "@/features/projects";
@@ -18,7 +19,6 @@ interface HeroProps {
  */
 export function Hero({ profile, latestProject }: HeroProps) {
   const name = profile?.fullName ?? siteConfig.name;
-  const resumeUrl = profile?.resumeUrl ?? "/resume.pdf";
   const location = profile?.location ?? siteConfig.location;
 
   return (
@@ -52,7 +52,7 @@ export function Hero({ profile, latestProject }: HeroProps) {
               </Link>
             </Button>
             <Button asChild size="lg" variant="secondary">
-              <a href={resumeUrl} download className="flex items-center gap-2">
+              <a href={CV_DOWNLOAD_PATH} download className="flex items-center gap-2">
                 <Download className="size-4" aria-hidden="true" />
                 <span>Unduh CV</span>
               </a>
