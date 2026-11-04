@@ -14,7 +14,7 @@ describe("Hero", () => {
       }),
     ).toBeInTheDocument();
     expect(screen.getByText("Rakha Yuda Wicaksono")).toBeInTheDocument();
-    expect(screen.getByText("Software Engineer & Data Engineer")).toBeInTheDocument();
+    expect(screen.getByText("Software Engineer & Backend Developer")).toBeInTheDocument();
   });
 
   it("menampilkan tiga metrik tanpa angka 500+", () => {

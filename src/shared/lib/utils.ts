@@ -48,3 +48,37 @@ export function toListItems(value: string | null | undefined): string[] {
     .map((line) => line.trim().replace(/^[-•*]\s+/, ""))
     .filter(Boolean);
 }
+
+export interface ListItemNode {
+  text: string;
+  children: ListItemNode[];
+}
+
+/**
+ * Pecah teks deskripsi menjadi pohon poin. Baris yang menjorok lebih dalam dari
+ * poin sebelumnya menjadi anak poin tersebut, sehingga sub-poin tetap tampil
+ * berjenjang. Penanda daftar di awal baris (`-`, `•`, `*`) dibuang.
+ */
+export function toListTree(value: string | null | undefined): ListItemNode[] {
+  const roots: ListItemNode[] = [];
+  const stack: { indent: number; node: ListItemNode }[] = [];
+
+  for (const line of (value ?? "").split("\n")) {
+    if (!line.trim()) continue;
+
+    const indent = (line.match(/^\s*/)?.[0] ?? "").replace(/\t/g, "  ").length;
+    const node: ListItemNode = { text: line.trim().replace(/^[-•*]\s+/, ""), children: [] };
+
+    let parent = stack[stack.length - 1];
+    while (parent && parent.indent >= indent) {
+      stack.pop();
+      parent = stack[stack.length - 1];
+    }
+    if (parent) parent.node.children.push(node);
+    else roots.push(node);
+
+    stack.push({ indent, node });
+  }
+
+  return roots;
+}

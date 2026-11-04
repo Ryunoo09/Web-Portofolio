@@ -1228,3 +1228,21 @@ tetap berupa paragraf. Hint form admin organisasi yang sudah ada kini sesuai den
 organisasi kini mengisi deskripsi dua baris dan memastikan keduanya tampil). Snapshot visual
 `proyek-*` dan `keahlian-*` di-regenerasi setelah diff diperiksa: drift konten proyek/keahlian
 dan chevron menu CV di header, bukan akibat perubahan ini (`tentang-*` tidak berubah).
+
+---
+
+### Sesi 2026-11-04 (lanjutan 2) - Branding Backend Developer + sub-poin organisasi
+
+**Permintaan:** (1) ganti frasa "Software Engineer & Data Engineer" menjadi "Software Engineer &
+Backend Developer" di tampilan publik; (2) poin Organisasi di `/about` mengikuti struktur berjenjang
+yang sudah diisi pemilik (acara/kepanitiaan dengan sub-poin), bukan daftar rata.
+
+**Perubahan:** (1) `siteConfig` (`title`, `description`, `role`), OG image publik, dan ekspektasi
+`Hero.test.tsx`; (2) `toListTree` di `shared/lib/utils` memecah deskripsi berdasarkan indentasi dan
+`BulletPoints` merender sub-`ul` di dalam poin induk. Data DB organisasi PCC tidak diubah (sudah
+berisi teks berjenjang); `docs/isi_website/04_seed_organisasi_bahasa.sql` disinkronkan agar seed
+menghasilkan tampilan yang sama.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama) - `pnpm typecheck` bersih - `pnpm test`
+**57 file / 248 tes** lulus - `pnpm build` sukses - E2E visual `tentang` 2 lulus (snapshot tidak
+berubah karena section organisasi di bawah lipatan).

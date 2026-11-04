@@ -13,7 +13,7 @@ interface CredentialRowProps {
   subtitle?: string | null;
   period?: string | null;
   description?: string | null;
-  /** Tampilkan deskripsi sebagai daftar berbutir (satu baris = satu poin). */
+  /** Tampilkan deskripsi sebagai daftar berbutir (satu baris = satu poin, baris menjorok = sub-poin). */
   descriptionAsList?: boolean;
   href?: string | null;
   linkLabel?: string;

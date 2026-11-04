@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatMonthPeriod, formatPeriod, slugify, toListItems } from "./utils";
+import { formatMonthPeriod, formatPeriod, slugify, toListItems, toListTree } from "./utils";
 
 describe("slugify", () => {
   it("mengubah teks menjadi slug", () => {
@@ -61,5 +61,32 @@ describe("toListItems", () => {
     expect(toListItems("Satu paragraf panjang tanpa baris baru.")).toEqual([
       "Satu paragraf panjang tanpa baris baru.",
     ]);
+  });
+});
+
+describe("toListTree", () => {
+  it("menjadikan baris yang menjorok sebagai anak poin sebelumnya", () => {
+    expect(toListTree("- Induk\n    - Anak A\n    - Anak B\n- Induk dua")).toEqual([
+      {
+        text: "Induk",
+        children: [
+          { text: "Anak A", children: [] },
+          { text: "Anak B", children: [] },
+        ],
+      },
+      { text: "Induk dua", children: [] },
+    ]);
+  });
+
+  it("mengembalikan poin sejajar saat tidak ada indentasi", () => {
+    expect(toListTree("- Satu\n• Dua")).toEqual([
+      { text: "Satu", children: [] },
+      { text: "Dua", children: [] },
+    ]);
+  });
+
+  it("mengembalikan array kosong untuk teks kosong atau null", () => {
+    expect(toListTree(null)).toEqual([]);
+    expect(toListTree("   \n\t")).toEqual([]);
   });
 });
