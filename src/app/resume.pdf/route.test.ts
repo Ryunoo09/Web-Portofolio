@@ -53,6 +53,39 @@ describe("GET /resume.pdf", () => {
     expect(await response.text()).toContain("%PDF");
   });
 
+  it("memakai CV Inggris saat ?lang=en dan menambahkan sufiks EN", async () => {
+    mocks.getProfile.mockResolvedValue({
+      fullName: "Rakha Yuda Wicaksono",
+      resumeUrl: "https://example.supabase.co/storage/v1/object/public/portfolio-media/cv-id.pdf",
+      resumeUrlEn: "https://example.supabase.co/storage/v1/object/public/portfolio-media/cv-en.pdf",
+    });
+    mocks.fetch.mockResolvedValue(pdfResponse());
+
+    const response = await GET(new Request("http://localhost:3000/resume.pdf?lang=en"));
+
+    expect(response.status).toBe(200);
+    expect(mocks.fetch).toHaveBeenCalledWith(
+      new URL("https://example.supabase.co/storage/v1/object/public/portfolio-media/cv-en.pdf"),
+      { cache: "no-store" },
+    );
+    expect(response.headers.get("content-disposition")).toBe(
+      'attachment; filename="CV ATS Rakha Yuda Wicaksono - EN.pdf"',
+    );
+  });
+
+  it("mengembalikan 404 bila CV Inggris belum diunggah", async () => {
+    mocks.getProfile.mockResolvedValue({
+      fullName: "Rakha Yuda Wicaksono",
+      resumeUrl: "https://example.supabase.co/storage/v1/object/public/portfolio-media/cv-id.pdf",
+      resumeUrlEn: null,
+    });
+
+    const response = await GET(new Request("http://localhost:3000/resume.pdf?lang=en"));
+
+    expect(response.status).toBe(404);
+    expect(mocks.fetch).not.toHaveBeenCalled();
+  });
+
   it("mengembalikan 502 bila sumber bukan PDF", async () => {
     mocks.getProfile.mockResolvedValue({
       fullName: "Rakha Yuda Wicaksono",

@@ -1,10 +1,10 @@
 import * as React from "react";
 import Link from "next/link";
-import { Download, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { siteConfig } from "@/shared/constants/siteConfig";
-import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 import { resolveSocialLinks, type SocialProfile } from "@/shared/lib/social-links";
 import { PageContainer } from "@/shared/components/common/PageContainer";
+import { CvDownloadLinks } from "../common/CvDownloadLinks";
 import { SocialLinks } from "../common/SocialLinks";
 
 interface SiteFooterProps {
@@ -74,14 +74,7 @@ export function SiteFooter({ profile }: SiteFooterProps) {
                 <SocialLinks links={socialLinks} />
               </li>
               <li>
-                <a
-                  href={CV_DOWNLOAD_PATH}
-                  download
-                  className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
-                >
-                  <Download className="size-4 shrink-0" aria-hidden="true" />
-                  <span>Unduh CV</span>
-                </a>
+                <CvDownloadLinks className="text-sm" />
               </li>
             </ul>
           </div>

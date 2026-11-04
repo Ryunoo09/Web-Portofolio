@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import { Check, Copy } from "lucide-react";
-import { SocialLinks } from "@/shared/components";
+import { CvDownloadLinks, SocialLinks } from "@/shared/components";
 import { Button } from "@/shared/components/ui/button";
-import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { resolveSocialLinks, type SocialProfile } from "@/shared/lib/social-links";
 
@@ -86,13 +85,7 @@ export function ContactPanel({ profile }: ContactPanelProps) {
               links={socialLinks}
               className="flex flex-wrap items-center justify-end gap-3"
             />
-            <a
-              href={CV_DOWNLOAD_PATH}
-              download
-              className="text-gold-muted hover:text-foreground focus-visible:ring-ring rounded-sm text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
-            >
-              CV
-            </a>
+            <CvDownloadLinks className="text-sm" />
           </dd>
         </div>
       </dl>

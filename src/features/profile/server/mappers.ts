@@ -40,6 +40,7 @@ export function toProfile(row: Row<"profile">): Profile {
     bio: row.bio,
     avatarUrl: row.avatar_url,
     resumeUrl: row.resume_url,
+    resumeUrlEn: row.resume_url_en,
     email: row.email,
     location: row.location,
     // social_links tersimpan sebagai jsonb: [{ platform, url }]

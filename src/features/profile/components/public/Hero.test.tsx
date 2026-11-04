@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Hero } from "./Hero";
 
 describe("Hero", () => {
@@ -45,14 +46,25 @@ describe("Hero", () => {
     expect(screen.getByRole("link", { name: /Hubungi saya/ })).toHaveAttribute("href", "/contact");
   });
 
-  it("menampilkan dua CTA: studi kasus dan unduh CV", () => {
+  it("menampilkan dua CTA: studi kasus dan unduh CV dua bahasa", async () => {
+    const user = userEvent.setup();
     render(<Hero profile={null} latestProject={null} />);
 
     expect(screen.getByRole("link", { name: /Baca studi kasus/ })).toHaveAttribute(
       "href",
       "/projects",
     );
-    expect(screen.getByRole("link", { name: /Unduh CV/ })).toHaveAttribute("href", "/resume.pdf");
+
+    await user.click(screen.getByRole("button", { name: /Unduh CV/ }));
+
+    expect(screen.getByRole("menuitem", { name: /CV Bahasa Indonesia/ })).toHaveAttribute(
+      "href",
+      "/resume.pdf",
+    );
+    expect(screen.getByRole("menuitem", { name: /CV Bahasa Inggris/ })).toHaveAttribute(
+      "href",
+      "/resume.pdf?lang=en",
+    );
     expect(screen.getByText("Studi kasus segera")).toBeInTheDocument();
   });
 });

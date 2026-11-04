@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ArrowUpRight, Download } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
+import { CvDownloadMenu } from "@/shared/components";
 
 /**
  * Ajakan terakhir halaman beranda. Tanpa kata "Konsultasi" dan tanpa janji
@@ -31,12 +31,7 @@ export function ContactCta() {
               <ArrowUpRight className="size-4" aria-hidden="true" />
             </Link>
           </Button>
-          <Button asChild size="lg" variant="secondary">
-            <a href={CV_DOWNLOAD_PATH} download className="flex items-center gap-2">
-              <Download className="size-4" aria-hidden="true" />
-              <span>Unduh CV</span>
-            </a>
-          </Button>
+          <CvDownloadMenu size="lg" />
         </div>
       </div>
     </section>

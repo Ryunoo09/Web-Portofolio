@@ -31,7 +31,14 @@ describe("ContactPanel", () => {
       "href",
       siteConfig.socials.github,
     );
-    expect(screen.getByRole("link", { name: "CV" })).toHaveAttribute("href", "/resume.pdf");
+    expect(screen.getByRole("link", { name: "CV Bahasa Indonesia" })).toHaveAttribute(
+      "href",
+      "/resume.pdf",
+    );
+    expect(screen.getByRole("link", { name: "CV Bahasa Inggris" })).toHaveAttribute(
+      "href",
+      "/resume.pdf?lang=en",
+    );
   });
 
   it("menampilkan WhatsApp dari profil dengan pesan otomatis", () => {

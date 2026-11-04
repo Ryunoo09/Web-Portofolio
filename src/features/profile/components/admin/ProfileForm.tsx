@@ -34,6 +34,7 @@ export function ProfileForm({ profile }: ProfileFormProps) {
       location: profile.location ?? "",
       avatarUrl: profile.avatarUrl ?? "",
       resumeUrl: profile.resumeUrl ?? "",
+      resumeUrlEn: profile.resumeUrlEn ?? "",
       socialLinks: profile.socialLinks,
       whatsappNumber: profile.whatsappNumber ?? "",
       whatsappMessage: profile.whatsappMessage ?? "",
@@ -117,12 +118,27 @@ export function ProfileForm({ profile }: ProfileFormProps) {
         name="resumeUrl"
         render={({ field }) => (
           <ImageUploadField
-            label="Berkas CV"
+            label="Berkas CV (Indonesia)"
             value={field.value || null}
             onChange={(url) => field.onChange(url ?? "")}
             upload={uploadResume}
             accept={DOCUMENT_ACCEPT}
-            help="PDF maksimal 5 MB; tombol “Unduh CV” di beranda memakai berkas ini."
+            help="PDF maksimal 5 MB; tombol “Unduh CV” untuk pilihan bahasa Indonesia."
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="resumeUrlEn"
+        render={({ field }) => (
+          <ImageUploadField
+            label="Berkas CV (Inggris)"
+            value={field.value || null}
+            onChange={(url) => field.onChange(url ?? "")}
+            upload={uploadResume}
+            accept={DOCUMENT_ACCEPT}
+            help="PDF maksimal 5 MB; dipakai tombol Unduh CV untuk pilihan bahasa Inggris."
           />
         )}
       />

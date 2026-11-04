@@ -4,7 +4,9 @@ export type Profile = {
   headline: string;
   bio: string | null;
   avatarUrl: string | null;
+  /** CV bahasa Indonesia. Nama kolom lama di database tetap `resume_url`. */
   resumeUrl: string | null;
+  resumeUrlEn: string | null;
   email: string | null;
   location: string | null;
   socialLinks: { platform: string; url: string }[];

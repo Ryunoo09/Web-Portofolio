@@ -11,6 +11,7 @@ const profileRow: ProfileRow = {
   bio: "Membangun aplikasi web.",
   avatar_url: "https://demo.supabase.co/avatar.png",
   resume_url: null,
+  resume_url_en: "https://demo.supabase.co/cv-en.pdf",
   email: "halo@example.com",
   location: "Jakarta",
   social_links: [{ platform: "github", url: "https://github.com/ryunoo09" }],
@@ -27,6 +28,7 @@ describe("toProfile", () => {
 
     expect(profile.fullName).toBe("Rakha Pratama");
     expect(profile.avatarUrl).toBe("https://demo.supabase.co/avatar.png");
+    expect(profile.resumeUrlEn).toBe("https://demo.supabase.co/cv-en.pdf");
     expect(profile.socialLinks).toEqual([
       { platform: "github", url: "https://github.com/ryunoo09" },
     ]);

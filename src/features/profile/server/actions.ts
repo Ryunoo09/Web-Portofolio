@@ -62,7 +62,7 @@ export async function updateProfile(input: ProfileFormValues): Promise<ActionRes
     const supabase = await createServerSupabase();
     const { data: current, error: findError } = await supabase
       .from("profile")
-      .select("id, avatar_url, resume_url")
+      .select("id, avatar_url, resume_url, resume_url_en")
       .maybeSingle();
     if (findError) return { ok: false, error: findError.message };
     if (!current) return { ok: false, error: "Baris profil belum tersedia di database." };
@@ -70,6 +70,7 @@ export async function updateProfile(input: ProfileFormValues): Promise<ActionRes
     const values: ParsedProfile = parsed.data;
     const avatarUrl = emptyToNull(values.avatarUrl);
     const resumeUrl = emptyToNull(values.resumeUrl);
+    const resumeUrlEn = emptyToNull(values.resumeUrlEn);
     const whatsappNumber = emptyToNull(normalizeWhatsAppNumber(values.whatsappNumber));
     const whatsappMessage = emptyToNull(values.whatsappMessage);
 
@@ -83,6 +84,7 @@ export async function updateProfile(input: ProfileFormValues): Promise<ActionRes
         location: emptyToNull(values.location),
         avatar_url: avatarUrl,
         resume_url: resumeUrl,
+        resume_url_en: resumeUrlEn,
         social_links: values.socialLinks,
         whatsapp_number: whatsappNumber,
         whatsapp_message: whatsappMessage,
@@ -96,6 +98,7 @@ export async function updateProfile(input: ProfileFormValues): Promise<ActionRes
     await removeFiles(supabase, [
       current.avatar_url === avatarUrl ? null : current.avatar_url,
       current.resume_url === resumeUrl ? null : current.resume_url,
+      current.resume_url_en === resumeUrlEn ? null : current.resume_url_en,
     ]);
 
     revalidateProfile();

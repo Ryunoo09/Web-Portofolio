@@ -16,6 +16,8 @@ export { BulletPoints } from "./common/BulletPoints";
 export { ThemeProvider } from "./common/ThemeProvider";
 export { GithubIcon, LinkedinIcon, WhatsappIcon } from "./common/Icons";
 export { SocialLinks } from "./common/SocialLinks";
+export { CvDownloadMenu } from "./common/CvDownloadMenu";
+export { CvDownloadLinks } from "./common/CvDownloadLinks";
 export { SiteHeader } from "./layout/SiteHeader";
 export { PublicShell } from "./layout/PublicShell";
 export { SiteFooter } from "./layout/SiteFooter";

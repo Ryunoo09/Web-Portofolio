@@ -1,5 +1,5 @@
 import { getProfile } from "@/features/profile";
-import { buildCvFilename } from "@/shared/lib/cv";
+import { buildCvFilename, type CvLanguage } from "@/shared/lib/cv";
 
 export const dynamic = "force-dynamic";
 
@@ -8,17 +8,19 @@ function notFound() {
 }
 
 /**
- * Semua tautan lama memakai `/resume.pdf`. Route ini membaca URL CV dari profil
- * Supabase agar admin cukup mengganti berkas lewat `/admin/profile`, tanpa
- * menyimpan PDF di repo publik dan tanpa deploy ulang.
+ * Semua tautan lama memakai `/resume.pdf` (CV Indonesia). `?lang=en` memilih
+ * CV Inggris. Route ini membaca URL dari profil Supabase agar admin cukup
+ * mengganti berkas lewat `/admin/profile`, tanpa menyimpan PDF di repo publik
+ * dan tanpa deploy ulang.
  */
 export async function GET(request: Request) {
+  const language: CvLanguage = new URL(request.url).searchParams.get("lang") === "en" ? "en" : "id";
   const profile = await getProfile().catch(() => null);
-  const resumeUrl = profile?.resumeUrl;
+  const resumeUrl = language === "en" ? profile?.resumeUrlEn : profile?.resumeUrl;
 
   if (!resumeUrl) return notFound();
 
-  const filename = buildCvFilename(profile?.fullName);
+  const filename = buildCvFilename(profile?.fullName, language);
 
   let target: URL;
   try {

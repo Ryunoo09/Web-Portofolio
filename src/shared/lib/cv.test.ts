@@ -13,4 +13,10 @@ describe("buildCvFilename", () => {
   it("membuang karakter yang tidak valid untuk nama berkas", () => {
     expect(buildCvFilename('Rakha / "Yuda"')).toBe("CV ATS Rakha Yuda.pdf");
   });
+
+  it("menambahkan sufiks EN untuk CV bahasa Inggris", () => {
+    expect(buildCvFilename("Rakha Yuda Wicaksono", "en")).toBe(
+      "CV ATS Rakha Yuda Wicaksono - EN.pdf",
+    );
+  });
 });
