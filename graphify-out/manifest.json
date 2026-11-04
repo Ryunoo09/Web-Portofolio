@@ -972,10 +972,10 @@
     "semantic_hash": "6d3261b28d9b36371eaa9d72398f585d"
   },
   "src/shared/components/common/BulletPoints.tsx": {
-    "mtime": 1792311547.5763438,
-    "seen": 1793097844.5797765,
-    "ast_hash": "e2016740e4a28341795645ac82dfae92",
-    "semantic_hash": "e2016740e4a28341795645ac82dfae92"
+    "mtime": 1793807055.989189,
+    "seen": 1793807304.3520837,
+    "ast_hash": "575f560fd5c3952e85f2a7c390fec1f8",
+    "semantic_hash": ""
   },
   "src/shared/components/common/ConfirmDeleteDialog.test.tsx": {
     "mtime": 1792232998.7646587,
@@ -1146,9 +1146,9 @@
     "semantic_hash": "29ac1aee2d412b9c5ab787d0c9ac16d4"
   },
   "src/shared/constants/siteConfig.ts": {
-    "mtime": 1793806100.8119183,
-    "seen": 1793806384.5258281,
-    "ast_hash": "d302b9c26ecb8c793ac5460ec1d61ee5",
+    "mtime": 1793806415.648532,
+    "seen": 1793807304.3661766,
+    "ast_hash": "c3d1e1fa52f15d2d9d29f7e878e2980d",
     "semantic_hash": ""
   },
   "src/shared/lib/query.ts": {
@@ -1224,16 +1224,16 @@
     "semantic_hash": ""
   },
   "src/shared/lib/utils.test.ts": {
-    "mtime": 1792519088.2413354,
-    "seen": 1793097844.5798779,
-    "ast_hash": "75612f037fe95baee70764cbd77ccac6",
-    "semantic_hash": "75612f037fe95baee70764cbd77ccac6"
+    "mtime": 1793806894.0300415,
+    "seen": 1793807304.371848,
+    "ast_hash": "25e90bfe1461b0837970e9df871dbb30",
+    "semantic_hash": ""
   },
   "src/shared/lib/utils.ts": {
-    "mtime": 1792519088.199952,
-    "seen": 1793097844.57988,
-    "ast_hash": "cd531fca6de135e9fcb248b9161762d0",
-    "semantic_hash": "cd531fca6de135e9fcb248b9161762d0"
+    "mtime": 1793807055.989189,
+    "seen": 1793807304.3718517,
+    "ast_hash": "a9cade40a41c0140b9a43e6bf69eacf3",
+    "semantic_hash": ""
   },
   "src/shared/lib/validation.ts": {
     "mtime": 1792232455.8977156,
@@ -1326,9 +1326,9 @@
     "semantic_hash": ""
   },
   "HANDOFF.md": {
-    "mtime": 1793785049.9572935,
-    "seen": 1793806384.534795,
-    "ast_hash": "60bf38e989ce7041360065c4f0807618",
+    "mtime": 1793807186.5378253,
+    "seen": 1793807304.3743315,
+    "ast_hash": "f2ec027ca7acd0e921512a6135a075c0",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1674,9 +1674,9 @@
     "semantic_hash": ""
   },
   "src/features/profile/components/public/CredentialRow.tsx": {
-    "mtime": 1793785048.4849129,
-    "seen": 1793806384.4902325,
-    "ast_hash": "550d0989e399dde9ab72065317a3907d",
+    "mtime": 1793806899.6493475,
+    "seen": 1793807304.3349714,
+    "ast_hash": "67b12a23aac402f07e89a39dd6f08457",
     "semantic_hash": ""
   },
   "src/features/profile/components/public/about.test.tsx": {
@@ -1740,9 +1740,9 @@
     "semantic_hash": ""
   },
   "src/app/(public)/opengraph-image.tsx": {
-    "mtime": 1793806100.8119183,
-    "seen": 1793806384.4546099,
-    "ast_hash": "a1e08a8fe772a82f21a170eb26b8583b",
+    "mtime": 1793806415.5425618,
+    "seen": 1793807304.300731,
+    "ast_hash": "3f70c1b708ccaf192c8dae0f427a7b96",
     "semantic_hash": ""
   },
   "src/app/(public)/projects/opengraph-image.tsx": {
@@ -2337,6 +2337,12 @@
     "mtime": 1793592718.1889982,
     "seen": 1793780297.989943,
     "ast_hash": "1a9a2c0e210009b65facca0b32316d78",
+    "semantic_hash": ""
+  },
+  "src/shared/components/common/BulletPoints.test.tsx": {
+    "mtime": 1793806894.0300415,
+    "seen": 1793807304.3520796,
+    "ast_hash": "f425987f1d0ab333fe918d3f1920a09e",
     "semantic_hash": ""
   },
   "pnpm-lock.yaml": {
