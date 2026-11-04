@@ -1,17 +1,15 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { JsonLd, PageContainer, SectionIntro } from "@/shared/components";
+import { CvDownloadMenu, JsonLd, PageContainer, SectionIntro } from "@/shared/components";
 import { buildMetadata } from "@/shared/lib/seo/buildMetadata";
 import { aboutPageNode } from "@/shared/lib/seo/structured-data";
-import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { formatPeriod } from "@/shared/lib/utils";
 import {
   AboutProof,
   CredentialRow,
   ExperienceTimeline,
-  Principles,
   getCertificates,
   getEducation,
   getExperiences,
@@ -96,16 +94,6 @@ export default async function AboutPage() {
         </section>
       )}
 
-      <section className="space-y-4" aria-labelledby="prinsip-title">
-        <h2
-          id="prinsip-title"
-          className="text-foreground font-heading text-xl font-semibold tracking-tight sm:text-2xl"
-        >
-          Prinsip
-        </h2>
-        <Principles />
-      </section>
-
       {educationList.length > 0 && (
         <section className="space-y-4" aria-labelledby="pendidikan-title">
           <h2
@@ -175,6 +163,7 @@ export default async function AboutPage() {
                 meta={organization.memberCount ? `${organization.memberCount}+ anggota` : null}
                 period={formatPeriod(organization.startedAt, organization.endedAt)}
                 description={organization.description}
+                descriptionAsList
                 images={organization.images}
               />
             ))}
@@ -201,12 +190,7 @@ export default async function AboutPage() {
             <ArrowUpRight className="size-4" aria-hidden="true" />
           </Link>
         </Button>
-        <Button asChild size="lg" variant="secondary">
-          <a href={CV_DOWNLOAD_PATH} download className="flex items-center gap-2">
-            <span>Unduh CV</span>
-            <ArrowUpRight className="size-4" aria-hidden="true" />
-          </a>
-        </Button>
+        <CvDownloadMenu size="lg" />
       </div>
     </PageContainer>
   );

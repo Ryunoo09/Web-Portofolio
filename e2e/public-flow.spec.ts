@@ -21,6 +21,21 @@ test("beranda memakai metrik jujur dan tanpa angka 500+", async ({ page }) => {
   );
 });
 
+test("tombol CV menampilkan pilihan bahasa Indonesia dan Inggris", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Unduh CV" }).first().click();
+
+  await expect(page.getByRole("menuitem", { name: "CV Bahasa Indonesia" })).toHaveAttribute(
+    "href",
+    "/resume.pdf",
+  );
+  await expect(page.getByRole("menuitem", { name: "CV Bahasa Inggris" })).toHaveAttribute(
+    "href",
+    "/resume.pdf?lang=en",
+  );
+});
+
 test("daftar proyek membuka detail proyek", async ({ page }) => {
   await page.goto("/projects");
 
@@ -135,6 +150,14 @@ test("menu mobile: Escape menutup dan fokus kembali ke tombol", async ({ page })
   const dialog = page.getByRole("dialog", { name: "Menu" });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole("link", { name: "Proyek" })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: "CV Bahasa Indonesia" })).toHaveAttribute(
+    "href",
+    "/resume.pdf",
+  );
+  await expect(dialog.getByRole("link", { name: "CV Bahasa Inggris" })).toHaveAttribute(
+    "href",
+    "/resume.pdf?lang=en",
+  );
 
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();

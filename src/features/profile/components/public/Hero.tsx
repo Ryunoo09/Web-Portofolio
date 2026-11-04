@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ArrowUpRight, Download } from "lucide-react";
-import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
+import { ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/shared/constants/siteConfig";
 import { Button } from "@/shared/components/ui/button";
+import { CvDownloadMenu } from "@/shared/components";
 import type { Project } from "@/features/projects";
 import type { Profile } from "../../types";
 import { MetricRail } from "./MetricRail";
@@ -51,12 +51,7 @@ export function Hero({ profile, latestProject }: HeroProps) {
                 <ArrowUpRight className="size-4" aria-hidden="true" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="secondary">
-              <a href={CV_DOWNLOAD_PATH} download className="flex items-center gap-2">
-                <Download className="size-4" aria-hidden="true" />
-                <span>Unduh CV</span>
-              </a>
-            </Button>
+            <CvDownloadMenu size="lg" />
           </div>
 
           <MetricRail metrics={siteConfig.metrics} />

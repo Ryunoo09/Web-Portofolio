@@ -4,7 +4,6 @@ import type { Experience } from "../../types";
 import { AboutProof } from "./AboutProof";
 import { CredentialRow } from "./CredentialRow";
 import { ExperienceTimeline } from "./ExperienceTimeline";
-import { Principles } from "./Principles";
 
 const experience: Experience = {
   id: "e1",
@@ -65,19 +64,6 @@ describe("AboutProof", () => {
   });
 });
 
-describe("Principles", () => {
-  it("menampilkan tiga prinsip sebagai baris berurutan", () => {
-    render(<Principles />);
-
-    const headings = screen.getAllByRole("heading", { level: 3 });
-    expect(headings.map((heading) => heading.textContent)).toEqual([
-      "Masalah dulu",
-      "Ukur hasil",
-      "Rawat setelah kirim",
-    ]);
-  });
-});
-
 describe("CredentialRow", () => {
   it("merender deskripsi sertifikat", () => {
     render(
@@ -91,6 +77,25 @@ describe("CredentialRow", () => {
     );
 
     expect(screen.getByText("Bukti kompetensi pengembangan aplikasi cloud.")).toBeInTheDocument();
+  });
+
+  it("memecah deskripsi organisasi menjadi poin per baris", () => {
+    const { container } = render(
+      <ul>
+        <CredentialRow
+          title="Himpunan Mahasiswa"
+          subtitle="Ketua"
+          description={"- Memimpin program kerja\n- Mengelola 30 anggota"}
+          descriptionAsList
+        />
+      </ul>,
+    );
+
+    const list = container.querySelector("ul ul");
+    expect(list).not.toBeNull();
+    expect(list?.querySelectorAll("li")).toHaveLength(2);
+    expect(screen.getByText("Memimpin program kerja")).toBeInTheDocument();
+    expect(screen.getByText("Mengelola 30 anggota")).toBeInTheDocument();
   });
 
   it("tidak merender paragraf deskripsi saat kosong", () => {

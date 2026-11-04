@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CV_DOWNLOAD_PATH } from "@/shared/constants/downloads";
+import { CvDownloadLinks } from "@/shared/components";
 import { resolveSocialLinks, type SocialProfile } from "@/shared/lib/social-links";
 
 interface ContactPathsProps {
@@ -26,13 +26,7 @@ export function ContactPaths({ profile }: ContactPathsProps) {
             CV, pengalaman, dan kesiapan untuk peran Backend/Data.
           </p>
           <div className="flex flex-wrap gap-4">
-            <a
-              href={CV_DOWNLOAD_PATH}
-              download
-              className="text-gold-muted hover:text-foreground focus-visible:ring-ring rounded-sm text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none"
-            >
-              Unduh CV
-            </a>
+            <CvDownloadLinks className="text-sm font-semibold" />
             <a
               href="#kirim-pesan"
               className="text-gold-muted hover:text-foreground focus-visible:ring-ring rounded-sm text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none"

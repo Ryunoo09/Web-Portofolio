@@ -204,6 +204,9 @@ test.describe("alur admin", () => {
     await page.goto("/admin/organizations/new");
     await page.getByLabel("Nama Organisasi").fill(name);
     await page.getByLabel("Peran").fill("Anggota Aktif");
+    await page
+      .getByLabel("Deskripsi")
+      .fill("Menjalankan program kerja mingguan\nMengoordinasikan 30 anggota");
     await page.getByRole("button", { name: "Buat Organisasi" }).click();
 
     await expect(page).toHaveURL(/\/admin\/organizations$/);
@@ -224,6 +227,8 @@ test.describe("alur admin", () => {
 
     await page.goto("/about");
     await expect(page.getByText(name)).toBeVisible();
+    await expect(page.getByText("Menjalankan program kerja mingguan")).toBeVisible();
+    await expect(page.getByText("Mengoordinasikan 30 anggota")).toBeVisible();
     await expect(page.getByAltText(alt)).toBeVisible();
 
     await page.goto("/admin/organizations");

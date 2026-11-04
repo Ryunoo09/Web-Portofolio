@@ -9,6 +9,7 @@ export const profileFormSchema = z.object({
   location: z.string().max(100).optional(),
   avatarUrl: urlOrEmpty,
   resumeUrl: urlOrEmpty,
+  resumeUrlEn: urlOrEmpty,
   socialLinks: z.array(
     z.object({
       platform: z.string().min(1, "Nama platform wajib diisi").max(40),

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { ImageLightbox, MediaFrame } from "@/shared/components";
+import { BulletPoints, ImageLightbox, MediaFrame } from "@/shared/components";
 
 interface CredentialImage {
   id: string;
@@ -13,6 +13,8 @@ interface CredentialRowProps {
   subtitle?: string | null;
   period?: string | null;
   description?: string | null;
+  /** Tampilkan deskripsi sebagai daftar berbutir (satu baris = satu poin). */
+  descriptionAsList?: boolean;
   href?: string | null;
   linkLabel?: string;
   imageUrl?: string | null;
@@ -29,6 +31,7 @@ export function CredentialRow({
   subtitle,
   period,
   description,
+  descriptionAsList = false,
   href,
   linkLabel = "Verifikasi sertifikat",
   imageUrl,
@@ -53,11 +56,17 @@ export function CredentialRow({
         <h3 className="text-foreground font-heading text-base font-semibold">{title}</h3>
         {subtitle && <p className="text-gold-muted mt-0.5 text-sm">{subtitle}</p>}
         {meta && <p className="text-muted-foreground mt-0.5 text-xs">{meta}</p>}
-        {description && (
-          <p className="text-muted-foreground mt-2 max-w-[68ch] text-sm leading-relaxed">
-            {description}
-          </p>
-        )}
+        {description &&
+          (descriptionAsList ? (
+            <BulletPoints
+              text={description}
+              className="text-muted-foreground mt-2 max-w-[68ch] text-sm leading-relaxed"
+            />
+          ) : (
+            <p className="text-muted-foreground mt-2 max-w-[68ch] text-sm leading-relaxed">
+              {description}
+            </p>
+          ))}
         {href && (
           <a
             href={href}

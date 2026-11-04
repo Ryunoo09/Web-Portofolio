@@ -445,6 +445,7 @@ export type Database = {
           id: number;
           location: string | null;
           resume_url: string | null;
+          resume_url_en: string | null;
           seo_description: string | null;
           seo_title: string | null;
           social_links: Json;
@@ -461,6 +462,7 @@ export type Database = {
           id?: number;
           location?: string | null;
           resume_url?: string | null;
+          resume_url_en?: string | null;
           seo_description?: string | null;
           seo_title?: string | null;
           social_links?: Json;
@@ -477,6 +479,7 @@ export type Database = {
           id?: number;
           location?: string | null;
           resume_url?: string | null;
+          resume_url_en?: string | null;
           seo_description?: string | null;
           seo_title?: string | null;
           social_links?: Json;

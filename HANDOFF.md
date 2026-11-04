@@ -1160,3 +1160,71 @@ dinormalisasi ke `628...`. Semua tombol CV lewat `/resume.pdf` agar header route
 
 **Utang:** 404 memakai footer fallback statis (tidak mengambil profil) agar `not-found` tetap
 komponen sinkron yang bisa diuji. `personNode` JSON-LD masih memakai `siteConfig.socials`.
+
+---
+
+### Sesi 2026-11-04 - Tombol CV dua bahasa (Indonesia dan Inggris)
+
+**Permintaan:** satu tombol **Unduh CV** yang membuka dua pilihan: CV Bahasa Indonesia dan
+CV Bahasa Inggris. Planning disetujui pemilik: semua titik CV, bentuk dropdown, label bahasa penuh.
+
+**Data:** migrasi `0013_profile_resume_en.sql` menambah `profile.resume_url_en`; kolom lama
+`resume_url` tetap dipakai untuk CV Indonesia. Migrasi sudah di-push ke project linked.
+`pnpm db:types` + prettier dijalankan.
+
+**Perubahan:**
+
+| Berkas                                                                                    | Isi                                                         |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `src/shared/components/common/CvDownloadMenu.tsx`                                         | dropdown Radix: trigger Unduh CV + dua item bahasa          |
+| `src/shared/components/common/CvDownloadLinks.tsx`                                        | dua tautan teks untuk footer/panel kontak                   |
+| `src/shared/constants/downloads.ts`                                                       | `CV_DOWNLOAD_PATHS.id` dan `.en`                            |
+| `src/app/resume.pdf/route.ts`                                                             | `?lang=en` memilih `resume_url_en`; default tetap Indonesia |
+| `src/shared/lib/cv.ts`                                                                    | nama EN berakhiran ` - EN`; nama ID tidak berubah           |
+| `src/features/profile/{types,schemas,server/*}`                                           | field `resumeUrlEn`, mapper, update, cleanup Storage        |
+| `src/features/profile/components/admin/ProfileForm.tsx`                                   | unggahan CV Indonesia dan Inggris terpisah                  |
+| Header, Hero, /about, /skills, ContactCta, footer, ContactPanel, ContactPaths, MobileMenu | memakai menu/tautan dua bahasa                              |
+
+**Keputusan:** menu mobile memakai dua tombol langsung, bukan dropdown bersarang, karena
+`<dialog>` native berada di top layer. CV Inggris yang belum diunggah menghasilkan 404 eksplisit;
+tidak ada fallback ke CV Indonesia.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama) - `pnpm typecheck` bersih - `pnpm test`
+**56 file / 243 tes** lulus - `pnpm build` sukses - `pnpm test:e2e` **92 lulus** (termasuk tes
+dropdown CV dan menu mobile). Snapshot visual `beranda-390-*`, `proyek-1440-*`, dan proyek
+viewport lain di-regenerasi setelah diff diperiksa: perubahan header/hero dan drift konten proyek.
+
+**Sisa pekerjaan:** unggah PDF CV Inggris lewat `/admin/profile` (CV Indonesia sudah ada).
+Sebelum unggah, tombol CV Bahasa Inggris mengembalikan 404.
+
+---
+
+### Sesi 2026-11-04 (lanjutan) - Hapus bagian Prinsip di /about
+
+**Permintaan:** hapus bagian **Prinsip** dari halaman `/about`.
+
+**Perubahan:** section `prinsip-title` dan import `Principles` dihapus dari
+`src/app/(public)/about/page.tsx`; komponen `Principles.tsx` dan tesnya dihapus karena tidak
+dipakai lagi; export di `src/features/profile/index.ts` dibersihkan.
+
+**Verifikasi:** `pnpm typecheck` bersih - `pnpm lint` 0 error (1 warning lama) - `pnpm test`
+**56 file / 242 tes** lulus - `pnpm build` sukses - E2E `tentang` visual 2 lulus, a11y about
+2 lulus, smoke `/about` lulus.
+
+---
+
+### Sesi 2026-11-04 (lanjutan) - Deskripsi organisasi per poin
+
+**Permintaan:** deskripsi pada bagian **Organisasi** di `/about` tampil sebagai poin per baris,
+bukan satu paragraf.
+
+**Perubahan:** `CredentialRow` mendapat prop `descriptionAsList`; bila aktif, deskripsi
+dirender lewat `BulletPoints` (satu baris = satu poin). Hanya baris organisasi di
+`src/app/(public)/about/page.tsx` yang memakai prop ini, sehingga pendidikan dan sertifikasi
+tetap berupa paragraf. Hint form admin organisasi yang sudah ada kini sesuai dengan tampilannya.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama) - `pnpm typecheck` bersih - `pnpm test`
+**56 file / 243 tes** lulus - `pnpm build` sukses - `pnpm test:e2e` **92 lulus** (tes admin
+organisasi kini mengisi deskripsi dua baris dan memastikan keduanya tampil). Snapshot visual
+`proyek-*` dan `keahlian-*` di-regenerasi setelah diff diperiksa: drift konten proyek/keahlian
+dan chevron menu CV di header, bukan akibat perubahan ini (`tentang-*` tidak berubah).

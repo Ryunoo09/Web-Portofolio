@@ -9,6 +9,7 @@ const valid = {
   location: "Jakarta",
   avatarUrl: "",
   resumeUrl: "",
+  resumeUrlEn: "",
   socialLinks: [],
   seoTitle: "",
   seoDescription: "",
