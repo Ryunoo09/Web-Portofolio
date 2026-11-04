@@ -8,12 +8,12 @@ export type SiteMetric = {
 export const siteConfig = {
   name: "Rakha Yuda Wicaksono",
   shortName: "Rakha",
-  title: "Rakha Yuda Wicaksono | Software Engineer & Data Engineer",
+  title: "Rakha Yuda Wicaksono | Software Engineer & Backend Developer",
   description:
-    "Portofolio Rakha Yuda Wicaksono — Software Engineer & Data Engineer. Python, FastAPI, Laravel, PostgreSQL, serta otomasi dan AI untuk menyelesaikan masalah nyata.",
+    "Portofolio Rakha Yuda Wicaksono — Software Engineer & Backend Developer. Python, FastAPI, Laravel, PostgreSQL, serta otomasi dan AI untuk menyelesaikan masalah nyata.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   locale: "id_ID",
-  role: "Software Engineer & Data Engineer",
+  role: "Software Engineer & Backend Developer",
   valueProp:
     "Saya mengubah proses manual menjadi sistem terintegrasi, pipeline data, dan sistem computer vision yang bisa diukur. Fresh graduate Teknologi Rekayasa Komputer, Politeknik Negeri Semarang.",
   location: "Brebes, Jawa Tengah, Indonesia",
