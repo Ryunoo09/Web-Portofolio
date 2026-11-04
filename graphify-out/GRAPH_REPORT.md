@@ -1,17 +1,17 @@
 # Graph Report - portfolio  (2026-11-04)
 
 ## Corpus Check
-- 345 files · ~83,838 words
+- 345 files · ~84,069 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 34 file(s) not represented in the graph (top: (none) 30, .example 1, .ico 1)
 
 ## Summary
-- 1410 nodes · 4604 edges · 72 communities (62 shown, 10 thin omitted)
+- 1410 nodes · 4606 edges · 70 communities (60 shown, 10 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e1cd54dd`
+- Built from commit: `b025ddb3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,7 +21,7 @@
 - components/admin.ts
 - [slug]/page.tsx
 - AdminSidebar.tsx
-- MediaFrame
+- ErrorSummary.tsx
 - Project Docs & Architecture Rules
 - GitHub Deploy Workflow
 - Dev Dependencies Manifest
@@ -59,21 +59,19 @@
 - CaseCard.tsx
 - Project
 - revalidateAbout
-- SiteHeader.tsx
+- lucide-react
 - react
 - languages/server/actions.ts
 - projects/server/queries.ts
 - siteConfig.ts
 - skills/server/actions.ts
 - vitest
-- JsonLd
 - certificates/server/actions.ts
 - experiences/server/queries.ts
 - withOfflineFallback
 - a11y.spec.ts
 - server.ts
 - (public)/page.tsx
-- radix-ui
 - app/layout.tsx
 - database.ts
 - ProjectForm.tsx
@@ -115,15 +113,15 @@
 - **Visual Identity System (palette, type, spacing, anti-patterns)** — design_system_portfolio_master_color_palette, design_system_portfolio_master_typography, design_system_portfolio_master_spacing, design_system_portfolio_master_anti_patterns, handoff_design_typography [EXTRACTED 1.00]
 - **Layered Architecture and Server Action Convention** — handoff_architecture_rules, handoff_server_action_pattern, readme_architecture_rules, readme_server_action_pattern, readme_admin_defense_layers [INFERRED 0.85]
 
-## Communities (72 total, 10 thin omitted)
+## Communities (70 total, 10 thin omitted)
 
 ### Community 0 - "profile/server/actions.ts"
 Cohesion: 0.21
 Nodes (11): profileFormSchema, ProfileFormValues, valid, invalidInput(), ParsedProfile, updateProfile(), uploadProfileImage(), uploadProfileResume() (+3 more)
 
 ### Community 1 - "(dashboard)/page.tsx"
-Cohesion: 0.19
-Nodes (16): AdminDashboardPage(), CertificateFormProps, CertificateTableProps, CertificateRow, toCertificate(), countCertificates(), getAllCertificates(), getPublishedCertificates() (+8 more)
+Cohesion: 0.20
+Nodes (14): AdminDashboardPage(), countCertificates(), countEducation(), countExperiences(), LanguageFormProps, LanguageTableProps, LanguageList(), LanguageListProps (+6 more)
 
 ### Community 2 - "components/admin.ts"
 Cohesion: 0.08
@@ -137,9 +135,9 @@ Nodes (18): alt, contentType, ImageProps, OpengraphImage(), size, truncate(), ge
 Cohesion: 0.19
 Nodes (16): AdminSidebar(), AdminSidebarProps, isActive(), links, NavLinks(), NavProps, UtilityLinks(), Sheet() (+8 more)
 
-### Community 5 - "MediaFrame"
-Cohesion: 0.21
-Nodes (11): experience, AboutFact, AboutProof(), AboutProofProps, toParagraphs(), CredentialImage, CredentialRow(), CredentialRowProps (+3 more)
+### Community 5 - "ErrorSummary.tsx"
+Cohesion: 0.50
+Nodes (3): ErrorSummary(), ErrorSummaryEntry, ErrorSummaryProps
 
 ### Community 6 - "Project Docs & Architecture Rules"
 Cohesion: 0.05
@@ -210,12 +208,12 @@ Cohesion: 0.11
 Nodes (7): hasCredentials, PROTECTED_ROUTES, publicRoutes, routes, viewports, @playwright/test@^1.63.0, @playwright/test
 
 ### Community 23 - "about/page.tsx"
-Cohesion: 0.21
-Nodes (17): AboutPage(), metadata, revalidate, LanguageFormProps, LanguageTableProps, LanguageList(), LanguageListProps, getPublishedLanguages() (+9 more)
+Cohesion: 0.19
+Nodes (18): AboutPage(), metadata, revalidate, CertificateFormProps, CertificateTableProps, CertificateRow, toCertificate(), getAllCertificates() (+10 more)
 
 ### Community 24 - "profile/server/mappers.ts"
-Cohesion: 0.16
-Nodes (21): ProfileFormProps, ExperienceTimelineProps, EducationImageFields, EducationWithImages, ExperienceImageFields, ExperienceWithImages, Row, ProfileRow (+13 more)
+Cohesion: 0.10
+Nodes (34): ProfileFormProps, experience, AboutFact, AboutProof(), AboutProofProps, toParagraphs(), CredentialImage, CredentialRow() (+26 more)
 
 ### Community 25 - "NPM Scripts & Tooling"
 Cohesion: 0.15
@@ -230,8 +228,8 @@ Cohesion: 0.19
 Nodes (15): ErrorPage(), ContactPage(), metadata, revalidate, ContactPanel(), ContactPanelProps, ContactPaths(), ContactPathsProps (+7 more)
 
 ### Community 28 - "components/index.ts"
-Cohesion: 0.15
-Nodes (15): NotFound(), PublicLayout(), EmptyState(), EmptyStateProps, ErrorSummary(), ErrorSummaryEntry, ErrorSummaryProps, GithubIcon() (+7 more)
+Cohesion: 0.09
+Nodes (28): next-themes, NotFound(), PublicLayout(), BreadcrumbItem, Breadcrumbs(), BreadcrumbsProps, toAbsoluteUrl(), EmptyState() (+20 more)
 
 ### Community 29 - "Project Scaffold Script"
 Cohesion: 0.73
@@ -246,8 +244,8 @@ Cohesion: 0.40
 Nodes (5): File / Document Icon (16px monochrome UI glyph), Globe / World Icon (16px monochrome UI glyph), Next.js Wordmark Logo (black horizontal logotype, 394x80), Vercel Triangle Mark (white on transparent, 1155x1000), Browser Window Icon (16px monochrome UI glyph with three dots)
 
 ### Community 33 - "AdminSidebar.tsx"
-Cohesion: 0.15
-Nodes (20): CvDownloadMenu(), CvDownloadMenuProps, CardAction(), CardContent(), CardDescription(), CardFooter(), CardHeader(), CardTitle() (+12 more)
+Cohesion: 0.13
+Nodes (18): class-variance-authority, radix-ui, badgeVariants, CardAction(), CardContent(), CardDescription(), CardFooter(), CardHeader() (+10 more)
 
 ### Community 34 - "pnpm Workspace Build Approvals"
 Cohesion: 0.50
@@ -277,13 +275,13 @@ Nodes (11): resolveProjectStatus(), CaseFacts(), STATUS_LABELS, CaseNext(), Case
 Cohesion: 0.26
 Nodes (16): AdminOrganizationsEditPage(), createOrganization(), createOrganizationImage(), deleteOrganization(), deleteOrganizationImage(), imageInputSchema, invalidInput(), ParsedOrganization (+8 more)
 
-### Community 49 - "SiteHeader.tsx"
-Cohesion: 0.18
-Nodes (11): next-themes, CvDownloadLinksProps, isActivePath(), MobileMenu(), MobileMenuProps, isActivePath(), SiteHeader(), emptySubscribe() (+3 more)
+### Community 49 - "lucide-react"
+Cohesion: 0.13
+Nodes (20): lucide-react, ErrorPageProps, FACTS, CvDownloadLinksProps, CvDownloadMenu(), CvDownloadMenuProps, isActivePath(), MobileMenu() (+12 more)
 
 ### Community 50 - "react"
-Cohesion: 0.12
-Nodes (17): lucide-react, react, metadata, ErrorPageProps, initialState, FACTS, SignalTickerProps, TickerItem (+9 more)
+Cohesion: 0.13
+Nodes (17): react, metadata, initialState, ConfirmDeleteDialogProps, FieldError(), FieldErrorProps, FormFieldControlProps, FormFieldProps (+9 more)
 
 ### Community 51 - "languages/server/actions.ts"
 Cohesion: 0.20
@@ -304,10 +302,6 @@ Nodes (11): skillFormSchema, SkillFormValues, valid, createSkill(), deleteSkill(
 ### Community 55 - "vitest"
 Cohesion: 0.06
 Nodes (20): @testing-library/react, @testing-library/user-event, vitest, dynamic, GET(), notFound(), mocks, request (+12 more)
-
-### Community 56 - "JsonLd"
-Cohesion: 0.15
-Nodes (13): BreadcrumbItem, Breadcrumbs(), BreadcrumbsProps, toAbsoluteUrl(), JsonLd(), JsonLdProps, aspectClasses, MediaFrameProps (+5 more)
 
 ### Community 57 - "certificates/server/actions.ts"
 Cohesion: 0.24
@@ -333,10 +327,6 @@ Nodes (9): @supabase/ssr@^0.12.7, @supabase/ssr, config, proxy(), withAdminHeade
 Cohesion: 0.15
 Nodes (24): HomePage(), metadata, revalidate, AboutStrip(), ContactCta(), ProofStrip(), SignalTicker(), TickerLink() (+16 more)
 
-### Community 63 - "radix-ui"
-Cohesion: 0.22
-Nodes (6): class-variance-authority, radix-ui, StatusToggleProps, badgeVariants, Separator(), Switch()
-
 ### Community 64 - "app/layout.tsx"
 Cohesion: 0.29
 Nodes (6): jakarta, jetbrainsMono, metadata, RootLayout(), spaceGrotesk, ThemeProvider()
@@ -354,16 +344,16 @@ Cohesion: 0.50
 Nodes (3): contentSecurityPolicy, nextConfig, securityHeaders
 
 ### Community 68 - "ConfirmDeleteDialog.tsx"
-Cohesion: 0.21
-Nodes (15): ConfirmDeleteDialogProps, GalleryManagerProps, ImageLightbox(), ImageLightboxProps, ImageUploadFieldProps, Dialog(), DialogContent(), DialogDescription() (+7 more)
+Cohesion: 0.30
+Nodes (11): ImageLightbox(), ImageLightboxProps, Dialog(), DialogContent(), DialogDescription(), DialogFooter(), DialogHeader(), DialogOverlay() (+3 more)
 
 ### Community 69 - "eslint.config.mjs"
 Cohesion: 0.25
 Nodes (7): eslintConfig, eslint@^9, eslint-config-next@16.3.8, eslint-config-prettier@^10.1.8, eslint, eslint-config-next, eslint-config-prettier
 
 ### Community 72 - "utils.ts"
-Cohesion: 0.16
-Nodes (10): CaseTocProps, CaseTocSection, BulletPoints(), BulletPointsProps, PageContainerProps, ProjectCoverFallback(), ProjectCoverFallbackProps, StackList() (+2 more)
+Cohesion: 0.14
+Nodes (9): CaseTocProps, CaseTocSection, SignalTickerProps, TickerItem, BulletPointsProps, aspectClasses, MediaFrameProps, PageContainerProps (+1 more)
 
 ## Knowledge Gaps
 - **12 isolated node(s):** `File / Document Icon (16px monochrome UI glyph)`, `Globe / World Icon (16px monochrome UI glyph)`, `Vercel Triangle Mark (white on transparent, 1155x1000)`, `Cloudflare Proxied DNS with Full (strict) TLS`, `IMAGE_TAG Rollback by Commit SHA` (+7 more)
@@ -373,17 +363,17 @@ Nodes (10): CaseTocProps, CaseTocSection, BulletPoints(), BulletPointsProps, Pag
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `next` connect `components/admin.ts` to `(dashboard)/page.tsx`, `[slug]/page.tsx`, `AdminSidebar.tsx`, `MediaFrame`, `Dev Dependencies Manifest`, `projects/server/actions.ts`, `createServerSupabase`, `Runtime Dependencies Manifest`, `ContactForm.tsx`, `(public)/skills/page.tsx`, `about/page.tsx`, `og-image.tsx`, `PageContainer`, `components/index.ts`, `taxonomy.ts`, `Project`, `CaseCard.tsx`, `Project`, `revalidateAbout`, `SiteHeader.tsx`, `react`, `siteConfig.ts`, `skills/server/actions.ts`, `JsonLd`, `server.ts`, `(public)/page.tsx`, `radix-ui`, `app/layout.tsx`, `ProjectForm.tsx`, `next.config.ts`, `ConfirmDeleteDialog.tsx`?**
-  _High betweenness centrality (0.136) - this node is a cross-community bridge._
+- **Why does `next` connect `components/admin.ts` to `(dashboard)/page.tsx`, `[slug]/page.tsx`, `AdminSidebar.tsx`, `Dev Dependencies Manifest`, `projects/server/actions.ts`, `createServerSupabase`, `Runtime Dependencies Manifest`, `ContactForm.tsx`, `(public)/skills/page.tsx`, `about/page.tsx`, `profile/server/mappers.ts`, `og-image.tsx`, `PageContainer`, `components/index.ts`, `taxonomy.ts`, `Project`, `CaseCard.tsx`, `Project`, `revalidateAbout`, `lucide-react`, `react`, `siteConfig.ts`, `skills/server/actions.ts`, `server.ts`, `(public)/page.tsx`, `app/layout.tsx`, `ProjectForm.tsx`, `next.config.ts`, `ConfirmDeleteDialog.tsx`, `utils.ts`?**
+  _High betweenness centrality (0.131) - this node is a cross-community bridge._
 - **What connects `File / Document Icon (16px monochrome UI glyph)`, `Globe / World Icon (16px monochrome UI glyph)`, `Vercel Triangle Mark (white on transparent, 1155x1000)` to the rest of the system?**
   _12 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `components/admin.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.07932875667429443 - nodes in this community are weakly interconnected._
-- **Why does `vitest` connect `vitest` to `profile/server/actions.ts`, `[slug]/page.tsx`, `MediaFrame`, `Dev Dependencies Manifest`, `social-links.ts`, `createPublicClient`, `ContactForm.tsx`, `(public)/skills/page.tsx`, `storage.ts`, `profile/server/mappers.ts`, `PageContainer`, `components/index.ts`, `taxonomy.ts`, `public.ts`, `zod`, `Project`, `languages/server/actions.ts`, `projects/server/queries.ts`, `siteConfig.ts`, `skills/server/actions.ts`, `JsonLd`, `certificates/server/actions.ts`, `experiences/server/queries.ts`, `withOfflineFallback`, `(public)/page.tsx`, `database.ts`, `ProjectForm.tsx`, `@vitejs/plugin-react`, `utils.ts`?**
-  _High betweenness centrality (0.095) - this node is a cross-community bridge._
+- **Why does `vitest` connect `vitest` to `profile/server/actions.ts`, `[slug]/page.tsx`, `ErrorSummary.tsx`, `Dev Dependencies Manifest`, `social-links.ts`, `createPublicClient`, `ContactForm.tsx`, `(public)/skills/page.tsx`, `storage.ts`, `profile/server/mappers.ts`, `PageContainer`, `components/index.ts`, `taxonomy.ts`, `public.ts`, `zod`, `Project`, `languages/server/actions.ts`, `projects/server/queries.ts`, `siteConfig.ts`, `skills/server/actions.ts`, `certificates/server/actions.ts`, `experiences/server/queries.ts`, `withOfflineFallback`, `(public)/page.tsx`, `database.ts`, `ProjectForm.tsx`, `@vitejs/plugin-react`, `utils.ts`?**
+  _High betweenness centrality (0.103) - this node is a cross-community bridge._
 - **Should `[slug]/page.tsx` be split into smaller, more focused modules?**
   _Cohesion score 0.13043478260869565 - nodes in this community are weakly interconnected._
-- **Why does `react` connect `react` to `components/admin.ts`, `AdminSidebar.tsx`, `Dev Dependencies Manifest`, `projects/server/actions.ts`, `Runtime Dependencies Manifest`, `ContactForm.tsx`, `PageContainer`, `components/index.ts`, `taxonomy.ts`, `AdminSidebar.tsx`, `Project`, `SiteHeader.tsx`, `vitest`, `JsonLd`, `radix-ui`, `app/layout.tsx`, `ProjectForm.tsx`, `ConfirmDeleteDialog.tsx`, `utils.ts`?**
-  _High betweenness centrality (0.042) - this node is a cross-community bridge._
+- **Why does `react` connect `react` to `app/layout.tsx`, `AdminSidebar.tsx`, `components/admin.ts`, `ProjectForm.tsx`, `AdminSidebar.tsx`, `ConfirmDeleteDialog.tsx`, `ErrorSummary.tsx`, `Dev Dependencies Manifest`, `projects/server/actions.ts`, `utils.ts`, `Runtime Dependencies Manifest`, `ContactForm.tsx`, `Project`, `lucide-react`, `vitest`, `PageContainer`, `components/index.ts`, `taxonomy.ts`?**
+  _High betweenness centrality (0.040) - this node is a cross-community bridge._
 - **Should `Project Docs & Architecture Rules` be split into smaller, more focused modules?**
   _Cohesion score 0.0463768115942029 - nodes in this community are weakly interconnected._

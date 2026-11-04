@@ -79,6 +79,25 @@ describe("CredentialRow", () => {
     expect(screen.getByText("Bukti kompetensi pengembangan aplikasi cloud.")).toBeInTheDocument();
   });
 
+  it("memecah deskripsi organisasi menjadi poin per baris", () => {
+    const { container } = render(
+      <ul>
+        <CredentialRow
+          title="Himpunan Mahasiswa"
+          subtitle="Ketua"
+          description={"- Memimpin program kerja\n- Mengelola 30 anggota"}
+          descriptionAsList
+        />
+      </ul>,
+    );
+
+    const list = container.querySelector("ul ul");
+    expect(list).not.toBeNull();
+    expect(list?.querySelectorAll("li")).toHaveLength(2);
+    expect(screen.getByText("Memimpin program kerja")).toBeInTheDocument();
+    expect(screen.getByText("Mengelola 30 anggota")).toBeInTheDocument();
+  });
+
   it("tidak merender paragraf deskripsi saat kosong", () => {
     const { container } = render(
       <ul>

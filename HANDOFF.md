@@ -1210,3 +1210,21 @@ dipakai lagi; export di `src/features/profile/index.ts` dibersihkan.
 **Verifikasi:** `pnpm typecheck` bersih - `pnpm lint` 0 error (1 warning lama) - `pnpm test`
 **56 file / 242 tes** lulus - `pnpm build` sukses - E2E `tentang` visual 2 lulus, a11y about
 2 lulus, smoke `/about` lulus.
+
+---
+
+### Sesi 2026-11-04 (lanjutan) - Deskripsi organisasi per poin
+
+**Permintaan:** deskripsi pada bagian **Organisasi** di `/about` tampil sebagai poin per baris,
+bukan satu paragraf.
+
+**Perubahan:** `CredentialRow` mendapat prop `descriptionAsList`; bila aktif, deskripsi
+dirender lewat `BulletPoints` (satu baris = satu poin). Hanya baris organisasi di
+`src/app/(public)/about/page.tsx` yang memakai prop ini, sehingga pendidikan dan sertifikasi
+tetap berupa paragraf. Hint form admin organisasi yang sudah ada kini sesuai dengan tampilannya.
+
+**Verifikasi:** `pnpm lint` 0 error (1 warning lama) - `pnpm typecheck` bersih - `pnpm test`
+**56 file / 243 tes** lulus - `pnpm build` sukses - `pnpm test:e2e` **92 lulus** (tes admin
+organisasi kini mengisi deskripsi dua baris dan memastikan keduanya tampil). Snapshot visual
+`proyek-*` dan `keahlian-*` di-regenerasi setelah diff diperiksa: drift konten proyek/keahlian
+dan chevron menu CV di header, bukan akibat perubahan ini (`tentang-*` tidak berubah).

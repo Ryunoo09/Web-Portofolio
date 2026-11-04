@@ -163,6 +163,7 @@ export default async function AboutPage() {
                 meta={organization.memberCount ? `${organization.memberCount}+ anggota` : null}
                 period={formatPeriod(organization.startedAt, organization.endedAt)}
                 description={organization.description}
+                descriptionAsList
                 images={organization.images}
               />
             ))}
