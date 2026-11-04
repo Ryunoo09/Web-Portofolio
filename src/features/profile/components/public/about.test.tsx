@@ -4,7 +4,6 @@ import type { Experience } from "../../types";
 import { AboutProof } from "./AboutProof";
 import { CredentialRow } from "./CredentialRow";
 import { ExperienceTimeline } from "./ExperienceTimeline";
-import { Principles } from "./Principles";
 
 const experience: Experience = {
   id: "e1",
@@ -62,19 +61,6 @@ describe("AboutProof", () => {
       />,
     );
     expect(screen.getByText("Bio belum diisi.")).toBeInTheDocument();
-  });
-});
-
-describe("Principles", () => {
-  it("menampilkan tiga prinsip sebagai baris berurutan", () => {
-    render(<Principles />);
-
-    const headings = screen.getAllByRole("heading", { level: 3 });
-    expect(headings.map((heading) => heading.textContent)).toEqual([
-      "Masalah dulu",
-      "Ukur hasil",
-      "Rawat setelah kirim",
-    ]);
   });
 });
 

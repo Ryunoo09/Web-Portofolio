@@ -1196,3 +1196,17 @@ viewport lain di-regenerasi setelah diff diperiksa: perubahan header/hero dan dr
 
 **Sisa pekerjaan:** unggah PDF CV Inggris lewat `/admin/profile` (CV Indonesia sudah ada).
 Sebelum unggah, tombol CV Bahasa Inggris mengembalikan 404.
+
+---
+
+### Sesi 2026-11-04 (lanjutan) - Hapus bagian Prinsip di /about
+
+**Permintaan:** hapus bagian **Prinsip** dari halaman `/about`.
+
+**Perubahan:** section `prinsip-title` dan import `Principles` dihapus dari
+`src/app/(public)/about/page.tsx`; komponen `Principles.tsx` dan tesnya dihapus karena tidak
+dipakai lagi; export di `src/features/profile/index.ts` dibersihkan.
+
+**Verifikasi:** `pnpm typecheck` bersih - `pnpm lint` 0 error (1 warning lama) - `pnpm test`
+**56 file / 242 tes** lulus - `pnpm build` sukses - E2E `tentang` visual 2 lulus, a11y about
+2 lulus, smoke `/about` lulus.

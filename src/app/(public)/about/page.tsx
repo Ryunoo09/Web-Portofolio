@@ -10,7 +10,6 @@ import {
   AboutProof,
   CredentialRow,
   ExperienceTimeline,
-  Principles,
   getCertificates,
   getEducation,
   getExperiences,
@@ -94,16 +93,6 @@ export default async function AboutPage() {
           <ExperienceTimeline experiences={experiences} />
         </section>
       )}
-
-      <section className="space-y-4" aria-labelledby="prinsip-title">
-        <h2
-          id="prinsip-title"
-          className="text-foreground font-heading text-xl font-semibold tracking-tight sm:text-2xl"
-        >
-          Prinsip
-        </h2>
-        <Principles />
-      </section>
 
       {educationList.length > 0 && (
         <section className="space-y-4" aria-labelledby="pendidikan-title">
