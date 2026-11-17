@@ -4,6 +4,8 @@ export { V2Navbar } from "./components/V2Navbar";
 export { V2Hero } from "./components/V2Hero";
 export { V2About } from "./components/V2About";
 export { V2FeaturedProjects } from "./components/V2FeaturedProjects";
+export { V2EducationExperience } from "./components/V2EducationExperience";
+export { V2Certificates } from "./components/V2Certificates";
 export type {
   V2NavbarProps,
   V2Stats,

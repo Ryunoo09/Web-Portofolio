@@ -61,6 +61,7 @@ export type V2CertificatesProps = {
     id: string;
     title: string;
     issuer: string;
+    description: string | null;
     credentialUrl: string | null;
   }[];
 };
