@@ -27,11 +27,11 @@ export function V2Navbar({ activeSection = "beranda" }: V2NavbarProps) {
           rakha.dev
         </Link>
 
-        <ul className="hidden items-center gap-1 lg:flex">
+        <ul className="flex items-center gap-1">
           {NAV_ITEMS.map((item) => {
             const isActive = activeSection === item.id;
             return (
-              <li key={item.id} className={isActive ? "hidden lg:block" : ""}>
+              <li key={item.id}>
                 <Link
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}

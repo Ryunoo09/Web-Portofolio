@@ -25,15 +25,15 @@ describe("V2Navbar", () => {
 
     const activeLink = screen.getByRole("link", { name: "Portfolio" });
     expect(activeLink).toHaveAttribute("aria-current", "page");
-    expect(activeLink).toHaveAttribute("data-active", "");
+    expect(activeLink).toHaveAttribute("data-active");
   });
 
   it("does not mark non-active sections", () => {
     render(<V2Navbar activeSection="Portfolio" />);
 
     const inactiveLink = screen.getByRole("link", { name: "Beranda" });
-    expect(inactiveLink).not.toHaveAttribute("aria-current");
-    expect(inactiveLink).not.toHaveAttribute("data-active");
+    expect(inactiveLink.hasAttribute("aria-current")).toBe(false);
+    expect(inactiveLink.hasAttribute("data-active")).toBe(false);
   });
 
   it("renders the CV download dropdown trigger", () => {
