@@ -6,6 +6,8 @@ export { V2About } from "./components/V2About";
 export { V2FeaturedProjects } from "./components/V2FeaturedProjects";
 export { V2EducationExperience } from "./components/V2EducationExperience";
 export { V2Certificates } from "./components/V2Certificates";
+export { V2Contact } from "./components/V2Contact";
+export { V2Footer } from "./components/V2Footer";
 export type {
   V2NavbarProps,
   V2Stats,
