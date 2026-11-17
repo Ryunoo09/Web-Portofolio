@@ -4,7 +4,7 @@ import { siteConfig } from "@/shared/constants/siteConfig";
 import type { V2ContactProps } from "../types";
 
 export function V2Contact({ profile }: V2ContactProps) {
-  const email = profile?.email ?? siteConfig.socials?.email ?? "rakha@example.com";
+  const email = profile?.email ?? siteConfig.socials.email;
 
   return (
     <section id="kontak" className="bg-[#FDFBF9] py-20 md:py-28">
@@ -53,8 +53,8 @@ export function V2Contact({ profile }: V2ContactProps) {
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 rounded-full border border-[#FEF3C7] bg-[#FDFBF9] px-4 py-2 text-xs font-semibold text-[#475569] transition hover:border-[#C59B27] hover:text-[#8A6A1F]"
                   >
-                    {link.platform === "github" ? <GithubIcon size={14} /> : null}
-                    {link.platform === "linkedin" ? <LinkedinIcon size={14} /> : null}
+                    {link.platform === "github" ? <GithubIcon className="size-4" /> : null}
+                    {link.platform === "linkedin" ? <LinkedinIcon className="size-4" /> : null}
                     {link.platform}
                   </a>
                 ))}
