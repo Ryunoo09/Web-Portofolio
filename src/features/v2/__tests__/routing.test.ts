@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const repoRoot = join(process.cwd());
+const repoRoot = "C:\\FILE CODE\\WEB Portofolio\\portfolio\\.worktrees\\portfolio-v2";
 
 describe("v2 routing versioning", () => {
   it("keeps the original public home route intact", () => {
