@@ -31,3 +31,82 @@ Rules:
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
 - A committed graphify-out/graph.json is rewritten whole on every build, so a large diff to it in a pull request is expected. Do not flag it as churn or suggest skipping the graph rebuild or its hooks.
+
+# FigCraft MCP Integration Rules
+
+## General Rules
+
+- Use the official FigCraft MCP from storytold/figcraft.
+- Always inspect the active document before editing.
+- Never assume document IDs or layer IDs.
+- Use the actual IDs returned by MCP tools.
+
+## set_properties
+
+The correct tool schema is:
+
+set_properties {
+document?: string,
+ids: number[],
+props: object
+}
+
+Rules:
+
+- Never use `id` instead of `ids`.
+- Always pass `ids` as an array.
+- Always put layer properties inside `props`.
+- `document` is optional. Only provide it when the target document is known.
+- Never put width, height, fill, x, y or other layer properties outside props.
+
+## Workflow
+
+1. Call inspect_ui.
+2. Call inspect_document.
+3. Identify the target document and layer IDs.
+4. Create or modify layers using the correct MCP schema.
+5. Use batch for related operations when appropriate.
+6. Inspect the document again.
+7. Take a screenshot to verify the result.
+
+## Error Handling
+
+- Never repeat failed calls with guessed arguments.
+- Inspect the actual tool schema before retrying.
+- If a tool call fails, correct the arguments based on its schema.
+
+## Skill & Subagent Wajib
+
+Panggil skill/subagent yang relevan secara **menyeluruh**, sebelum dan selama mengerjakan tugas — jangan menunggu diminta. Skill dimuat lewat tool `skill`; subagent dijalankan lewat tool `subagent`. Gunakan ID persis seperti di bawah (case-sensitive).
+
+Selalu dan wajib digunakan disemua percakapan dan tugas koding(dasar komunikasi & kualitas):
+
+- `caveman`, `karpathy-guidelines`
+
+Saat menulis / mengubah kode:
+
+- `ponytail`, `clean-code`, `code-reviewer`
+
+Backend:
+
+- Subagent: `backend-architect`, `database-architect`, `architect-review`
+- Skill: `senior-backend`
+
+Frontend:
+
+- Subagent: `frontend-developer`
+- Skill: `frontend-design`, `senior-frontend`
+
+Desain / UI:
+
+- Skill: `impeccable`, `emil-design-eng`, `design-taste-frontend`, `ui-design-system`, `ui-ux-pro-max`
+- Subagent: `ui-ux-designer`
+
+Keamanan & pengujian:
+
+- Skill: `senior-security`, `security-audit`, `webapp-testing`
+- Subagent: `test-engineer`, `security-auditor`
+
+Commit & push ke GitHub:
+
+- Skill: `git-commit-helper` (selalu pakai untuk menyusun pesan commit; push hanya bila diminta)
