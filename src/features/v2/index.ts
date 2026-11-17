@@ -2,6 +2,7 @@
 // Kode di luar fitur hanya boleh mengimpor dari sini.
 export { V2Navbar } from "./components/V2Navbar";
 export { V2Hero } from "./components/V2Hero";
+export { V2About } from "./components/V2About";
 export type {
   V2NavbarProps,
   V2Stats,
