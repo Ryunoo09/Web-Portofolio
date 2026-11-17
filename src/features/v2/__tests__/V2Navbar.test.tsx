@@ -21,7 +21,7 @@ describe("V2Navbar", () => {
   });
 
   it("marks the active section via aria-current and data-active", () => {
-    render(<V2Navbar activeSection="Portfolio" />);
+    render(<V2Navbar activeSection="proyek" />);
 
     const activeLink = screen.getByRole("link", { name: "Portfolio" });
     expect(activeLink).toHaveAttribute("aria-current", "page");
@@ -29,7 +29,7 @@ describe("V2Navbar", () => {
   });
 
   it("does not mark non-active sections", () => {
-    render(<V2Navbar activeSection="Portfolio" />);
+    render(<V2Navbar activeSection="proyek" />);
 
     const inactiveLink = screen.getByRole("link", { name: "Beranda" });
     expect(inactiveLink.hasAttribute("aria-current")).toBe(false);
